@@ -48,9 +48,12 @@ const Header = ({ menuItems }) => {
             >
               <MenuIcon />
             </IconButton>
+            {/* Quando click sul logo => torna alla home */}
+            <Link href="/" passHref>
             <Typography variant="h6" className="flex-grow">
               <img src="https://example.com/logo.png" alt="Logo" className="h-10" />
             </Typography>
+            </Link>
           </div>
           <div className="hidden md:flex space-x-4">
             {menuItems.map((item) => (
@@ -61,9 +64,11 @@ const Header = ({ menuItems }) => {
               </Link>
             ))}
           </div>
-          <IconButton edge="end" color="inherit" aria-label="profile">
-            <AccountCircle />
-          </IconButton>
+          <Link href="/login" passHref>
+            <IconButton edge="end" color="inherit" aria-label="profile">
+              <AccountCircle />
+            </IconButton>
+          </Link>
         </Toolbar>
       </AppBar>
 
