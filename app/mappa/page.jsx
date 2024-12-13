@@ -1,5 +1,5 @@
 "use client"
-import GoogleMapComponent from "../components/GoogleMapComponent.jsx";
+import GoogleMapComponent from "../components/Mappa/GoogleMapComponent.jsx";
 import React, { useState, useEffect } from 'react';
 
 const App = () => {
