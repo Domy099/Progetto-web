@@ -64,7 +64,7 @@ const Header = ({ menuItems }) => {
               </Link>
             ))}
           </div>
-          <Link href="/login" passHref>
+          <Link href="/dashboard" passHref>
             <IconButton edge="end" color="inherit" aria-label="profile">
               <AccountCircle />
             </IconButton>
