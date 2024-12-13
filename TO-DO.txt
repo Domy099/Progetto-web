@@ -1,0 +1,2 @@
+Aggiornare il redirecting di home con '/'
+(Al momento home non esiste una pagina)

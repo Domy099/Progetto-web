@@ -51,7 +51,7 @@ const Header = ({ menuItems }) => {
             {/* Quando click sul logo => torna alla home */}
             <Link href="/" passHref>
             <Typography variant="h6" className="flex-grow">
-              <img src="https://example.com/logo.png" alt="Logo" className="h-10" />
+              <img src="https://www.carnevalediputignano.it/home/wp-content/uploads/2019/12/LOGO_sito_web_header-e1576858331734.png" alt="Logo" className="h-10" />
             </Typography>
             </Link>
           </div>
