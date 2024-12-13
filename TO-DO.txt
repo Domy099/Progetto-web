@@ -1,2 +1,2 @@
-Aggiornare il redirecting di home con '/'
-(Al momento home non esiste una pagina)
+Sistemare voto solo se non si è ancora votato
+

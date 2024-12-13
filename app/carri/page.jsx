@@ -4,6 +4,8 @@ import ActionAreaCard from '../components/ActionAreaCard'; // Importa il compone
 import { Container, Grid } from '@mui/material';
 import Link from 'next/link';
 
+import './carri.css';
+
 const Page = () => {
   const [carri, setCarri] = useState([]); // Stato per i dati dei carri
 
@@ -24,7 +26,7 @@ const Page = () => {
   }, []);
   
   return (
-    <Container>
+    <Container style={{ paddingTop: '20px' }}>
       <Grid container spacing={4}>
         {carri.map((carro) => (
           <Grid item key={carro.idCarro} xs={12} sm={6} md={4}>

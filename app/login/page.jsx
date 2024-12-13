@@ -2,11 +2,6 @@
 import React, { useState } from 'react';
 import Login from './login';
 
-
-
-
-//<Registrazione />
-
 function App() {
 
 	return (

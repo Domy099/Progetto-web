@@ -12,7 +12,6 @@ const CarroDetailPage = ({ params }) => {
 
   const [carroDetails, setCarroDetails] = useState(null);
   const oggi = new Date();
-  //const dataOdierna = `${oggi.getFullYear()}-${(oggi.getMonth() + 1).toString().padStart(2, '0')}-${(oggi.getDate()).toString().padStart(2, '0')}`;
   const router = useRouter();
 
   useEffect(() => {
@@ -159,6 +158,13 @@ const CarroDetailPage = ({ params }) => {
                 <CardContent>
                   <Typography variant="body2" component="p">
                     {artigiano.nome} {artigiano.cognome}
+                  </Typography>
+
+                  <Typography variant="body1" component="p">
+                    Storia dell'artigiano:
+                  </Typography>
+                  <Typography variant="body2" component="p">
+                    {artigiano.storia}
                   </Typography>
                 </CardContent>
               </Card>

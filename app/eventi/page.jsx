@@ -24,7 +24,7 @@ const Page = () => {
   }, []);
   
   return (
-    <Container>
+    <Container style={{ paddingTop: '20px' }}>
       <Grid container spacing={4}>
         {eventi.map((evento) => (
           <Grid item key={evento.matricola} xs={12} sm={6} md={4}>
