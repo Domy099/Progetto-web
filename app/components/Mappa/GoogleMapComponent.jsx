@@ -26,67 +26,45 @@ const defaultCenter = {
   lng: 17.122637,
 };
 
-// Raggio di ricerca (km)
-const searchRadius = 1.5;
-
-// Funzione per calcolare la distanza (Haversine formula)
-const calculateDistance = (pos1, pos2) => {
-  const R = 6371; // Raggio della Terra in km
-  const toRad = (x) => (x * Math.PI) / 180;
-  const dLat = toRad(pos2.lat - pos1.lat);
-  const dLng = toRad(pos2.lng - pos1.lng);
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRad(pos1.lat)) *
-      Math.cos(toRad(pos2.lat)) *
-      Math.sin(dLng / 2) ** 2;
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c; // Distanza in km
-};
-
 const GoogleMapComponent = () => {
   const [userLocation, setUserLocation] = useState(null);
   const [nearbyPoints, setNearbyPoints] = useState([]);
-  const [nearbyMarkers, setNearbyMarkers] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
-  // Capisci se inserire la funzionalità
-  const [showNearbyPoints, setShowNearbyPoints] = useState(false);
 
-  // Recupera i punti dal server
+  //* Recupera i POI dal server senza eventi associati
   useEffect(() => {
     const fetchPoints = async () => {
       try {
-        const today = new Date().toISOString().split("T")[0];
-        const response = await axios.get(`${STRAPI_POI_API_URL}/api/pois?populate=*`);
-
-        console.log("Risposta API:", response.data);
+        const response = await axios.get(
+          `${STRAPI_POI_API_URL}/api/pois?populate=*`
+        );
 
         const data = response.data;
+
         if (data?.data?.length > 0) {
           const fetchedPoints = data.data
-            .filter((point) => !point.evento || point.evento.data === today)
+            .filter((point) => !point.evento)
             .map((point) => ({
-              id: point.idPOI || null,
+              id: point.id || null,
               position: {
                 lat: parseFloat(point.Latitudine) || 0,
                 lng: parseFloat(point.Longitudine) || 0,
               },
               title: point.nome || "Punto dal server",
               icon: {
-                  url: point.Marker.url ?
-                    "https://strapiweb.duckdns.org".concat(point.Marker.url)
-                    : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                scaledSize: window.google
-                  ? new google.maps.Size(30, 30)
-                  : { width: 30, height: 30 },
+                url: point.Marker?.url
+                  ? `https://strapiweb.duckdns.org${point.Marker.url}`
+                  : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                scaledSize:
+                  window.google && window.google.maps
+                    ? new google.maps.Size(30, 30)
+                    : { width: 30, height: 30 },
               },
               description: point.descrizione || "Nessuna descrizione",
-              eventCode: point.evento?.matricola || null,
-              eventName: point.evento?.nome || null,
-              eventDescription: point.evento?.Descrizione || null,
+              eventImg: null,
+              eventCode: point.matricola,
             }));
 
-          console.log("Punti recuperati:", fetchedPoints);
           setNearbyPoints(fetchedPoints);
         }
       } catch (error) {
@@ -98,9 +76,64 @@ const GoogleMapComponent = () => {
     };
 
     fetchPoints();
-  }, [STRAPI_POI_API_URL]);
+  }, []);
 
-  // Ottenere la posizione dell'utente
+  //*ANCHOR - Recupera i POI associati agli eventi
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const today = new Date().toISOString().split("T")[0];
+        const response = await axios.get(
+          `${STRAPI_POI_API_URL}/api/eventi?populate[0]=Locandina&populate[1]=pois.Marker`
+        );
+
+        const data = response.data;
+
+        if (data?.data?.length > 0) {
+          const fetchedPoints = data.data
+            .flatMap((evento) =>
+              evento.pois?.map((point) => ({
+                id: point.id || null,
+                position: {
+                  lat: parseFloat(point.Latitudine) || 0,
+                  lng: parseFloat(point.Longitudine) || 0,
+                },
+                title: evento.nome|| "Punto dal server",
+                icon: {
+                  url: point.Marker?.url
+                    ? `${STRAPI_POI_API_URL}${point.Marker.url}`
+                    : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                  scaledSize:
+                    window.google && window.google.maps
+                      ? new google.maps.Size(30, 30)
+                      : { width: 30, height: 30 },
+                },
+                description: evento.Descrizione || "Nessuna descrizione",
+                eventCode: evento.matricola,
+                eventPosition: evento.posizione,
+                eventDate: evento.data,
+                eventHour: evento.Orario || "Non definito",
+                eventImg: evento.Locandina?.url
+                  ? `${STRAPI_POI_API_URL}${evento.Locandina.url}`
+                  : null, // Restituisce null se la locandina non esiste
+              }))
+            )
+            .filter(Boolean); // Filtra eventuali elementi null o undefined
+
+          setNearbyPoints((prevPoints) => [...prevPoints, ...fetchedPoints]);
+        }
+      } catch (error) {
+        console.error(
+          "Errore nel recupero dei punti degli eventi:",
+          error.response || error.message
+        );
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  //*ANCHOR -  Ottenere la posizione dell'utente
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -111,43 +144,18 @@ const GoogleMapComponent = () => {
           });
         },
         (error) => {
-          switch (error.code) {
-            case error.PERMISSION_DENIED:
-              console.error("L'utente ha negato l'accesso alla posizione.");
-              break;
-            case error.POSITION_UNAVAILABLE:
-              console.error("Informazioni sulla posizione non disponibili.");
-              break;
-            case error.TIMEOUT:
-              console.error("Richiesta di geolocalizzazione scaduta.");
-              break;
-            default:
-              console.log("Errore sconosciuto nella geolocalizzazione.");
-          }
-          // Fallback: usa la posizione predefinita
+          console.error("Errore nella geolocalizzazione:", error.message);
           setUserLocation(defaultCenter);
         }
       );
     } else {
-      console.error("La geolocalizzazione non è supportata dal browser.");
+      console.error("La geolocalizzazione non è supportata.");
       setUserLocation(defaultCenter);
     }
   }, []);
 
-  // Filtrare i marker vicini
-  useEffect(() => {
-    if (userLocation) {
-      const filteredMarkers = nearbyPoints.filter((point) => {
-        const distance = calculateDistance(userLocation, point.position);
-        return distance <= searchRadius;
-      });
-      setNearbyMarkers(filteredMarkers);
-    }
-  }, [userLocation, nearbyPoints]);
-
   return (
     <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
-      {/* Mappa */}
       <LoadScript googleMapsApiKey={GOOGLE_MAPS_API}>
         <GoogleMap
           mapContainerStyle={containerStyle}
@@ -155,47 +163,43 @@ const GoogleMapComponent = () => {
           zoom={15}
           options={{
             mapTypeControl: false,
-            // mapTypeld: "satellite",
-            // mapTypeld: "terrain",
-            // mapTypeId: "hybrid"
             fullscreenControl: false,
             streetViewControl: false,
-            // zoomControl: false,
-            // disableDefaultUI: true,
-            // draggable: false,
-            // navigationControl: false,
             styles: [
               {
-                featureType: "poi", // Nasconde tutti i POI
+                featureType: "poi",
                 elementType: "all",
                 stylers: [{ visibility: "off" }],
               },
               {
-                featureType: "poi.business", // Nasconde i POI delle attività commerciali
+                featureType: "poi.business",
                 elementType: "all",
                 stylers: [{ visibility: "off" }],
               },
               {
-                featureType: "transit", // Rimuove i simboli delle stazioni di trasporto
+                featureType: "transit",
                 elementType: "all",
                 stylers: [{ visibility: "off" }],
               },
             ],
           }}
         >
-          {/* Marker posizione utente */}
+          {/* Marker per la posizione dell'utente */}
           {userLocation && (
             <Marker
               position={userLocation}
               title="La tua posizione"
               icon={{
                 url: "myPosition.svg",
-                scaledSize: new window.google.maps.Size(30, 30),
+                scaledSize:
+                  window.google && window.google.maps
+                    ? new google.maps.Size(30, 30)
+                    : { width: 30, height: 30 },
               }}
             />
           )}
 
-          {/* Marker dei punti vicini */}
+          {/* Marker per i POI */}
           {nearbyPoints.map((point) => (
             <Marker
               key={point.id}
@@ -206,36 +210,34 @@ const GoogleMapComponent = () => {
             />
           ))}
 
+          {/* InfoWindow */}
           {selectedMarker && (
             <InfoWindow
               position={selectedMarker.position}
-              onCloseClick={() => setSelectedMarker(null)} // Chiude la finestra
+              onCloseClick={() => setSelectedMarker(null)}
             >
-              <div>
-
-                {/* Logica per mostrare il componente giusto */}
-                {selectedMarker.eventCode ? (
-                  <MultiActionAreaCard
-                  title={
-                    selectedMarker.eventName || "Nome evento non disponibile"
-                  }
+              {selectedMarker.eventoid === null ? (
+                <MultiActionAreaCard
+                  title={selectedMarker.title || "Titolo non disponibile"}
                   description={
-                    selectedMarker.eventDescription ||
-                    "Descrizione evento non disponibile"
+                    selectedMarker.description || "Nessuna descrizione"
                   }
                   position={selectedMarker.position}
                 />
-                ) : (
-                  <MultiActionAreaCard
-                    title={selectedMarker.title || "Titolo non disponibile"}
-                    description={
-                      selectedMarker.description ||
-                      "Descrizione non disponibile"
-                    }
-                    position={selectedMarker.position}
-                  />
-                )}
-              </div>
+              ) : (
+                <MultiActionAreaCard
+                  image={selectedMarker.eventImg}
+                  title={selectedMarker.title || "Titolo non disponibile"}
+                  description={
+                    selectedMarker.description || "Nessuna descrizione"
+                  }
+                  position={selectedMarker.position}
+                  date={selectedMarker.eventDate}
+                  hour={selectedMarker.eventHour}
+                  eventPosition={selectedMarker.eventPosition}
+                  eventCode={selectedMarker.eventCode}
+                />
+              )}
             </InfoWindow>
           )}
         </GoogleMap>
