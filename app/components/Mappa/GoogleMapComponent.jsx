@@ -8,8 +8,7 @@ import {
   InfoWindow,
 } from "@react-google-maps/api";
 import axios from "axios";
-import ActionAreaCard from "../ActionAreaCard";
-import MultiActionAreaCard from "../MultiActionAreaCard";
+import MultiActionAreaCard from "./MultiActionAreaCard";
 
 // URL per API
 const STRAPI_POI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
@@ -57,38 +56,49 @@ const GoogleMapComponent = () => {
   useEffect(() => {
     const fetchPoints = async () => {
       try {
-        const today = new Date().toISOString().split("T")[0]; // Data di oggi
-        const response = await axios.get(STRAPI_POI_API_URL);
+        const today = new Date().toISOString().split("T")[0];
+        const response = await axios.get(`${STRAPI_POI_API_URL}/api/pois?populate=*`);
+
+        console.log("Risposta API:", response.data);
 
         const data = response.data;
         if (data?.data?.length > 0) {
           const fetchedPoints = data.data
-            .filter((point) => !point.evento || point.evento.data === today) // Filtra i punti
+            .filter((point) => !point.evento || point.evento.data === today)
             .map((point) => ({
-              id: point.idPOI,
+              id: point.idPOI || null,
               position: {
-                lat: parseFloat(point.Latitudine),
-                lng: parseFloat(point.Longitudine),
+                lat: parseFloat(point.Latitudine) || 0,
+                lng: parseFloat(point.Longitudine) || 0,
               },
               title: point.nome || "Punto dal server",
               icon: {
-                url: point.Marker?.url
-                  ? point.Marker.url.startsWith("http")
-                    ? point.Marker.url
-                    : "https://strapiweb.duckdns.org".concat(point.Marker.url)
-                  : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-                scaledSize: new google.maps.Size(30, 30),
+                  url: point.Marker.url ?
+                    "https://strapiweb.duckdns.org".concat(point.Marker.url)
+                    : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+                scaledSize: window.google
+                  ? new google.maps.Size(30, 30)
+                  : { width: 30, height: 30 },
               },
-              description: point.descrizione,
+              description: point.descrizione || "Nessuna descrizione",
+              eventCode: point.evento?.matricola || null,
+              eventName: point.evento?.nome || null,
+              eventDescription: point.evento?.Descrizione || null,
             }));
+
+          console.log("Punti recuperati:", fetchedPoints);
           setNearbyPoints(fetchedPoints);
         }
       } catch (error) {
-        console.error("Errore nel recupero dei punti:", error);
+        console.error(
+          "Errore nel recupero dei punti:",
+          error.response || error.message
+        );
       }
     };
+
     fetchPoints();
-  }, []);
+  }, [STRAPI_POI_API_URL]);
 
   // Ottenere la posizione dell'utente
   useEffect(() => {
@@ -153,7 +163,24 @@ const GoogleMapComponent = () => {
             // zoomControl: false,
             // disableDefaultUI: true,
             // draggable: false,
-            // navigationControl: false
+            // navigationControl: false,
+            styles: [
+              {
+                featureType: "poi", // Nasconde tutti i POI
+                elementType: "all",
+                stylers: [{ visibility: "off" }],
+              },
+              {
+                featureType: "poi.business", // Nasconde i POI delle attività commerciali
+                elementType: "all",
+                stylers: [{ visibility: "off" }],
+              },
+              {
+                featureType: "transit", // Rimuove i simboli delle stazioni di trasporto
+                elementType: "all",
+                stylers: [{ visibility: "off" }],
+              },
+            ],
           }}
         >
           {/* Marker posizione utente */}
@@ -162,7 +189,7 @@ const GoogleMapComponent = () => {
               position={userLocation}
               title="La tua posizione"
               icon={{
-                url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png",
+                url: "myPosition.svg",
                 scaledSize: new window.google.maps.Size(30, 30),
               }}
             />
@@ -182,14 +209,32 @@ const GoogleMapComponent = () => {
           {selectedMarker && (
             <InfoWindow
               position={selectedMarker.position}
-              onCloseClick={() => setSelectedMarker(null)} // Chiudi la finestra
+              onCloseClick={() => setSelectedMarker(null)} // Chiude la finestra
             >
               <div>
-                <MultiActionAreaCard
-                  title={selectedMarker.title}
-                  description={selectedMarker.description}
+
+                {/* Logica per mostrare il componente giusto */}
+                {selectedMarker.eventCode ? (
+                  <MultiActionAreaCard
+                  title={
+                    selectedMarker.eventName || "Nome evento non disponibile"
+                  }
+                  description={
+                    selectedMarker.eventDescription ||
+                    "Descrizione evento non disponibile"
+                  }
                   position={selectedMarker.position}
                 />
+                ) : (
+                  <MultiActionAreaCard
+                    title={selectedMarker.title || "Titolo non disponibile"}
+                    description={
+                      selectedMarker.description ||
+                      "Descrizione non disponibile"
+                    }
+                    position={selectedMarker.position}
+                  />
+                )}
               </div>
             </InfoWindow>
           )}
