@@ -8,7 +8,8 @@ import {
   InfoWindow,
 } from "@react-google-maps/api";
 import axios from "axios";
-import MultiActionAreaCard from "./MultiActionAreaCard";
+import ActionAreaCard from "../ActionAreaCard";
+import MultiActionAreaCard from "../MultiActionAreaCard";
 
 // URL per API
 const STRAPI_POI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
