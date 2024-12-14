@@ -1,2 +1,8 @@
-Sistemare voto solo se non si è ancora votato
+Da fare:
+1.Sistemare voto solo se non si è ancora votato
+
+Fatto:
+1.Sistema errore in caso di login errato (Vito)
+2.Sistemare che si puo' accedere alle informazioni dei carri anche senza aver effettuato l'accesso (Vito)
+3.Sistemare la DashBoard (Vito)
 
