@@ -1,0 +1,25 @@
+/* Action Area Card Styling */
+.action-area-card {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+    transition: box-shadow 0.3s ease-in-out;
+  }
+  
+  .action-area-card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .action-area-card img {
+    width: 100%;
+    height: 200px; /* Fixed height for the image */
+    object-fit: cover; /* Ensures the image fills the area and keeps the aspect ratio */
+    object-position: center; /* Displays the central part of the image */
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .action-area-card:hover img {
+    transform: scale(1.05); /* Adds zoom effect on hover */
+  }
+  

@@ -226,13 +226,25 @@ export default function CarroDetailPage ({ params }){
         <Box display="flex" gap={2} flexWrap="wrap">
           {carroDetails.artigiani.length > 0 ? (
             carroDetails.artigiani.map((artigiano) => (
-              <Card key={artigiano.idArtigiano} sx={{ maxWidth: "200px" }}>
-                <CardContent>
-                  <Typography variant="body2" component="p">
+              <Card key={artigiano.idArtigiano} sx={{ display: 'flex', width: '600px', height: 160}}>
+                <CardMedia
+                  component="img"
+                  sx={{
+                    flexShrink: 0, // Impedisce che l'immagine si restringa troppo
+                    width: 'auto', // Imposta la larghezza dell'immagine in modo che si adatti al contenitore
+                    maxWidth: '100%', // Impedisce che l'immagine superi la larghezza del contenitore
+                    height: 'auto', // Imposta l'altezza per mantenere le proporzioni
+                    objectFit: 'cover', // Assicura che l'immagine riempia l'area senza distorsioni
+                  }}
+                  image={'https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg'}
+                />
+
+                <CardContent sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', paddingLeft: 2 }}>
+                  <Typography variant="h6" component="p" sx={{ marginBottom: 1 }}>
                     {artigiano.nome} {artigiano.cognome}
                   </Typography>
 
-                  <Typography variant="body1" component="p">
+                  <Typography variant="body1" component="p" sx={{ marginBottom: 1 }}>
                     Storia dell'artigiano:
                   </Typography>
                   <Typography variant="body2" component="p">
@@ -240,6 +252,7 @@ export default function CarroDetailPage ({ params }){
                   </Typography>
                 </CardContent>
               </Card>
+
             ))
           ) : (
             <Typography variant="body2" color="textSecondary">

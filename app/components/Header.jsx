@@ -15,6 +15,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import Box from "@mui/material/Box";
 
+
 const Header = ({ menuItems }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -50,7 +51,7 @@ const Header = ({ menuItems }) => {
             <Link href="/" passHref>
               <Typography variant="h6" className="flex-grow">
                 <img
-                  src="https://www.carnevalediputignano.it/home/wp-content/uploads/2019/12/LOGO_sito_web_header-e1576858331734.png"
+                  src= "/logoCarnevale.png"
                   alt="Logo"
                   className="h-10"
                 />

@@ -9,7 +9,7 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 function App() {
-  const menuItems = ['Home', 'Eventi', 'Mappa', 'Storia', 'Carri', 'Artisti'];
+  const menuItems = ['Home', 'Eventi', 'Mappa', 'Storia', 'Carri', 'Artigiani'];
   const images = [
     'https://www.friggitoriasandomenico.com/wp-content/uploads/2023/01/carnevale-putignano.jpg',
     'https://www.toureventitalia.com/myadm/tiny/editor/file/putignano.jpeg'
