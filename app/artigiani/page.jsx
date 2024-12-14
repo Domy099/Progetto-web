@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ActionAreaCard from '../components/ActionAreaCard'; // Importa il componente ActionAreaCard
 import { Container, Grid } from '@mui/material';
 import Link from 'next/link';
+import Typography from '@mui/material/Typography';
 
 import './artigiani.css';
 
@@ -27,6 +28,9 @@ const Page = () => {
   
   return (
     <Container style={{ paddingTop: '20px' }}>
+      <Typography variant="h4" component="h1" color="text.secondary"> 
+      I creatori della magia
+      </Typography>
       <Grid container spacing={4}>
         {artigiani.map((artigiano) => (
           <Grid item key={artigiano.idArtigiano} xs={12} sm={6} md={4}>
