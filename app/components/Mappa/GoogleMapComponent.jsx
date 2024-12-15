@@ -9,7 +9,7 @@ import {
 } from "@react-google-maps/api";
 import axios from "axios";
 import ActionAreaCard from "../ActionAreaCard";
-import MultiActionAreaCard from "../MultiActionAreaCard";
+import MultiActionAreaCard from "./MultiActionAreaCard";
 
 // URL per API
 const STRAPI_POI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
@@ -83,13 +83,13 @@ const GoogleMapComponent = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const today = new Date().toISOString().split("T")[0];
+        const today = new Date().toISOString().split("T")[0]; // Ottieni la data di oggi in formato YYYY-MM-DD
         const response = await axios.get(
           `${STRAPI_POI_API_URL}/api/eventi?populate[0]=Locandina&populate[1]=pois.Marker`
         );
-
+  
         const data = response.data;
-
+  
         if (data?.data?.length > 0) {
           const fetchedPoints = data.data
             .flatMap((evento) =>
@@ -99,7 +99,7 @@ const GoogleMapComponent = () => {
                   lat: parseFloat(point.Latitudine) || 0,
                   lng: parseFloat(point.Longitudine) || 0,
                 },
-                title: evento.nome|| "Punto dal server",
+                title: evento.nome || "Punto dal server",
                 icon: {
                   url: point.Marker?.url
                     ? `${STRAPI_POI_API_URL}${point.Marker.url}`
@@ -119,8 +119,9 @@ const GoogleMapComponent = () => {
                   : null, // Restituisce null se la locandina non esiste
               }))
             )
+            .filter((point) => point.eventDate === today) // Filtra gli eventi che corrispondono a oggi
             .filter(Boolean); // Filtra eventuali elementi null o undefined
-
+  
           setNearbyPoints((prevPoints) => [...prevPoints, ...fetchedPoints]);
         }
       } catch (error) {
@@ -130,7 +131,7 @@ const GoogleMapComponent = () => {
         );
       }
     };
-
+  
     fetchEvents();
   }, []);
 
