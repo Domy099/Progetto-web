@@ -23,17 +23,15 @@ const Login = () => {
       console.log('User profile:', response.data.user);
       console.log('User token:', response.data.jwt);
 
-      //aggiungi if
-      //alert('Login successful!');
       sessionStorage.setItem('token', response.data.jwt);
-      const token = sessionStorage.getItem('token');
-      console.log('Token:', token);
-      
       router.push('/dashboard');
-
     } catch (err) {
-      setError(err.response?.data?.message || 'An error occurred. Please try again.');
+      setError(err.response?.data?.message || 'Errore. Credenziali non valide.');
     }
+  };
+
+  const handleRegistrazione = () => {
+    router.push('/registrazione'); // Reindirizza alla pagina di registrazione
   };
 
   const toggleMostraPassword = () => {
@@ -42,6 +40,7 @@ const Login = () => {
 
   return (
     <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', border: '1px solid #ddd', borderRadius: '5px', backgroundColor: '#f9f9f9' }}>
+      <h2 style={{ color: 'black', fontWeight: 'bold', textAlign: 'left' }}>Login</h2>
       <form onSubmit={handleLogin}>
         <div style={{ marginBottom: '15px' }}>
           <label htmlFor="email" style={{ color: '#333', fontWeight: 'bold', display: 'block', textAlign: 'center' }}>Email</label>
@@ -59,7 +58,7 @@ const Login = () => {
               borderRadius: '4px',
               border: '1px solid #ccc',
               backgroundColor: '#fff',
-              color: '#000', // Colore del testo impostato su nero
+              color: '#000',
             }}
           />
         </div>
@@ -79,7 +78,7 @@ const Login = () => {
               borderRadius: '4px',
               border: '1px solid #ccc',
               backgroundColor: '#fff',
-              color: '#000', // Colore del testo impostato su nero
+              color: '#000',
             }}
           />
           <button
@@ -96,7 +95,7 @@ const Login = () => {
           style={{
             width: '100%',
             padding: '10px',
-            backgroundColor: '#EA580C', // Colore dell'header
+            backgroundColor: '#EA580C',
             color: 'white',
             border: 'none',
             borderRadius: '4px',
@@ -104,6 +103,22 @@ const Login = () => {
           }}
         >
           Login
+        </button>
+        <button
+          type="button"
+          onClick={handleRegistrazione} // Chiamata alla funzione di reindirizzamento
+          style={{
+            width: '100%',
+            padding: '10px',
+            marginTop: '10px',
+            backgroundColor: '#EA580C',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer',
+          }}
+        >
+          Registrati
         </button>
       </form>
     </div>
