@@ -79,7 +79,7 @@ const GoogleMapComponent = () => {
                  title: point.nome || "Punto dal server",
                  icon: {
                    url: markerUrl, // Icona personalizzata
-                   scaledSize: new window.google.maps.Size(30, 30),
+                   scaledSize:  { width: 30, height: 30 }
                  },
                };
              });
@@ -140,7 +140,7 @@ const GoogleMapComponent = () => {
              title="La tua posizione"
              icon={{
                url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png", // Percorso al file PNG nella cartella `public/icons`
-               scaledSize: new window.google.maps.Size(30, 30), // Dimensioni dell'icona personalizzata
+               scaledSize:  { width: 30, height: 30 }, // Dimensioni dell'icona personalizzata
               }}
            />
           )}
