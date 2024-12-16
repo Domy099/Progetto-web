@@ -9,17 +9,22 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@babel/preset-react": "^7.26.3",
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
-    "@mui/icons-material": "^6.1.10",
-    "@mui/material": "^6.1.10",
+    "@mui/icons-material": "^5.14.13",
+    "@mui/material": "^5.14.13",
     "@react-google-maps/api": "^2.20.3",
     "axios": "^1.7.9",
+    "ccat-api": "latest",
+    "framer-motion": "^10.12.18",
     "jsonwebtoken": "^9.0.2",
     "next": "15.0.4",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
-    "react-responsive-carousel": "^3.2.23"
+    "react-icons": "^4.11.0",
+    "react-responsive-carousel": "^3.2.23",
+    "widget-ccat": "^1.0.61"
   },
   "devDependencies": {
     "eslint": "^8",
