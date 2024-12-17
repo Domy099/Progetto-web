@@ -1,6 +1,11 @@
-Sistemare che non si puo vedere carro specifico o evento specifico senza votare (chiedi a vito cosa ha fatto -> va bene con solzuione?)
 
 Cosa ho modificato (Vito) :
 1. login.jsx -> Ho aggiunto il tasto per la registrazione e ho sitemato gli errori in caso di login errato
 2. registrazione.jsx -> Ho migliorato lo stile della pagina e aggiunto delle funzioni
 3. dashboard2.jsx -> Migliorato la grafica della pagina utente
+
+
+IDEE
+Feedback solo se l'evento è gia avvenuto (giorno feedback >= data evento)
+Biglietti gia confezionati su strapi, l'utente ne sceglie uno tramite codice e li vede in dashboard
+
