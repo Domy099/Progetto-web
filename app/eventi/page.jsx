@@ -15,7 +15,7 @@ const Page = () => {
       try {
         const response = await fetch(`https://strapiweb.duckdns.org/api/eventi?filters[sfilata][$eq]=${sfilataSelezionata}`); // Sostituisci con l'endpoint reale
         const jsonData = await response.json();
-        console.log('Dati ricevuti:', jsonData);
+        console.log('Eventi ricevuti:', jsonData);
         setEventi(jsonData.data); // Accedi a jsonData.data per l'array corretto
       } catch (error) {
         console.error('Errore durante il recupero dei dati:', error);

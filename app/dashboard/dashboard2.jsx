@@ -1,52 +1,45 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { Box, Button, Typography, Card, CardContent, Grid, Container } from "@mui/material";
 
 export default function DashboardNuova() {
   const router = useRouter();
 
-  // Stato per i dati dell'utente, i biglietti, stato di caricamento ed errori
   const [user, setUser] = useState(null);
-  const [tickets, setTickets] = useState([]); // Stato per i biglietti
+  const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Recupera il token dal sessionStorage
-    const token = sessionStorage.getItem('token');
+    const token = sessionStorage.getItem("token");
 
     if (!token) {
-      // Reindirizza alla pagina di login se non c'è il token
-      router.push('/login');
+      router.push("/login");
       return;
     }
 
-    // Funzione per recuperare i dati dell'utente e i biglietti
     const fetchUserData = async () => {
       try {
-        const response = await fetch('https://strapiweb.duckdns.org/api/users/me?populate=*', {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await fetch(
+          "https://strapiweb.duckdns.org/api/users/me?populate=*",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         if (!response.ok) {
-          throw new Error('Impossibile recuperare i dati utente');
+          throw new Error("Impossibile recuperare i dati utente");
         }
 
         const userData = await response.json();
-        console.log(userData);  // Aggiungi questo per vedere la risposta
-
-        // Imposta i dati dell'utente
         setUser(userData);
 
-        // Controlla se la risposta contiene i biglietti
-        const userTickets = userData.biglietti;
-        
-        console.log(userTickets);
+        const userTickets = userData.biglietti || [];
         setTickets(userTickets);
-
       } catch (err) {
         setError(err.message);
       } finally {
@@ -57,49 +50,93 @@ export default function DashboardNuova() {
     fetchUserData();
   }, [router]);
 
-  if (loading) {
-    return <p>Caricamento in corso...</p>;
-  }
-
-  if (error) {
-    return <p>Errore: {error}</p>;
-  }
-
-  if (!user) {
-    return null;
-  }
+  if (loading) return <Typography>Caricamento in corso...</Typography>;
+  if (error) return <Typography>Errore: {error}</Typography>;
+  if (!user) return null;
 
   return (
-    <div>
-      <h1>Benvenuto nella tua Dashboard</h1>
-      <div>
-        <p><strong>Username:</strong> {user.username}</p>
-        <p><strong>Email:</strong> {user.email}</p>
-      </div>
+    <Container sx={{ padding: 4 }}>
+      {/* Sezione di benvenuto */}
+      <Box sx={{ mb: 4 }}>
+        <Typography
+          variant="h4"
+          sx={{ textAlign: "left", mb: 2, color: "black", fontFamily: "Arial, sans-serif" }}
+        >
+          Bentornato, {user.username}!
+        </Typography>
+        <Grid container spacing={3}>
+          {/* Informazioni utente */}
+          <Grid item xs={12} md={6}>
+            <Card
+              sx={{
+                borderRadius: 5,
+                boxShadow: 3,
+                backgroundColor: "white",
+                padding: 3,
+              }}
+            >
+              <CardContent>
+                <Typography variant="h5" sx={{ fontWeight: "bold" }}>
+                  {user.username}
+                </Typography>
+                <Typography color="textSecondary" sx={{ mb: 2 }}>
+                  {user.email}
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Box>
 
-      <div>
-        <h2>I miei biglietti</h2>
-        {tickets.length > 0 ? (
-          <ul>
-            {tickets.map(ticket => (
-              <li key={ticket.id}>
-                Codice: {ticket.codice}
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>Nessun biglietto</p>
-        )}
-      </div>
+      {/* Sezione biglietti */}
+      <Box sx={{ mb: 4 }}>
+        <Typography
+          variant="h6"
+          sx={{ textAlign: "left", mb: 2, color: "black", fontFamily: "Arial, sans-serif" }}
+        >
+          I tuoi Biglietti:
+        </Typography>
+        <Grid container spacing={3}>
+          {tickets.length > 0 ? (
+            tickets.map((ticket) => (
+              <Grid item xs={12} md={6} key={ticket.id}>
+                <Card
+                  sx={{
+                    borderRadius: 5,
+                    boxShadow: 3,
+                    backgroundColor: "white",
+                    padding: 3,
+                  }}
+                >
+                  <CardContent>
+                    <Typography variant="body1">
+                      Codice: {ticket.codice}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))
+          ) : (
+            <Typography color="textSecondary" sx={{ textAlign: "center" }}>
+              Nessun biglietto
+            </Typography>
+          )}
+        </Grid>
+      </Box>
 
-      <button
-        onClick={() => {
-          sessionStorage.removeItem('token');
-          router.push('/login');
-        }}
-      >
-        Logout
-      </button>
-    </div>
+      {/* Logout Button */}
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+        <Button
+          variant="contained"
+          className="bg-orange-600 hover:bg-orange-700"
+          onClick={() => {
+            sessionStorage.removeItem("token");
+            router.push("/login");
+          }}
+        >
+          Logout
+        </Button>
+      </Box>
+    </Container>
   );
 }
