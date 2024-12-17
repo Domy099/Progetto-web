@@ -1,2 +1,2 @@
-Sistemare voto solo se non si è ancora votato
+Sistemare che non si puo vedere carro specifico o evento specifico senza votare (chiedi a vito cosa ha fatto -> va bene con solzuione?)
 
