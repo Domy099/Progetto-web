@@ -48,143 +48,123 @@ export default function EventoDetailPage ({ params }) {
   }, [matricola]);
 
   // FETCH DATI DEI VOTI PER VERIFICARE SE L'UTENTE HA GIA' VOTATO
-    //useEffect(() => {
-      const fetchFeedback = async () => {
-        try {
-          // Recupera il token dell'utente dal sessionStorage
-          const token = sessionStorage.getItem('token');
-          if (!token) {
-            console.error("Utente non autenticato!");
-            alert("Devi effettuare l'accesso per inviare un feedback");
-            router.push("/login");
-            return;
-          }
+  const fetchFeedback = async () => {
+    try {
+      const token = sessionStorage.getItem("token");
+      if (!token) {
+        console.error("Utente non autenticato!");
+        alert("Devi effettuare l'accesso per inviare un feedback");
+        router.push("/login");
+        return { hasVoted: false, feedbackDetails: null };
+      }
   
-          // Decodifica il token per ottenere l'ID dell'utente
-          const decoded = jwt.decode(token);
-          if (!decoded || !decoded.id) {
-            console.error("Token non valido o ID utente non presente!");
-            alert("Errore durante l'autenticazione, accedi nuovamente.");
-            router.push("/login");
-            return;
-          }
+      const decoded = jwt.decode(token);
+      if (!decoded || !decoded.id) {
+        console.error("Token non valido o ID utente non presente!");
+        alert("Errore durante l'autenticazione, accedi nuovamente.");
+        router.push("/login");
+        return { hasVoted: false, feedbackDetails: null };
+      }
   
-          const idUtente = decoded.id;
-          setIdUtente(idUtente);
-          console.log('ID utente:', idUtente);
+      const idUtente = decoded.id;
+      setIdUtente(idUtente);
   
-          // Imposta lo stato di caricamento
-          setLoading(true);
+      setLoading(true);
   
-          // Esegui la chiamata API con il token incluso nei headers
-          const response = await fetch(`https://strapiweb.duckdns.org/api/feedbacks?filters[visitatore][$eq]=${idUtente}&filters[evento][$eq]=${idEvento}`, {
-            headers: {
-              'Authorization': `Bearer ${token}`, // Include il token
-              'Content-Type': 'application/json', // Specifica il tipo di contenuto
-            },
-          });
-  
-          if (!response.ok) {
-            throw new Error('Errore nella risposta della API');
-          }
-  
-          // Ottieni i dati dei voti
-          const voti = await response.json();
-  
-          // Controlla se l'utente ha già votato
-          const hasVoted = voti.data && voti.data.length > 0;
-          setHasVoted(hasVoted);
-
-          setFeedbackDetails(hasVoted ? voti.data[0] : null); // Se ha votato, salva i dettagli del voto
-          console.log('Dati dei feedback:', feedbackDetails);
-          console.log('Votato:', hasVoted);
-          
-          hasVoted && setShowForm(false); // Nascondi il form se l'utente ha già votato
-          setLoading(false);
-
-        } catch (error) {
-          console.error('Errore nel recuperare i feedback utente:', error);
-          setLoading(false);
+      const response = await fetch(
+        `https://strapiweb.duckdns.org/api/feedbacks?filters[visitatore][$eq]=${idUtente}&filters[evento][$eq]=${idEvento}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         }
-      };
+      );
+  
+      if (!response.ok) {
+        throw new Error("Errore nella risposta della API");
+      }
+  
+      const voti = await response.json();
+      const hasVoted = voti.data && voti.data.length > 0;
+  
+      setLoading(false);
+  
+      return { hasVoted, feedbackDetails: hasVoted ? voti.data[0] : null };
+    } catch (error) {
+      console.error("Errore nel recuperare i feedback utente:", error);
+      setLoading(false);
+      return { hasVoted: false, feedbackDetails: null };
+    }
+  };
+  
 
       //fetchFeedback();
     //}, [idEvento]);
 
   //Gestisce l'invio del feedback
   const handleFeedbackClick = async () => {
-    // Verifica se l'utente ha già votato
-    fetchFeedback();
+    const { hasVoted, feedbackDetails } = await fetchFeedback();
+  
+    if (hasVoted) {
+      setShowForm(false);
+      alert("Hai già inviato un feedback per questo evento");
+    } else {
+      setShowForm(true);
+    }
+  };
+  
 
+  const handleSubmitFeedback = async () => {
     const token = sessionStorage.getItem("token");
+  
     if (!token) {
-      alert("Devi effettuare l'accesso per inviare un feedback");
       console.error("Utente non autenticato!");
+      alert("Devi effettuare l'accesso per inviare un feedback");
       router.push("/login");
       return;
     }
-    
-    if (hasVoted) {
-      setShowForm(false); // Nascondi il form se l'utente ha già votato
-      alert("Hai già inviato un feedback per questo evento");
-      return;
-    }
-    setShowForm(true); // Mostra il form per inviare il feedback
-  };
-
-  const handleSubmitFeedback = async () => {
-    
-    // Se è autenticato, ottieni il suo id dal token tramite 
-    const token = sessionStorage.getItem("token");
+  
     const decoded = jwt.decode(token);
     const userId = decoded.id;
-    setIdUtente(userId);
-    console.log('ID utente per il voto:', idUtente);
+  
     setLoading(true);
-    console.log('Matricola evento:', matricola);
+  
     try {
-      // Prepara i dati del voto
-      const votoData = {
+      const feedbackData = {
         data: {
-          evento: { id: idEvento },  // ID del carro votato
-          visitatore: { id: idUtente }, // ID dell'utente che sta votando
-          descrizione: feedbackText, // Descrizione del feedback
+          evento: { id: idEvento },
+          visitatore: { id: userId },
+          descrizione: feedbackText,
         },
       };
-
-      // Invia la richiesta POST per registrare il voto
+  
       const response = await fetch("https://strapiweb.duckdns.org/api/feedbacks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Aggiungi il token nell'intestazione
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(votoData),
+        body: JSON.stringify(feedbackData),
       });
-
+  
       if (!response.ok) {
         throw new Error("Errore nel registrare il feedback");
       }
-
+  
       const responseData = await response.json();
-      console.log("Feedback registrato con successo", responseData);
-
-      // Imposta lo stato per mostrare che l'utente ha votato
+      console.log("Feedback registrato con successo:", responseData);
+  
       setHasVoted(true);
-      setShowForm(false); // Nascondi il form dopo aver inviato il feedback
+      setShowForm(false);
       alert("Grazie per aver inviato il feedback!");
     } catch (error) {
-      console.error("Errore:", error);
+      console.error("Errore durante l'invio del feedback:", error);
     } finally {
       setLoading(false);
     }
-
-    
-
-    if (loading) {
-      return <Typography>Caricamento in corso...</Typography>; // Mostra il messaggio di caricamento
-    }
   };
+  
 
 
     
