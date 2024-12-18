@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './registrazione.css'; // Puoi personalizzare lo stile qui
 import { useRouter } from 'next/router';
+import { Snackbar, Alert } from "@mui/material";
+
+/*TODO - Aggiungi la snackbar per ricordare di confermare la mail prima di fare il login*/
 
 const Registrazione = () => {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
@@ -10,6 +13,7 @@ const Registrazione = () => {
   const [username, setUsername] = useState('');
   const [error, setError] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -21,21 +25,31 @@ const Registrazione = () => {
       });
       console.log("User profile", response.data.user);
       console.log("User token", response.data.jwt);
-
-      // Mostra l'alert di successo
-      alert("Registrazione avvenuta con successo!");
-      
-      // Reindirizza alla home page usando un link
-      window.location.href = '/'; // o usa useRouter() per il reindirizzamento, ma href è più semplice
+  
+      // Mostra la snackbar
+      setOpenSnackbar(true);
+     
+      // Reindirizza alla home page
+      window.location.href = '/';
     } catch (error) {
       console.log("An error occurred:", error.response);
       setError("Registrazione fallita. Riprova.");
     }
   };
+  
 
   return (
     <div style={{ maxWidth: '400px', margin: '50px auto', padding: '20px', border: '1px solid #ddd', borderRadius: '5px', textAlign: 'center' }}>
       <h2 style={{ color: 'black', fontWeight: 'bold', textAlign: 'left' }}>Registrazione</h2>
+      <Snackbar
+      open={openSnackbar}
+      autoHideDuration={20000}
+      onClose={() => setOpenSnackbar(false)}
+    >
+      <Alert onClose={() => setOpenSnackbar(false)} severity="info">
+        Controlla la tua email per confermare la registrazione!
+      </Alert>
+    </Snackbar>
       <form onSubmit={handleSubmit}>
         <div style={{ marginBottom: '15px' }}>
           <label htmlFor="email" style={{ color: 'black', fontWeight: 'bold' }}>Email</label>
