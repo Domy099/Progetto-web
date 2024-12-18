@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
 const Login = () => {
-  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [mostraPassword, setMostraPassword] = useState(false);

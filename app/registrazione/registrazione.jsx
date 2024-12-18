@@ -4,7 +4,7 @@ import './registrazione.css'; // Puoi personalizzare lo stile qui
 import { useRouter } from 'next/router';
 
 const Registrazione = () => {
-  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API;
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');

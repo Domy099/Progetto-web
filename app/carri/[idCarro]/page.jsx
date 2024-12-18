@@ -6,6 +6,7 @@ import { Container, Typography, Card, CardContent, CardMedia, Box, Button } from
 import jwt from "jsonwebtoken";
 
 export default function CarroDetailPage({ params }) {
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
   const router = useRouter();
   const { idCarro } = React.use(params);
 
@@ -24,7 +25,7 @@ export default function CarroDetailPage({ params }) {
     const fetchCarroDetails = async () => {
       try {
         const response = await fetch(
-          `https://strapiweb.duckdns.org/api/carri?filters[idCarro][$eq]=${idCarro}&populate=artigiani`
+          `${STRAPI_API_URL}/api/carri?filters[idCarro][$eq]=${idCarro}&populate=artigiani`
         );
         const data = await response.json();
         setCarroDetails(data.data[0]);

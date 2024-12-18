@@ -6,7 +6,7 @@ import { Container, Typography, Card, CardContent, CardMedia, Box } from '@mui/m
 import Link from 'next/link';
 
 export default function CarroDetailPage ({ params }){
-    const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API;
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
   const {idContenuto} = params;
     //const idArtigiano = params?.idArtigiano;
     console.log(idContenuto);
