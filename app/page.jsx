@@ -7,6 +7,7 @@ import Typography from '@mui/material/Typography';
 import ClickableCard from './components/ClickableCard';
 import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import MeteoCard from './components/MeteoCard';
 
 function App() {
   const menuItems = ['Home', 'Eventi', 'Mappa', 'Storia', 'Carri', 'Artigiani'];
@@ -35,6 +36,8 @@ function App() {
             </Typography>
           </Grid>
           <Grid item xs={12} md={4}>
+            <MeteoCard />
+            {/*
             <Paper elevation={3} className="p-4">
               <Typography variant="h6" gutterBottom className="text-black">
                 Meteo di Putignano
@@ -43,6 +46,7 @@ function App() {
                 Soleggiato, 25°C
               </Typography>
             </Paper>
+            */}
           </Grid>
         </Grid>
 
