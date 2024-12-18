@@ -6,7 +6,8 @@ import { Container, Typography, Card, CardContent, CardMedia, Box } from '@mui/m
 import Link from 'next/link';
 
 export default function CarroDetailPage ({ params }){
-    const {idContenuto} = params;
+    const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API;
+  const {idContenuto} = params;
     //const idArtigiano = params?.idArtigiano;
     console.log(idContenuto);
   const [contenutoDetails, setContenutoDetails] = useState(null);
@@ -17,7 +18,7 @@ export default function CarroDetailPage ({ params }){
     const fetchContenutoDetails = async () => {
       try {
         const response = await fetch(
-          `https://strapiweb.duckdns.org/api/contenuti?filters[idContenuto][$eq]=${idContenuto}`
+          `${STRAPI_API_URL}/api/contenuti?filters[idContenuto][$eq]=${idContenuto}`
         );
         const data = await response.json();
 

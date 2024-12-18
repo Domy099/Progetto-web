@@ -9,6 +9,7 @@ import MultiLineInput from '../../components/MultiLineInput';
 import { use } from 'react';
 
 export default function EventoDetailPage ({ params }) {
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
   //const matricola = params?.matricola;
   const matricola = use(params).matricola;
   //const {matricola} = params;
@@ -30,7 +31,7 @@ export default function EventoDetailPage ({ params }) {
     const fetchEventoDetails = async () => {
       try {
         const response = await fetch(
-          `https://strapiweb.duckdns.org/api/eventi?filters[matricola][$eq]=${matricola}&populate=pois`
+          `${STRAPI_API_URL}/api/eventi?filters[matricola][$eq]=${matricola}&populate=pois`
         );
         const data = await response.json();
 
@@ -74,7 +75,7 @@ export default function EventoDetailPage ({ params }) {
       setLoading(true);
   
       const response = await fetch(
-        `https://strapiweb.duckdns.org/api/feedbacks?filters[visitatore][$eq]=${idUtente}&filters[evento][$eq]=${idEvento}`,
+        `${STRAPI_API_URL}/api/feedbacks?filters[visitatore][$eq]=${idUtente}&filters[evento][$eq]=${idEvento}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -141,7 +142,7 @@ export default function EventoDetailPage ({ params }) {
         },
       };
   
-      const response = await fetch("https://strapiweb.duckdns.org/api/feedbacks", {
+      const response = await fetch("${STRAPI_API_URL}/api/feedbacks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import ActionAreaCard from '../components/ActionAreaCard'; // Importa il componente ActionAreaCard
 
 const Storia = () => {
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API;
   const [contenuti, setContenuti] = useState([]);
 
   // Caricamento dei contenuti da Strapi
@@ -13,7 +14,7 @@ const Storia = () => {
       const fetchContenutiDetails = async () => {
         try {
           const response = await fetch(
-            `https://strapiweb.duckdns.org/api/contenuti`
+            `${STRAPI_API_URL}/api/contenuti`
           );
           const data = await response.json();
   

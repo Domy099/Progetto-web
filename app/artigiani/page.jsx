@@ -8,13 +8,15 @@ import Typography from '@mui/material/Typography';
 import './artigiani.css';
 
 const Page = () => {
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
+  
   const [artigiani, setArtigiani] = useState([]); // Stato per i dati degli artigiani
 
   // Effettua la chiamata all'API per ottenere i dati degli artigiani
   useEffect(() => {
     const fetchArtigiani = async () => {
       try {
-        const response = await fetch('https://strapiweb.duckdns.org/api/artigiani?populate=*'); // Sostituisci con l'endpoint reale
+        const response = await fetch(`${STRAPI_API_URL}/api/artigiani?populate=*`); // Sostituisci con l'endpoint reale
         const jsonData = await response.json();
         console.log('Dati ricevuti:', jsonData);
         setArtigiani(jsonData.data); // Accedi a jsonData.data per l'array corretto

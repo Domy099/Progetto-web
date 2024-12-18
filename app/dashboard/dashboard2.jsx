@@ -6,6 +6,7 @@ import { Box, Button, Typography, Card, CardContent, Grid, Container } from "@mu
 
 export default function DashboardNuova() {
   const router = useRouter();
+  
 
   const [user, setUser] = useState(null);
   const [tickets, setTickets] = useState([]);
@@ -14,7 +15,7 @@ export default function DashboardNuova() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-
+    const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
     if (!token) {
       router.push("/login");
       return;
@@ -23,7 +24,7 @@ export default function DashboardNuova() {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          "https://strapiweb.duckdns.org/api/users/me?populate=*",
+          `${STRAPI_API_URL}/api/users/me?populate=*`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

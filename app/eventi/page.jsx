@@ -8,12 +8,12 @@ import Link from 'next/link';
 const Page = () => {
   const [eventi, setEventi] = useState([]); // Stato per i dati dei carri
   const [sfilataSelezionata, setSfilataSelezionata] = useState(1);
-
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
   // Effettua la chiamata all'API per ottenere i dati dei carri
   useEffect(() => {
     const fetchEventi = async () => {
       try {
-        const response = await fetch(`https://strapiweb.duckdns.org/api/eventi?filters[sfilata][$eq]=${sfilataSelezionata}`); // Sostituisci con l'endpoint reale
+        const response = await fetch(`${STRAPI_API_URL}/api/eventi?filters[sfilata][$eq]=${sfilataSelezionata}`); // Sostituisci con l'endpoint reale
         const jsonData = await response.json();
         console.log('Eventi ricevuti:', jsonData);
         setEventi(jsonData.data); // Accedi a jsonData.data per l'array corretto

@@ -4,6 +4,7 @@ import './registrazione.css'; // Puoi personalizzare lo stile qui
 import { useRouter } from 'next/router';
 
 const Registrazione = () => {
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');
@@ -13,7 +14,7 @@ const Registrazione = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await axios.post("https://strapiweb.duckdns.org/api/auth/local/register", {
+      const response = await axios.post(`${STRAPI_API_URL}/api/auth/local/register`, {
         username: username,
         email: email,
         password: password,

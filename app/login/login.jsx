@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useRouter } from 'next/navigation';
 
 const Login = () => {
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [mostraPassword, setMostraPassword] = useState(false);
@@ -15,7 +16,7 @@ const Login = () => {
     setError(''); // Reset any previous errors
 
     try {
-      const response = await axios.post('https://strapiweb.duckdns.org/api/auth/local', {
+      const response = await axios.post(`${STRAPI_API_URL}/api/auth/local`, {
         identifier: email,
         password: password,
       });
