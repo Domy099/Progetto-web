@@ -6,6 +6,6 @@ Cosa ho modificato (Vito) :
 
 
 IDEE
-Feedback solo se l'evento è gia avvenuto (giorno feedback >= data evento)
 Biglietti gia confezionati su strapi, l'utente ne sceglie uno tramite codice e li vede in dashboard
+FIXME - Email di conferma su raspberry
 
