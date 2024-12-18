@@ -21,6 +21,7 @@ export default function EventoDetailPage ({ params }) {
   const [idEvento, setIdEvento] = useState(null);
   const [feedbackText, setFeedbackText] = useState("");
   const [showForm, setShowForm] = useState(false); // Stato per mostrare/nascondere il form
+  const oggi = new Date().toISOString().split('T')[0];
 
 
   useEffect(() => {
@@ -36,6 +37,7 @@ export default function EventoDetailPage ({ params }) {
         if (data?.data?.length > 0) {
           setEventoDetails(data.data[0]);
           setIdEvento(data.data[0].id);
+          
         } else {
           console.warn("Nessun evento trovato per la matricola fornita.");
         }
@@ -45,7 +47,7 @@ export default function EventoDetailPage ({ params }) {
     };
 
     fetchEventoDetails();
-  }, [matricola]);
+  }, []);
 
   // FETCH DATI DEI VOTI PER VERIFICARE SE L'UTENTE HA GIA' VOTATO
   const fetchFeedback = async () => {
@@ -220,6 +222,11 @@ export default function EventoDetailPage ({ params }) {
         </Typography>
       )}
 
+      {/* Confronta la data odierna con quella dell'evento per verificare che si possa lasciare un feedback */}
+      
+      {oggi >= eventoDetails?.data  && (
+        <>
+        
       <Button
         variant="contained"
         color="primary"
@@ -249,6 +256,9 @@ export default function EventoDetailPage ({ params }) {
           </Button>
           </Box>
           )}
+      </>
+      )
+    }
     </Container>
   );
 } 
