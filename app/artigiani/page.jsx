@@ -5,7 +5,7 @@ import { Container, Grid } from '@mui/material';
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 
-import './artigiani.css';
+//import './artigiani.css';
 
 const Page = () => {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
@@ -31,13 +31,19 @@ const Page = () => {
   return (
     <Container style={{ paddingTop: '20px' }}>
       <Typography variant="h4" component="h1" color="text.secondary"> 
-      I creatori della magia
+        I creatori della magia
       </Typography>
       <Grid container spacing={4}>
         {artigiani.map((artigiano) => (
           <Grid item key={artigiano.idArtigiano} xs={12} sm={6} md={4}>
             <Link href={`/artigiani/${artigiano.idArtigiano}`} passHref>
-               <ActionAreaCard
+              <ActionAreaCard
+                sx={{
+                  width: '100%',           // Imposta la larghezza al 100% del contenitore
+                  height: 320,             // Imposta un'altezza fissa
+                  display: 'flex',         // Usa flexbox per gestire il layout interno
+                  flexDirection: 'column', // Assicura che il contenuto sia disposto in colonna
+                }}
                 title={artigiano.nome}
                 description={artigiano.storia}
                 image={'https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg'}
@@ -49,6 +55,6 @@ const Page = () => {
       </Grid>
     </Container>
   );
-};
+}  
 
 export default Page;
