@@ -4,11 +4,13 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Container, Typography, Card, CardContent, CardMedia, Box } from '@mui/material';
 import Link from 'next/link';
+import { use } from 'react';
 
 export default function CarroDetailPage ({ params }){
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
-  const {idContenuto} = params;
+  //const {idContenuto} = params;
     //const idArtigiano = params?.idArtigiano;
+  const idContenuto = use(params).idContenuto;
     console.log(idContenuto);
   const [contenutoDetails, setContenutoDetails] = useState(null);
 
