@@ -57,7 +57,7 @@ const Storia = () => {
         <CardMedia
           component="img"
           height="300"
-          image="https://web.archive.org/web/20240719213617im_/https://www.carnevalediputignano.it/home/wp-content/uploads/2019/12/storia_slide3.jpg" // Sostituisci con l'immagine appropriata
+          image="https://www.carnevalediputignano.it/home/wp-content/uploads/2019/12/storia_slide3.jpg" // Sostituisci con l'immagine appropriata
           alt="Immagine Carnevale Putignano"
         />
       </Card>
@@ -86,7 +86,7 @@ const Storia = () => {
     <CardMedia
       component="img"
       height="300"
-      image="https://web.archive.org/web/20240523003245im_/https://www.carnevalediputignano.it/home/wp-content/uploads/2020/01/PROPAGGINI_2018_05.jpg" // Sostituisci con l'immagine appropriata
+      image="https://www.carnevalediputignano.it/home/wp-content/uploads/2020/01/PROPAGGINI_2018_05.jpg" // Sostituisci con l'immagine appropriata
       alt="Immagine Storia Carnevale"
     />
   </Card>
@@ -113,7 +113,7 @@ const Storia = () => {
         <CardMedia
           component="img"
           height="300"
-          image="https://web.archive.org/web/20240423002631im_/https://www.carnevalediputignano.it/home/wp-content/uploads/2020/01/T8I5242.jpg" // Sostituisci con l'immagine appropriata
+          image="https://www.carnevalediputignano.it/home/wp-content/uploads/2020/01/T8I5242.jpg" // Sostituisci con l'immagine appropriata
           alt="Immagine Tradizioni Carnevale"
         />
       </Card>
@@ -133,11 +133,11 @@ const Storia = () => {
           <Grid container spacing={4}>
             {contenuti.map((contenuto) => (
               <Grid item key={contenuto.idContenuto} xs={12} sm={6} md={4}>
-                <Link href={`/storia/${contenuto.idCarro}`} passHref>
+                <Link href={`/storia/${contenuto.idContenuto}`} passHref>
                   <ActionAreaCard
                     title={contenuto.titolo}
                     description={contenuto.testo}
-                    image={contenuto.imageUrl || ''}  // Assicurati che l'URL dell'immagine sia corretto
+                    image= {/* {contenuto.imageUrl ||*/ ''}  // Assicurati che l'URL dell'immagine sia corretto
                     altText={`Immagine del contenuto`}
                   />
                 </Link>

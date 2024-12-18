@@ -14,7 +14,7 @@ export default function CarroDetailPage ({ params }){
   useEffect(() => {
     if (!idContenuto) return;
 
-    const fetchArtigianoDetails = async () => {
+    const fetchContenutoDetails = async () => {
       try {
         const response = await fetch(
           `https://strapiweb.duckdns.org/api/contenuti?filters[idContenuto][$eq]=${idContenuto}`
@@ -35,7 +35,7 @@ export default function CarroDetailPage ({ params }){
       }
     };
 
-    fetchArtigianoDetails();
+    fetchContenutoDetails();
   }, [idContenuto]);
 
   if (!contenutoDetails) {
