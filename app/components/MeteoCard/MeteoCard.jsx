@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import './MeteoCard.css'; 
 import axios from 'axios';
-import { Card, CardContent, Typography, CircularProgress } from '@mui/material';
+import { Card, CardContent, Typography, CircularProgress, CardMedia } from '@mui/material';
 
 const MeteoCard = () => {
   const [weatherData, setWeatherData] = useState(null);
@@ -47,17 +48,26 @@ const MeteoCard = () => {
   }
 
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardContent>
-        <Typography variant="h5">{city}</Typography>
-        <Typography variant="body1">
-          Temperatura: {weatherData.main.temp}°C
-        </Typography>
-        <Typography variant="body2">
-          Condizione: {weatherData.weather[0].description}
-        </Typography>
-      </CardContent>
-    </Card>
+    <Card className="weather-card" style={{ display: 'flex', alignItems: 'center' }}>
+  <CardMedia
+    component="img"
+    image={`https://openweathermap.org/img/wn/${weatherData.weather[0].icon}@2x.png`}
+    className="weather-icon"
+    style={{ width: '100px', height: '100px', marginRight: '16px' }} // Imposta le dimensioni e il margine a destra
+  />
+  <CardContent className="weather-content" style={{ flex: 1 }}>
+    <Typography variant="h5" gutterBottom className="weather-city">
+      {city}
+    </Typography>
+    <Typography variant="body1" className="weather-temp">
+      Temperatura: {weatherData.main.temp}°C
+    </Typography>
+    <Typography variant="body2" className="weather-condition">
+      Condizione: {weatherData.weather[0].description}
+    </Typography>
+  </CardContent>
+</Card>
+
   );
 };
 

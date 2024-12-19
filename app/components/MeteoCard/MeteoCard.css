@@ -1,0 +1,7 @@
+.weather-card {
+    display: flex;
+    align-items: center;
+    border-radius: 10px; /* Arrotonda gli angoli della card */
+    overflow: hidden; /* Impedisce che il contenuto ecceda i bordi arrotondati */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Aggiunge un'ombra leggera per un effetto visivo */
+  }
