@@ -1,13 +1,9 @@
-"use client";
-
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Box, Button, Typography, Card, CardContent, Grid, Container } from "@mui/material";
 
 export default function DashboardNuova() {
   const router = useRouter();
-  
-
   const [user, setUser] = useState(null);
   const [tickets, setTickets] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -110,17 +106,17 @@ export default function DashboardNuova() {
                   }}
                 >
                   <CardContent>
-                    <Typography variant="body1">
-                      Codice: {ticket.codice}
-                    </Typography>
+                    <Typography variant="body1">Codice: {ticket.codice}</Typography>
                   </CardContent>
                 </Card>
               </Grid>
             ))
           ) : (
-            <Typography color="textSecondary" sx={{ textAlign: "center" }}>
-              Nessun biglietto
-            </Typography>
+            <Grid item xs={12}>
+              <Typography color="textSecondary" sx={{ textAlign: "center" }}>
+                Nessun biglietto
+              </Typography>
+            </Grid>
           )}
         </Grid>
       </Box>

@@ -1,80 +1,73 @@
 "use client";
-import React, { useState } from 'react';
-import { Box, Typography, TextField, Button, Alert, Container } from '@mui/material';
+import React, { useState } from "react";
+import axios from "axios";
+import { useRouter } from "next/navigation";
 
-const ResetPasswordPage = () => {
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+const ResetPassword = () => {
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
+  const router = useRouter();
 
-  const handleResetPassword = () => {
-    if (password !== confirmPassword) {
-      setErrorMessage('Le password non coincidono.');
-      setSuccessMessage('');
-      return;
+  const handleResetPassword = async (e) => {
+    e.preventDefault();
+    setError(""); // Reset previous errors
+
+    try {
+      // Richiesta per inviare il token di reset via email
+      const response = await axios.post("https://strapiweb.duckdns.org/api/auth/forgot-password", {
+        email: email,
+      });
+
+      console.log("Email inviata con successo:", response.data);
+      alert("Email inviata con successo! Controlla la tua casella di posta.");
+      router.push("/login"); // Reindirizza alla pagina di login
+    } catch (err) {
+      setError(err.response?.data?.error?.message || "Errore durante l'invio della email.");
     }
-
-    // Simula l'invio della richiesta di reset della password
-    setTimeout(() => {
-      setErrorMessage('');
-      setSuccessMessage('Password reimpostata con successo!');
-    }, 1000);
   };
 
   return (
-    <Container maxWidth="sm">
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          mt: 8,
-          p: 4,
-          boxShadow: 3,
-          borderRadius: 2,
-          bgcolor: 'background.paper',
-        }}
-      >
-        <Typography variant="h4" gutterBottom>
-          Reimposta la tua password
-        </Typography>
-
-        {errorMessage && <Alert severity="error" sx={{ mb: 2 }}>{errorMessage}</Alert>}
-        {successMessage && <Alert severity="success" sx={{ mb: 2 }}>{successMessage}</Alert>}
-
-        <TextField
-          label="Nuova Password"
-          type="password"
-          fullWidth
-          variant="outlined"
-          margin="normal"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-
-        <TextField
-          label="Conferma Password"
-          type="password"
-          fullWidth
-          variant="outlined"
-          margin="normal"
-          value={confirmPassword}
-          onChange={(e) => setConfirmPassword(e.target.value)}
-        />
-
-        <Button
-          variant="contained"
-          color="primary"
-          fullWidth
-          sx={{ mt: 2 }}
-          onClick={handleResetPassword}
+    <div style={{ maxWidth: "400px", margin: "50px auto", padding: "20px", border: "1px solid #ddd", borderRadius: "5px", backgroundColor: "#f9f9f9" }}>
+      <h2 style={{ color: "black", fontWeight: "bold", textAlign: "left" }}>Reimposta Password</h2>
+      <form onSubmit={handleResetPassword}>
+        <div style={{ marginBottom: "15px" }}>
+          <label htmlFor="email" style={{ color: "#333", fontWeight: "bold", display: "block", textAlign: "center" }}>Email</label>
+          <input
+            type="email"
+            id="email"
+            value={email}
+            placeholder="esempio@mail.com"
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            style={{
+              width: "100%",
+              padding: "8px",
+              marginTop: "5px",
+              borderRadius: "4px",
+              border: "1px solid #ccc",
+              backgroundColor: "#fff",
+              color: "#000",
+            }}
+          />
+        </div>
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <button
+          type="submit"
+          style={{
+            width: "100%",
+            padding: "10px",
+            backgroundColor: "#EA580C",
+            color: "white",
+            border: "none",
+            borderRadius: "4px",
+            cursor: "pointer",
+          }}
         >
-          Reimposta Password
-        </Button>
-      </Box>
-    </Container>
+          Invia Email di Reset
+        </button>
+      </form>
+    </div>
   );
 };
 
-export default ResetPasswordPage;
+export default ResetPassword;
