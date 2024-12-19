@@ -141,4 +141,4 @@ const ResetPasswordConfirm = () => {
   );
 };
 
-export default ResetPasswordConfirm;
+export default ResetPasswordConfirm; 
