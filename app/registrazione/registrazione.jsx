@@ -26,11 +26,15 @@ const Registrazione = () => {
       console.log("User profile", response.data.user);
       console.log("User token", response.data.jwt);
   
-      // Mostra la snackbar
-      setOpenSnackbar(true);
+      // Mostra la snackbar 
+        setOpenSnackbar(true);
+      
+
      
       // Reindirizza alla home page
+      setTimeout(() => {
       window.location.href = '/';
+    }, 5000);
     } catch (error) {
       console.log("An error occurred:", error.response);
       setError("Registrazione fallita. Riprova.");
