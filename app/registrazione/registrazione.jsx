@@ -4,8 +4,6 @@ import './registrazione.css'; // Puoi personalizzare lo stile qui
 import { useRouter } from 'next/router';
 import { Snackbar, Alert } from "@mui/material";
 
-/*TODO - Aggiungi la snackbar per ricordare di confermare la mail prima di fare il login*/
-
 const Registrazione = () => {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
   const [email, setEmail] = useState('');
