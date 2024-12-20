@@ -12,7 +12,7 @@ import MultiActionAreaCard from "./MultiActionAreaCard";
 
 
 // Configuration
-const STRAPI_POI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
+const STRAPI_POI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
 // Styles

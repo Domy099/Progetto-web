@@ -11,7 +11,7 @@ export default function DashboardNuova() {
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
-    const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
+    const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
     if (!token) {
       router.push("/login");
       return;
