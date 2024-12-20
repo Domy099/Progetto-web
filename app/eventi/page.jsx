@@ -8,7 +8,7 @@ import Link from 'next/link';
 const Page = () => {
   const [eventi, setEventi] = useState([]); // Stato per i dati dei carri
   const [sfilataSelezionata, setSfilataSelezionata] = useState(1);
-  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   // Effettua la chiamata all'API per ottenere i dati dei carri
   useEffect(() => {
     const fetchEventi = async () => {

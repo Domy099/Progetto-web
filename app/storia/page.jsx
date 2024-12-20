@@ -5,7 +5,7 @@ import Link from 'next/link';
 import ActionAreaCard from '../components/ActionAreaCard'; // Importa il componente ActionAreaCard
 
 const Storia = () => {
-  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   const [contenuti, setContenuti] = useState([]);
 
   // Caricamento dei contenuti da Strapi

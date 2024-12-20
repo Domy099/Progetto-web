@@ -6,7 +6,7 @@ import { Container, Typography, Card, CardContent, CardMedia, Box, Button } from
 import jwt from "jsonwebtoken";
 
 export default function CarroDetailPage({ params }) {
-  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   const router = useRouter();
   const { idCarro } = React.use(params);
 

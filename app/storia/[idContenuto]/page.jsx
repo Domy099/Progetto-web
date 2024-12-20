@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { use } from 'react';
 
 export default function CarroDetailPage ({ params }){
-  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   //const {idContenuto} = params;
     //const idArtigiano = params?.idArtigiano;
   const idContenuto = use(params).idContenuto;

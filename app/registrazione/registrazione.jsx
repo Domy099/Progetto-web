@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { Snackbar, Alert } from "@mui/material";
 
 const Registrazione = () => {
-  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [username, setUsername] = useState('');

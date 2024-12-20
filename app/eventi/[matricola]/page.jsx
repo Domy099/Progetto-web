@@ -9,7 +9,7 @@ import MultiLineInput from '../../components/MultiLineInput';
 import { use } from 'react';
 
 export default function EventoDetailPage ({ params }) {
-  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   //const matricola = params?.matricola;
   const matricola = use(params).matricola;
   //const {matricola} = params;

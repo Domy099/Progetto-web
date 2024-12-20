@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 //import './artigiani.css';
 
 const Page = () => {
-  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   
   const [artigiani, setArtigiani] = useState([]); // Stato per i dati degli artigiani
 

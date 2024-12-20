@@ -7,7 +7,7 @@ import Link from 'next/link';
 import './carri.css';
 
 const Page = () => {
-  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_POI_API_URL;
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   const [carri, setCarri] = useState([]); // Stato per i dati dei carri
 
   // Effettua la chiamata all'API per ottenere i dati dei carri
