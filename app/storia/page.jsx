@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Container, Grid, Typography, Card, CardContent, CardMedia, Button, Box } from '@mui/material';
 import Link from 'next/link';
-import ActionAreaCard from '../components/ActionAreaCard'; // Importa il componente ActionAreaCard
+import GenericCard from '../components/GenericCard'; // Importa il componente ActionAreaCard
 
 const Storia = () => {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
@@ -135,7 +135,7 @@ const Storia = () => {
             {contenuti.map((contenuto) => (
               <Grid item key={contenuto.idContenuto} xs={12} sm={6} md={4}>
                 <Link href={`/storia/${contenuto.idContenuto}`} passHref>
-                  <ActionAreaCard
+                  <GenericCard
                     title={contenuto.titolo}
                     description={contenuto.testo}
                     image= {/* {contenuto.imageUrl ||*/ ''}  // Assicurati che l'URL dell'immagine sia corretto
