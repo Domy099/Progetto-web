@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import ActionAreaCard from '../components/ActionAreaCard'; // Importa il componente ActionAreaCard
+import CarriCard from '../components/CarriCard'; // Importa il componente ActionAreaCard
 import { Container, Grid } from '@mui/material';
 import Link from 'next/link';
 
@@ -33,7 +33,7 @@ const Page = () => {
           <Grid item key={carro.idCarro} xs={12} sm={6} md={4}>
             <Link href={`/carri/${carro.idCarro}`} passHref>
               
-              <ActionAreaCard
+              <CarriCard
                 title={carro.nome}
                 description={carro.descrizione}
                 image={carro.urlFoto}
