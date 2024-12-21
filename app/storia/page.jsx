@@ -149,7 +149,7 @@ const Storia = () => {
                   <ContenutoCard
                     title={contenuto.titolo}
                     data={contenuto.publishedAt}
-                    image={contenuto.Immagine || 'https://placehold.co/600x400'}
+                    image={contenuto.Immagine || `https://placehold.co/600x400?text=${contenuto.titolo.slice(0,30) + "..."}`}
                     altText={`Immagine del contenuto`}
                   />
                 </Link>
