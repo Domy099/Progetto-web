@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Container, Typography, Card, CardContent, CardMedia, Box, Button } from "@mui/material";
+import { Container, Typography, Card, CardContent, CardMedia, Box, Button} from "@mui/material";
+import BottoneIndietro from "@/app/components/IndietroButton";
 import jwt from "jsonwebtoken";
 
 export default function CarroDetailPage({ params }) {
@@ -144,8 +145,12 @@ export default function CarroDetailPage({ params }) {
 
   return (
     <Container>
-      <Box display="flex" flexDirection="column" alignItems="center" gap={4} mt={12}>
-        <Box flexShrink={0} maxWidth="50%" sx={{ display: "flex", justifyContent: "center" }}>
+      <BottoneIndietro destinazione="/carri" />
+  
+      {/* Contenuto dell'evento */}
+      <Box display="flex" alignItems="flex-start" gap={4} mt={12}>
+        {/* Immagine del carro a sinistra */}
+        <Box flexShrink={0} sx={{ maxWidth: "40%" }}>
           <img
             src={carroDetails.urlFoto}
             alt={`Foto del carro ${carroDetails.nome}`}
@@ -158,7 +163,8 @@ export default function CarroDetailPage({ params }) {
             }}
           />
         </Box>
-
+  
+        {/* Dettagli del carro a destra */}
         <Box flex={1}>
           <Typography variant="h4" component="h1" gutterBottom>
             {carroDetails.nome}
@@ -174,8 +180,9 @@ export default function CarroDetailPage({ params }) {
           </Button>
         </Box>
       </Box>
-
-      <Container>
+  
+      {/* Sezione Artigiani sotto i dettagli */}
+      <Container sx={{ mt: 4 }}>
         <Typography variant="h6" gutterBottom>
           Artigiani:
         </Typography>
@@ -200,7 +207,6 @@ export default function CarroDetailPage({ params }) {
                   <Typography variant="h6" component="p" sx={{ marginBottom: 1 }}>
                     {artigiano.nome} {artigiano.cognome}
                   </Typography>
-
                   <Typography variant="body1" component="p" sx={{ marginBottom: 1 }}>
                     Storia dell'artigiano:
                   </Typography>
@@ -219,4 +225,5 @@ export default function CarroDetailPage({ params }) {
       </Container>
     </Container>
   );
+  
 }
