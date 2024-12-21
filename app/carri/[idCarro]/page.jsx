@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Container, Typography, Card, CardContent, CardMedia, Box, Button} from "@mui/material";
+import { Container, Typography, Card, CardContent, CardMedia, Box, Button, Grid } from "@mui/material";
 import BottoneIndietro from "@/app/components/IndietroButton";
 import jwt from "jsonwebtoken";
+import ArtigianoCard from "@/app/components/ArtigianoCard";
 
 export default function CarroDetailPage({ params }) {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
@@ -51,19 +52,19 @@ export default function CarroDetailPage({ params }) {
         router.push("/login");
         return { hasVoted: false, votiDetails: null };
       }
-  
+
       const decoded = jwt.decode(token);
       if (!decoded || !decoded.id) {
         alert("Errore durante l'autenticazione, accedi nuovamente.");
         router.push("/login");
         return { hasVoted: false, votiDetails: null };
       }
-  
+
       const idUtente = decoded.id;
       setIdUtente(idUtente);
-  
+
       setLoading(true);
-  
+
       const response = await fetch(
         `https://strapiweb.duckdns.org/api/voti?filters[votante][id][$eq]=${idUtente}`,
         {
@@ -73,12 +74,12 @@ export default function CarroDetailPage({ params }) {
           },
         }
       );
-  
+
       if (!response.ok) throw new Error("Errore nella risposta della API");
-  
+
       const voti = await response.json();
       const hasVoted = voti.data && voti.data.length > 0;
-  
+
       setLoading(false);
       return { hasVoted, votiDetails: hasVoted ? voti.data[0] : null };
     } catch (error) {
@@ -87,7 +88,7 @@ export default function CarroDetailPage({ params }) {
       return { hasVoted: false, votiDetails: null };
     }
   };
-  
+
 
   const handleVotaClick = async () => {
     const token = sessionStorage.getItem("token");
@@ -96,18 +97,18 @@ export default function CarroDetailPage({ params }) {
       router.push("/login");
       return;
     }
-  
+
     const decoded = jwt.decode(token);
     const userId = decoded.id;
     setIdUtente(userId);
-  
+
     const { hasVoted } = await fetchVoti();
-  
+
     if (hasVoted) {
       alert("Hai già votato per un carro.");
       return;
     }
-  
+
     setLoading(true);
     try {
       const votoData = {
@@ -116,7 +117,7 @@ export default function CarroDetailPage({ params }) {
           votante: { id: userId },
         },
       };
-  
+
       const response = await fetch("https://strapiweb.duckdns.org/api/voti", {
         method: "POST",
         headers: {
@@ -125,9 +126,9 @@ export default function CarroDetailPage({ params }) {
         },
         body: JSON.stringify(votoData),
       });
-  
+
       if (!response.ok) throw new Error("Errore nel registrare il voto");
-  
+
       const responseData = await response.json();
       setHasVoted(true);
       alert("Voto registrato con successo!");
@@ -137,7 +138,7 @@ export default function CarroDetailPage({ params }) {
       setLoading(false);
     }
   };
-  
+
 
   if (!carroDetails) {
     return <Typography>Caricamento...</Typography>;
@@ -146,84 +147,90 @@ export default function CarroDetailPage({ params }) {
   return (
     <Container>
       <BottoneIndietro destinazione="/carri" />
-  
-      {/* Contenuto dell'evento */}
-      <Box display="flex" alignItems="flex-start" gap={4} mt={12}>
-        {/* Immagine del carro a sinistra */}
-        <Box flexShrink={0} sx={{ maxWidth: "40%" }}>
-          <img
-            src={carroDetails.urlFoto}
-            alt={`Foto del carro ${carroDetails.nome}`}
-            style={{
-              width: "100%",
-              height: "auto",
-              maxHeight: "400px",
-              objectFit: "cover",
-              borderRadius: "8px",
+      <Container>
+        {/* Contenuto dell'evento */}
+        <Box
+          display="flex"
+          flexDirection={{ xs: "column", sm: "row" }} // Cambia da una colonna a due colonne
+          alignItems="flex-start"
+          gap={4}
+          mt={12}
+        >
+          {/* Immagine del carro a sinistra */}
+          <Box
+            flexShrink={0}
+            sx={{
+              maxWidth: { xs: "100%", sm: "40%" }, // Larghezza dinamica per immagine
             }}
-          />
-        </Box>
-  
-        {/* Dettagli del carro a destra */}
-        <Box flex={1}>
-          <Typography variant="h4" component="h1" gutterBottom>
-            {carroDetails.nome}
-          </Typography>
-          <Typography variant="h6" gutterBottom>
-            Descrizione:
-          </Typography>
-          <Typography variant="body1" sx={{ color: "text.secondary" }}>
-            {carroDetails.descrizione}
-          </Typography>
-          <Button variant="contained" color="primary" onClick={handleVotaClick} sx={{ mt: 2 }}>
-            Vota
-          </Button>
-        </Box>
-      </Box>
-  
-      {/* Sezione Artigiani sotto i dettagli */}
-      <Container sx={{ mt: 4 }}>
-        <Typography variant="h6" gutterBottom>
-          Artigiani:
-        </Typography>
-        <Box display="flex" gap={2} flexWrap="wrap">
-          {carroDetails.artigiani.length > 0 ? (
-            carroDetails.artigiani.map((artigiano) => (
-              <Card key={artigiano.idArtigiano} sx={{ display: "flex", width: "600px", height: 160 }}>
-                <CardMedia
-                  component="img"
-                  sx={{
-                    flexShrink: 0,
-                    width: "auto",
-                    maxWidth: "100%",
-                    height: "auto",
-                    objectFit: "cover",
-                  }}
-                  image={
-                    "https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg"
-                  }
-                />
-                <CardContent sx={{ display: "flex", flexDirection: "column", justifyContent: "center", paddingLeft: 2 }}>
-                  <Typography variant="h6" component="p" sx={{ marginBottom: 1 }}>
-                    {artigiano.nome} {artigiano.cognome}
-                  </Typography>
-                  <Typography variant="body1" component="p" sx={{ marginBottom: 1 }}>
-                    Storia dell'artigiano:
-                  </Typography>
-                  <Typography variant="body2" component="p">
-                    {artigiano.storia}
-                  </Typography>
-                </CardContent>
-              </Card>
-            ))
-          ) : (
-            <Typography variant="body2" color="textSecondary">
-              Nessuna informazione sugli artigiani.
+          >
+            <img
+              src={carroDetails.urlFoto}
+              alt={`Foto del carro ${carroDetails.nome}`}
+              style={{
+                width: "100%",
+                height: "auto",
+                maxHeight: "400px",
+                objectFit: "cover",
+                borderRadius: "8px",
+              }}
+            />
+          </Box>
+
+          {/* Dettagli del carro a destra */}
+          <Box flex={1}>
+            <Typography variant="h4" component="h1" gutterBottom color="text.secondary">
+              {carroDetails.nome}
             </Typography>
-          )}
+            <Typography variant="h6" gutterBottom color="text.secondary">
+              Descrizione:
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              {carroDetails.descrizione}
+            </Typography>
+            <Button
+              variant="contained"
+              sx={{ mt: 2, backgroundColor: '#FFC107', '&:hover': { backgroundColor: '#FFB300' }}}
+              onClick={handleVotaClick}
+              
+            >
+              Vota
+            </Button>
+
+          </Box>
         </Box>
       </Container>
+
+
+      {/* Sezione Artigiani sotto i dettagli */}
+      <Container sx={{ mt: 4 }}>
+        <Typography variant="h6" gutterBottom color="text.secondary">
+          Artigiani:
+        </Typography>
+
+        {/* Grid container per gestire il layout a griglia */}
+        {carroDetails.artigiani.length > 0 ? (
+          <Grid container spacing={2}>
+            {carroDetails.artigiani.map((artigiano) => (
+              <Grid
+                key={artigiano.idArtigiano}
+                item
+                xs={12}   // Una colonna su schermi molto piccoli
+                sm={6}    // Due colonne su schermi medi
+                md={4}    // Tre colonne su schermi grandi
+                
+              >
+                <ArtigianoCard {...artigiano} />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <Typography variant="body2" color="textSecondary">
+            Nessuna informazione sugli artigiani.
+          </Typography>
+        )}
+      </Container>
+
     </Container>
   );
-  
+
 }
