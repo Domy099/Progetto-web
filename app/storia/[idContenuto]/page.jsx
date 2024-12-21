@@ -7,12 +7,12 @@ import Link from 'next/link';
 import { use } from 'react';
 import BottoneIndietro from '@/app/components/IndietroButton';
 
-export default function CarroDetailPage ({ params }){
+export default function CarroDetailPage({ params }) {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   //const {idContenuto} = params;
-    //const idArtigiano = params?.idArtigiano;
+  //const idArtigiano = params?.idArtigiano;
   const idContenuto = use(params).idContenuto;
-    console.log(idContenuto);
+  console.log(idContenuto);
   const [contenutoDetails, setContenutoDetails] = useState(null);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function CarroDetailPage ({ params }){
         if (data && data.data) {
 
           setContenutoDetails(data.data[0]);
-          
+
           console.log(data.data[0]);
 
         } else {
@@ -46,8 +46,8 @@ export default function CarroDetailPage ({ params }){
     return <Typography>Caricamento...</Typography>;
   }
 
-  const publicationDate = new Date(contenutoDetails.createdAt);
-  
+  const publicationDate = new Date(contenutoDetails.publishedAt);
+
   // Formattazione data in un formato leggibile
   const formattedDate = publicationDate.toLocaleDateString('it-IT', {
     year: 'numeric',
@@ -61,20 +61,50 @@ export default function CarroDetailPage ({ params }){
   return (
     <Container>
       <BottoneIndietro destinazione="/storia" />
+
+      {/* Immagine di copertura */}
+      {contenutoDetails.Immagine &&
+      <Box sx={{ width: '100%', height: '400px', mb: 4 }}>
+        
+          <img
+            src={contenutoDetails.Immagine} /* STUB - || 'https://placehold.co/600x400'*/
+            alt="Immagine di copertura"
+            style={{
+              width: '100%',
+              height: '100%', // Imposta l'altezza dell'immagine per coprire l'area
+              objectFit: 'cover', // Assicura che l'immagine riempia il contenitore senza distorsioni
+              borderRadius: '8px',
+            }}
+          />
+      </Box>
+      }
+
       {/* Titolo del contenuto */}
-      <Typography variant="h5" sx={{ color: 'text.secondary' }}>
+      <Typography
+        variant="h4"
+        sx={{ color: 'text.primary', fontWeight: 'bold', mb: 2 }}
+      >
         {contenutoDetails.titolo}
       </Typography>
 
-      <Typography variant="body2" sx={{ color: 'text.secondary', marginTop: 1 }}>
+      {/* Data di pubblicazione */}
+      <Typography
+        variant="body2"
+        sx={{ color: 'text.secondary', mb: 3 }}
+      >
         Pubblicato il: {formattedDate}
       </Typography>
-  
-      <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-        {contenutoDetails.testo} {/* Testo del contenuto */}
+
+      {/* Testo del contenuto */}
+      <Typography
+        variant="body1"
+        sx={{ color: 'text.secondary', lineHeight: 1.6 }}
+      >
+        {contenutoDetails.testo}
       </Typography>
-     
     </Container>
   );
-} 
+
+
+}
 
