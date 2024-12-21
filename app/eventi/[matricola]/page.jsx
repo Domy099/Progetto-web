@@ -178,6 +178,7 @@ export default function EventoDetailPage ({ params }) {
 
   return (
     <Container>
+      <BottoneIndietro destinazione="/eventi" />
       {/* Titolo dell'evento */}
       <Typography variant="h4" component="h1" gutterBottom>
         {eventoDetails.nome}

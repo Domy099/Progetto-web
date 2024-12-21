@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Container, Typography, Card, CardContent, CardMedia, Box } from '@mui/material';
 import Link from 'next/link';
 import { use } from 'react';
+import BottoneIndietro from '@/app/components/IndietroButton';
 
 export default function CarroDetailPage ({ params }){
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
@@ -59,6 +60,7 @@ export default function CarroDetailPage ({ params }){
 
   return (
     <Container>
+      <BottoneIndietro destinazione="/storia" />
       {/* Titolo del contenuto */}
       <Typography variant="h5" sx={{ color: 'text.secondary' }}>
         {contenutoDetails.titolo}
