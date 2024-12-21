@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Container, Grid, Typography, Card, CardContent, CardMedia, Button, Box } from '@mui/material';
 import Link from 'next/link';
 import GenericCard from '../components/GenericCard'; // Importa il componente ActionAreaCard
+import ContenutoCard from '../components/ContenutoCard';
 
 const Storia = () => {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
@@ -133,19 +134,29 @@ const Storia = () => {
           <Box mt={5}>
           <Grid container spacing={4}>
             {contenuti.map((contenuto) => (
-              <Grid item key={contenuto.idContenuto} xs={12} sm={6} md={4}>
-                <Link href={`/storia/${contenuto.idContenuto}`} passHref>
-                  <GenericCard
+              <Grid 
+                item 
+                key={contenuto.idContenuto} 
+                xs={12}
+                sm={6}      
+                md={4} 
+              >
+                <Link 
+                  href={`/storia/${contenuto.idContenuto}`} 
+                  passHref 
+                  style={{ textDecoration: 'none' }}
+                >
+                  <ContenutoCard
                     title={contenuto.titolo}
-                    description={contenuto.testo}
-                    image= {/* {contenuto.imageUrl ||*/ ''}  // Assicurati che l'URL dell'immagine sia corretto
+                    data={contenuto.publishedAt}
+                    image={contenuto.Immagine || 'https://placehold.co/600x400'}
                     altText={`Immagine del contenuto`}
                   />
                 </Link>
               </Grid>
             ))}
           </Grid>
-          </Box>
+        </Box>
         ) : (
           <Typography variant="body1" color="text.secondary" align="center">
             Non ci sono contenuti al momento, torna più tardi.
