@@ -10,7 +10,7 @@ const BottoneIndietro = ({ destinazione }) => {
         <IconButton >
           <ArrowBackIcon />
         </IconButton>
-        <Typography variant="h5" component="h1">
+        <Typography variant="body6" component="h1" color= "text.secondary">
           Torna indietro
         </Typography>
       </Box>
