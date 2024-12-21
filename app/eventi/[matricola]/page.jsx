@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { Container, Typography, Card, CardContent, CardMedia, Box, Button } from '@mui/material';
 import jwt from 'jsonwebtoken';
 import MultiLineInput from '../../components/MultiLineInput';
-
+import BottoneIndietro from '../../components/IndietroButton';
 import { use } from 'react';
 
 export default function EventoDetailPage ({ params }) {
