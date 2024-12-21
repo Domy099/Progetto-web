@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from 'react';
-import ActionAreaCard from '../components/ActionAreaCard'; // Importa il componente ActionAreaCard
+import ActionAreaCard from '../components/GenericCard'; // Importa il componente ActionAreaCard
 import { Container, Grid } from '@mui/material';
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
