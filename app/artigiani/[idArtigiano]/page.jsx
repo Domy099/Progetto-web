@@ -2,13 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { use } from 'react';
 import { Container, Typography, Card, CardContent, CardMedia, Box } from '@mui/material';
 import Link from 'next/link';
 import BottoneIndietro from '@/app/components/IndietroButton';
 
 export default function CarroDetailPage ({ params }){
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
-    const {idArtigiano} = params;
+    const idArtigiano = use(params).idArtigiano;
     //const idArtigiano = params?.idArtigiano;
     console.log(idArtigiano);
   const [artigianoDetails, setArtigianoDetails] = useState(null);
