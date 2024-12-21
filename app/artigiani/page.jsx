@@ -30,7 +30,12 @@ const Page = () => {
   
   return (
     <Container style={{ paddingTop: '20px' }}>
-      <Typography variant="h4" component="h1" color="text.secondary"> 
+      <Typography 
+        variant="h4" 
+        component="h1" 
+        color="text.secondary" 
+        sx={{ marginBottom: 4 }} // Aggiunge più spazio tra il titolo e le card
+      > 
         I creatori della magia
       </Typography>
       <Grid container spacing={4}>
@@ -38,12 +43,6 @@ const Page = () => {
           <Grid item key={artigiano.idArtigiano} xs={12} sm={6} md={4}>
             <Link href={`/artigiani/${artigiano.idArtigiano}`} passHref>
               <ActionAreaCard
-                sx={{
-                  width: '100%',           // Imposta la larghezza al 100% del contenitore
-                  height: 320,             // Imposta un'altezza fissa
-                  display: 'flex',         // Usa flexbox per gestire il layout interno
-                  flexDirection: 'column', // Assicura che il contenuto sia disposto in colonna
-                }}
                 title={artigiano.nome}
                 description={artigiano.storia}
                 image={'https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg'}
@@ -55,6 +54,7 @@ const Page = () => {
       </Grid>
     </Container>
   );
+  
 }  
 
 export default Page;
