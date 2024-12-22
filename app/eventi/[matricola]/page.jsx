@@ -180,11 +180,11 @@ export default function EventoDetailPage ({ params }) {
     <Container>
       <BottoneIndietro destinazione="/eventi" />
       {/* Titolo dell'evento */}
-      <Typography variant="h4" component="h1" gutterBottom>
+      <Typography variant="h4" component="h1" gutterBottom sx={{ color: 'black' }}>
         {eventoDetails.nome}
       </Typography>
   
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" gutterBottom sx={{ color: 'black' }}>
         Descrizione:
       </Typography>
       <Typography variant="body1" sx={{ color: 'text.secondary' }}>
@@ -201,7 +201,7 @@ export default function EventoDetailPage ({ params }) {
       <Typography variant="body2" color="text.secondary">
         Posizione: {eventoDetails.posizione || 'Non specificata'}
       </Typography>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" gutterBottom sx={{ color: 'black' }}>
         Punti di Interesse dell'evento:
       </Typography>
   
@@ -231,16 +231,19 @@ export default function EventoDetailPage ({ params }) {
         
       <Button
         variant="contained"
-        color="primary"
         onClick={handleFeedbackClick}
-        sx={{ mt: 2 }} // Aggiungi un margine superiore se necessario
+        sx={{
+          mt: 2, // Margine superiore
+          backgroundColor: '#EA580C', // Colore di sfondo personalizzato
+          '&:hover': { backgroundColor: '#D1550A' } // Colore al passaggio del mouse
+        }}
       >
         Lascia un feedback
       </Button>
 
       {showForm && (
         <Box mt={3}>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom sx={{ color: 'black' }}>
             Scrivi il tuo feedback
           </Typography>
           <MultiLineInput
@@ -252,7 +255,11 @@ export default function EventoDetailPage ({ params }) {
             variant="contained"
             color="secondary"
             onClick={handleSubmitFeedback}
-            sx={{ mt: 2 }}
+            sx={{
+              mt: 2, // Margine superiore
+              backgroundColor: '#EA580C', // Colore di sfondo personalizzato
+              '&:hover': { backgroundColor: '#D1550A' } // Colore al passaggio del mouse
+            }}
           >
             Invia
           </Button>

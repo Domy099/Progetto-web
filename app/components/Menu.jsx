@@ -33,6 +33,11 @@ const CarnivaleParadeMenus = ({ onSelect }) => {
         disableElevation
         onClick={handleClick}
         endIcon={<KeyboardArrowDownIcon />}
+        sx={{
+          mt: 2, // Margine superiore
+          backgroundColor: '#EA580C', // Colore di sfondo personalizzato
+          '&:hover': { backgroundColor: '#D1550A' } // Colore al passaggio del mouse
+        }}
       >
         {selectedParade}
       </Button>
