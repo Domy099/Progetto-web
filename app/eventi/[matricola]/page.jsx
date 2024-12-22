@@ -142,7 +142,7 @@ export default function EventoDetailPage ({ params }) {
         },
       };
   
-      const response = await fetch("${STRAPI_API_URL}/api/feedbacks", {
+      const response = await fetch(`${STRAPI_API_URL}/api/feedbacks`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
