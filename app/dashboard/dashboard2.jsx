@@ -145,13 +145,12 @@ export default function DashboardNuova() {
   const handleAddTicket = async () => {
     try {
       // Verifica che la matricola sia valida
-      /*REVIEW - Se non dovesse funzionare, riusa per convertire la matricola in intero*/
       const matricolaInt = parseInt(matricola, 10);
       if (isNaN(matricolaInt)) {
         alert("Matricola non valida. Inserire un numero.");
         return;
       }
-      console.log('All ticket', allTickets);
+
       // Cerca il biglietto con la matricola inserita
       const foundTicket = allTickets.find(
         (ticket) => ticket.matricola === matricolaInt
@@ -222,34 +221,31 @@ export default function DashboardNuova() {
       </Box>
 
       <Box sx={{ mb: 3 }}>
-  <Typography variant="h6">I tuoi Biglietti:</Typography>
-  {userTickets.length > 0 ? (
-    <Grid container spacing={20}> {/* Ridotto lo spacing a 2 */}
-      {userTickets
-        .filter((ticket, index, self) =>
-          // Filtra solo il primo biglietto con un codice unico
-          index === self.findIndex(t => t.codice === ticket.codice)
-        )
-        .map(ticket => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={ticket.codice}> {/* Modificato per avere 1 colonna su mobile, 2 su tablet, 3 su desktop e 4 su large */}
-            {/* Utilizza il componente Ticket per ogni biglietto */}
-            <TicketCard
-              dataEmissione={ticket.createdAt}
-              codice={ticket.codice}
-            />
+        <Typography variant="h6">I tuoi Biglietti:</Typography>
+        {userTickets.length > 0 ? (
+          <Grid container spacing={20}>
+            {userTickets
+              .filter((ticket, index, self) =>
+                // Filtra solo il primo biglietto con un codice unico
+                index === self.findIndex((t) => t.codice === ticket.codice)
+              )
+              .map((ticket) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={ticket.codice}>
+                  {/* Utilizza il componente Ticket per ogni biglietto */}
+                  <TicketCard
+                    dataEmissione={ticket.createdAt}
+                    codice={ticket.codice}
+                  />
+                </Grid>
+              ))}
           </Grid>
-        ))}
-    </Grid>
-  ) : (
-    <p>Nessun biglietto disponibile</p>
-  )}
-</Box>
+        ) : (
+          <p>Nessun biglietto disponibile</p>
+        )}
+      </Box>
 
-
-
-
-      {/* Logout Button */}
-      <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }}>
+      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
+        {/* Logout Button */}
         <Button
           variant="contained"
           className="bg-orange-600 hover:bg-orange-700"
@@ -260,8 +256,19 @@ export default function DashboardNuova() {
         >
           Logout
         </Button>
+
+        {/* Reset Password Button */}
+        <Button
+          variant="contained"
+          className="bg-orange-600 hover:bg-orange-700"
+          onClick={() => {
+            sessionStorage.removeItem("token");
+            router.push("/reset-password");
+          }}
+        >
+          Reset Password
+        </Button>
       </Box>
-      
     </Container>
   );
 }
