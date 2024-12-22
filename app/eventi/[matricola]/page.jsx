@@ -2,13 +2,13 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Container, Typography, Card, CardContent, CardMedia, Box, Button } from '@mui/material';
+import { TextField, Container, Typography, Card, CardContent, CardMedia, Box, Button } from '@mui/material';
 import jwt from 'jsonwebtoken';
 import MultiLineInput from '../../components/MultiLineInput';
 import BottoneIndietro from '../../components/IndietroButton';
 import { use } from 'react';
 
-export default function EventoDetailPage ({ params }) {
+export default function EventoDetailPage({ params }) {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   //const matricola = params?.matricola;
   const matricola = use(params).matricola;
@@ -24,7 +24,6 @@ export default function EventoDetailPage ({ params }) {
   const [showForm, setShowForm] = useState(false); // Stato per mostrare/nascondere il form
   const oggi = new Date().toISOString().split('T')[0];
 
-
   useEffect(() => {
     if (!matricola) return;
 
@@ -38,7 +37,6 @@ export default function EventoDetailPage ({ params }) {
         if (data?.data?.length > 0) {
           setEventoDetails(data.data[0]);
           setIdEvento(data.data[0].id);
-          
         } else {
           console.warn("Nessun evento trovato per la matricola fornita.");
         }
@@ -100,15 +98,14 @@ export default function EventoDetailPage ({ params }) {
       return { hasVoted: false, feedbackDetails: null };
     }
   };
-  
 
-      //fetchFeedback();
-    //}, [idEvento]);
+  //fetchFeedback();
+  //}, [idEvento]);
 
   //Gestisce l'invio del feedback
   const handleFeedbackClick = async () => {
     const { hasVoted, feedbackDetails } = await fetchFeedback();
-  
+
     if (hasVoted) {
       setShowForm(false);
       alert("Hai già inviato un feedback per questo evento");
@@ -116,23 +113,22 @@ export default function EventoDetailPage ({ params }) {
       setShowForm(true);
     }
   };
-  
 
   const handleSubmitFeedback = async () => {
     const token = sessionStorage.getItem("token");
-  
+
     if (!token) {
       console.error("Utente non autenticato!");
       alert("Devi effettuare l'accesso per inviare un feedback");
       router.push("/login");
       return;
     }
-  
+
     const decoded = jwt.decode(token);
     const userId = decoded.id;
-  
+
     setLoading(true);
-  
+
     try {
       const feedbackData = {
         data: {
@@ -141,7 +137,7 @@ export default function EventoDetailPage ({ params }) {
           descrizione: feedbackText,
         },
       };
-  
+
       const response = await fetch(`${STRAPI_API_URL}/api/feedbacks`, {
         method: "POST",
         headers: {
@@ -150,14 +146,14 @@ export default function EventoDetailPage ({ params }) {
         },
         body: JSON.stringify(feedbackData),
       });
-  
+
       if (!response.ok) {
         throw new Error("Errore nel registrare il feedback");
       }
-  
+
       const responseData = await response.json();
       console.log("Feedback registrato con successo:", responseData);
-  
+
       setHasVoted(true);
       setShowForm(false);
       alert("Grazie per aver inviato il feedback!");
@@ -167,10 +163,6 @@ export default function EventoDetailPage ({ params }) {
       setLoading(false);
     }
   };
-  
-
-
-    
 
   if (!eventoDetails) {
     return <Typography>Caricamento...</Typography>;
@@ -183,14 +175,14 @@ export default function EventoDetailPage ({ params }) {
       <Typography variant="h4" component="h1" gutterBottom sx={{ color: 'black' }}>
         {eventoDetails.nome}
       </Typography>
-  
+
       <Typography variant="h6" gutterBottom sx={{ color: 'black' }}>
         Descrizione:
       </Typography>
       <Typography variant="body1" sx={{ color: 'text.secondary' }}>
         {eventoDetails.Descrizione} {/* Descrizione dell'evento */}
       </Typography>
-  
+
       <Typography variant="body2" color="text.secondary"></Typography>
       <Typography variant="body2" color="text.secondary">
         Data: {new Date(eventoDetails.data).toLocaleDateString()}
@@ -204,9 +196,9 @@ export default function EventoDetailPage ({ params }) {
       <Typography variant="h6" gutterBottom sx={{ color: 'black' }}>
         Punti di Interesse dell'evento:
       </Typography>
-  
+
       {eventoDetails && eventoDetails.pois && eventoDetails.pois.length > 0 ? (
-        <Box mt={4}>
+        <Box mt={2}>
           {eventoDetails.pois.map((poi) => (
             <Card key={poi.idPOI} sx={{ mb: 2 }}>
               <CardContent>
@@ -225,50 +217,49 @@ export default function EventoDetailPage ({ params }) {
       )}
 
       {/* Confronta la data odierna con quella dell'evento per verificare che si possa lasciare un feedback */}
-      
-      {oggi >= eventoDetails?.data  && (
+      {oggi >= eventoDetails?.data && (
         <>
-        
-      <Button
-        variant="contained"
-        onClick={handleFeedbackClick}
-        sx={{
-          mt: 2, // Margine superiore
-          backgroundColor: '#EA580C', // Colore di sfondo personalizzato
-          '&:hover': { backgroundColor: '#D1550A' } // Colore al passaggio del mouse
-        }}
-      >
-        Lascia un feedback
-      </Button>
-
-      {showForm && (
-        <Box mt={3}>
-          <Typography variant="h6" gutterBottom sx={{ color: 'black' }}>
-            Scrivi il tuo feedback
-          </Typography>
-          <MultiLineInput
-            value={feedbackText}
-            onChange={(e) => setFeedbackText(e.target.value)}
-            placeholder="Inserisci qui il tuo feedback..."
-          />
           <Button
             variant="contained"
-            color="secondary"
-            onClick={handleSubmitFeedback}
+            onClick={handleFeedbackClick}
             sx={{
               mt: 2, // Margine superiore
               backgroundColor: '#EA580C', // Colore di sfondo personalizzato
               '&:hover': { backgroundColor: '#D1550A' } // Colore al passaggio del mouse
             }}
           >
-            Invia
+            Lascia un feedback
           </Button>
-          </Box>
+
+          {showForm && (
+            <Box mt={2}>
+              <Typography variant="h6" gutterBottom sx={{ color: 'black' }}>
+                Scrivi il tuo feedback
+              </Typography>
+              <TextField
+                multiline
+                rows={3} // Numero di righe visibili
+                fullWidth // Per occupare tutta la larghezza del container
+                value={feedbackText}
+                onChange={(e) => setFeedbackText(e.target.value)}
+                placeholder="Inserisci qui il tuo feedback..."
+              />
+              <Button
+                variant="contained"
+                color="secondary"
+                onClick={handleSubmitFeedback}
+                sx={{
+                  mt: 2, // Margine superiore
+                  backgroundColor: '#EA580C', // Colore di sfondo personalizzato
+                  '&:hover': { backgroundColor: '#D1550A' } // Colore al passaggio del mouse
+                }}
+              >
+                Invia
+              </Button>
+            </Box>
           )}
-      </>
-      )
-    }
+        </>
+      )}
     </Container>
   );
-} 
-
+}
