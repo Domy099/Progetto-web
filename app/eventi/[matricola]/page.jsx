@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { Container, Typography, Card, CardContent, CardMedia, Box, Button, Grid, Icon, Chip } from '@mui/material';
+import { TextField, Container, Typography, Card, CardContent, CardMedia, Box, Button, Grid, Icon, Chip } from '@mui/material';
 import { Event, LocationOn, DateRange, Description } from '@mui/icons-material';
 import jwt from 'jsonwebtoken';
 import MultiLineInput from '../../components/MultiLineInput';
@@ -304,11 +304,14 @@ export default function EventoDetailPage({ params }) {
           </Button>
 
           {showForm && (
-            <Box mt={3}>
-              <Typography variant="h6" gutterBottom>
+            <Box mt={2}>
+              <Typography variant="h6" gutterBottom sx={{ color: 'black' }}>
                 Scrivi il tuo feedback
               </Typography>
-              <MultiLineInput
+              <TextField
+                multiline
+                rows={3} // Numero di righe visibili
+                fullWidth // Per occupare tutta la larghezza del container
                 value={feedbackText}
                 onChange={(e) => setFeedbackText(e.target.value)}
                 placeholder="Inserisci qui il tuo feedback..."
@@ -317,7 +320,11 @@ export default function EventoDetailPage({ params }) {
                 variant="contained"
                 color="secondary"
                 onClick={handleSubmitFeedback}
-                sx={{ mt: 2 }}
+                sx={{
+                  mt: 2, // Margine superiore
+                  backgroundColor: '#EA580C', // Colore di sfondo personalizzato
+                  '&:hover': { backgroundColor: '#D1550A' } // Colore al passaggio del mouse
+                }}
               >
                 Invia
               </Button>
