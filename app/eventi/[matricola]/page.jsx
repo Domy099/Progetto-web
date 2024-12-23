@@ -5,7 +5,6 @@ import { useRouter } from 'next/navigation';
 import { TextField, Container, Typography, Card, CardContent, CardMedia, Box, Button, Grid, Icon, Chip } from '@mui/material';
 import { Event, LocationOn, DateRange, Description } from '@mui/icons-material';
 import jwt from 'jsonwebtoken';
-import MultiLineInput from '../../components/MultiLineInput';
 import BottoneIndietro from '../../components/IndietroButton';
 import { use } from 'react';
 import POICard from '../../components/POICard';
@@ -33,7 +32,7 @@ export default function EventoDetailPage({ params }) {
     const fetchEventoDetails = async () => {
       try {
         const response = await fetch(
-          `${STRAPI_API_URL}/api/eventi?filters[matricola][$eq]=${matricola}&populate=pois`
+          `${STRAPI_API_URL}/api/eventi?filters[matricola][$eq]=${matricola}&populate=pois&populate=Locandina`
         );
         const data = await response.json();
 
@@ -196,12 +195,10 @@ export default function EventoDetailPage({ params }) {
           }}
         >
           <img
-            /*FIXME - Rivedi, non mostra la locandina anche se è presente*/
-            src={ `https://placehold.co/400x600?text=${eventoDetails.nome}`
-              /*
+            src={
               eventoDetails.Locandina.url 
                 ? `${STRAPI_API_URL}${eventoDetails.Locandina.url}` 
-                : `https://placehold.co/400x600?text=${eventoDetails.nome}`*/
+                : `https://placehold.co/400x600?text=${eventoDetails.nome}`
             }
             alt={`Locandina dell'evento ${eventoDetails.nome}`}
             style={{
