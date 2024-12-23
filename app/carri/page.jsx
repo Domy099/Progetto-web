@@ -5,6 +5,7 @@ import { Container, Grid } from '@mui/material';
 import Link from 'next/link';
 
 import './carri.css';
+import LeaderBoardVoti from '../components/LeaderBoardVoti';
 
 const Page = () => {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
@@ -14,9 +15,9 @@ const Page = () => {
   useEffect(() => {
     const fetchCarri = async () => {
       try {
-        const response = await fetch(`${STRAPI_API_URL}/api/carri`); // Sostituisci con l'endpoint reale
+        const response = await fetch(`${STRAPI_API_URL}/api/carri?populate[voti][count]=true`); // Sostituisci con l'endpoint reale
         const jsonData = await response.json();
-        console.log('Dati ricevuti:', jsonData);
+        console.log('Dati ricevuti:', jsonData);    
         setCarri(jsonData.data); // Accedi a jsonData.data per l'array corretto
       } catch (error) {
         console.error('Errore durante il recupero dei dati:', error);
@@ -27,6 +28,11 @@ const Page = () => {
   }, []);
   
   return (
+    <>
+    
+    <Container style={{ paddingTop: '20px', paddingBottom: '20px' }}>
+    <LeaderBoardVoti carri={carri} />
+    </Container>
     <Container style={{ paddingTop: '20px' }}>
       <Grid container spacing={4}>
         {carri.map((carro) => (
@@ -44,6 +50,7 @@ const Page = () => {
         ))}
       </Grid>
     </Container>
+    </>
   );
 };
 
