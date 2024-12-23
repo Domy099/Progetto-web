@@ -43,7 +43,7 @@ const ClickableCard = ({ item }) => (
               height: '100px',
             }}
           >
-            <circle cx="50" cy="50" r="50" fill="#FF5349" />
+            <circle cx="50" cy="50" r="50" fill="#EA580C" />
           </svg>
         </div>
         <Typography variant="h6" className="text-black">{item}</Typography>

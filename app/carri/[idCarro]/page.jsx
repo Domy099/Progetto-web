@@ -154,7 +154,7 @@ export default function CarroDetailPage({ params }) {
           flexDirection={{ xs: "column", sm: "row" }} // Cambia da una colonna a due colonne
           alignItems="flex-start"
           gap={4}
-          mt={12}
+          mt={4}
         >
           {/* Immagine del carro a sinistra */}
           <Box
