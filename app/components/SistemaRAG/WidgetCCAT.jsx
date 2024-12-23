@@ -132,7 +132,7 @@ const Widget_CCAT = ({
         )}
         <img
           src={
-            "favicon.ico"
+            "CatLogoNEW.svg"
           }
           alt="cat Icon"
         />
