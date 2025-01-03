@@ -2,7 +2,6 @@
 import React from 'react';
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import ClickableCard from './components/ClickableCard';
 import { Carousel } from 'react-responsive-carousel';
@@ -11,10 +10,6 @@ import MeteoCard from './components/MeteoCard/MeteoCard';
 
 function App() {
   const menuItems = ['Home', 'Eventi', 'Mappa', 'Storia', 'Carri', 'Artigiani'];
-  const images = [
-    'https://www.friggitoriasandomenico.com/wp-content/uploads/2023/01/carnevale-putignano.jpg',
-    'https://www.toureventitalia.com/myadm/tiny/editor/file/putignano.jpeg'
-  ];
 
   return (
     <div>
@@ -44,11 +39,42 @@ function App() {
         <Grid container spacing={4} className="mt-4">
           <Grid item xs={12}>
             <Carousel showThumbs={false} autoPlay infiniteLoop>
-              {images.map((src, index) => (
-                <div key={index}>
-                  <img src={src} alt={`Carousel ${index + 1}`} className="carousel-image" />
-                </div>
-              ))}
+              <div>
+                <img src="/img/1.jpg" alt="Carousel 1" className="carousel-image" />
+              </div>
+              <div>
+                <img src="/img/2.jpg" alt="Carousel 2" className="carousel-image" />
+              </div>
+              <div>
+                <img src="/img/3.jpg" alt="Carousel 3" className="carousel-image" />
+              </div>
+              <div>
+                <img src="/img/4.jpg" alt="Carousel 4" className="carousel-image" />
+              </div>
+              <div>
+                <img src="/img/5.jpg" alt="Carousel 5" className="carousel-image" />
+              </div>
+              <div>
+                <img src="/img/6.jpg" alt="Carousel 6" className="carousel-image" />
+              </div>
+              <div>
+                <img src="/img/7.jpg" alt="Carousel 7" className="carousel-image" />
+              </div>
+              <div>
+                <img src="/img/8.jpg" alt="Carousel 8" className="carousel-image" />
+              </div>
+              <div>
+                <img src="/img/9.jpg" alt="Carousel 9" className="carousel-image" />
+              </div>
+              <div>
+                <img src="/img/10.jpg" alt="Carousel 10" className="carousel-image" />
+              </div>
+              <div>
+                <img src="/img/11.jpg" alt="Carousel 11" className="carousel-image" />
+              </div>
+              <div>
+                <img src="/img/12.jpg" alt="Carousel 12" className="carousel-image" />
+              </div>
             </Carousel>
           </Grid>
         </Grid>
