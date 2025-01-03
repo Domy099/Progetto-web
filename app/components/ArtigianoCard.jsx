@@ -27,8 +27,7 @@ const ArtigianoCard = ({ nome, cognome, storia, immagine }) => {
             objectFit: "cover", // Garantisce che l'immagine riempia lo spazio
           }}
           image={
-            immagine ||
-            "https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg"
+            immagine
           }
           alt={`Immagine di ${nome} ${cognome}`}
         />

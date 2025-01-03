@@ -6,6 +6,7 @@ import { Container, Typography, Card, CardContent, CardMedia, Box, Button, Grid 
 import BottoneIndietro from "@/app/components/IndietroButton";
 import jwt from "jsonwebtoken";
 import ArtigianoCard from "@/app/components/ArtigianoCard";
+import Link from "next/link";
 
 export default function CarroDetailPage({ params }) {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
@@ -27,11 +28,11 @@ export default function CarroDetailPage({ params }) {
     const fetchCarroDetails = async () => {
       try {
         const response = await fetch(
-          `${STRAPI_API_URL}/api/carri?filters[idCarro][$eq]=${idCarro}&populate=artigiani&populate=immagine`
+          `${STRAPI_API_URL}/api/carri?filters[idCarro][$eq]=${idCarro}&populate[0]=immagine&populate[1]=artigiani.immagine`
         );
         const data = await response.json();
         setCarroDetails(data.data[0]);
-
+        console.log("Dettagli del carro:", data.data[0]);
         setIdCarroVoto(data.data[0].id);
 
         setLoading(false);
@@ -164,7 +165,8 @@ export default function CarroDetailPage({ params }) {
             }}
           >
             <img
-              src={carroDetails.immagine?.url || `https://placehold.co/150?text=${carroDetails.nome}`}
+            
+              src={carroDetails.immagine?.url ? `${STRAPI_API_URL}${carroDetails.immagine.url}` :`https://placehold.co/150?text=${carroDetails.nome}`}
               alt={`Foto del carro ${carroDetails.nome}`}
               style={{
                 width: "100%",
@@ -219,7 +221,16 @@ export default function CarroDetailPage({ params }) {
                 md={4}    // Tre colonne su schermi grandi
                 
               >
-                <ArtigianoCard {...artigiano} />
+                <Link href={`/artigiani/${artigiano.idArtigiano}`} passHref>
+                <ArtigianoCard
+                  nome={artigiano.nome}
+                  cognome={artigiano.cognome}
+                  storia={artigiano.storia}
+                  immagine={  artigiano.immagine?.url ? 
+                  `${STRAPI_API_URL}${artigiano.immagine.url}` 
+                  : 'https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg'}
+                />
+                </Link>
               </Grid>
             ))}
           </Grid>

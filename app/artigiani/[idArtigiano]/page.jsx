@@ -21,7 +21,7 @@ export default function CarroDetailPage ({ params }){
     const fetchArtigianoDetails = async () => {
       try {
         const response = await fetch(
-          `${STRAPI_API_URL}/api/artigiani?filters[idArtigiano][$eq]=${idArtigiano}&populate=carri`
+          `${STRAPI_API_URL}/api/artigiani?filters[idArtigiano][$eq]=${idArtigiano}&populate[0]=immagine&populate[1]=carri.immagine`
         );
         const data = await response.json();
 
@@ -65,7 +65,7 @@ export default function CarroDetailPage ({ params }){
           }}
         >
           <img
-            src={artigianoDetails.urlFoto || 'https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg'}
+            src={`${STRAPI_API_URL}${artigianoDetails.immagine.url}`|| 'https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg'}
             alt={`Foto di ${artigianoDetails.nome} ${artigianoDetails.cognome}`}
             style={{
               width: "100%",
@@ -103,7 +103,7 @@ export default function CarroDetailPage ({ params }){
               <CarriCard 
               title={artigianoDetails.carri.nome}
               description={artigianoDetails.carri.descrizione}
-              image={artigianoDetails.carri.urlFoto}
+              image={artigianoDetails.carri.immagine?.url ? `${STRAPI_API_URL}${artigianoDetails.carri.immagine.url}` :`https://placehold.co/150?text=${artigianoDetails.carri.nome}`}
               altText={`Immagine del carro ${artigianoDetails.carri.nome}`}
               />
             </Link>

@@ -45,7 +45,7 @@ const Page = () => {
               <ActionAreaCard
                 title={artigiano.nome}
                 description={artigiano.storia}
-                image={'https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg'}
+                image={artigiano.immagine?.url ? `${STRAPI_API_URL}${artigiano.immagine.url}` :'https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg'}
                 altText={`Immagine dell'artigiano ${artigiano.nome}`}
               />
             </Link>
