@@ -12,7 +12,6 @@ export default function CarroDetailPage({ params }) {
   //const {idContenuto} = params;
   //const idArtigiano = params?.idArtigiano;
   const idContenuto = use(params).idContenuto;
-  console.log(idContenuto);
   const [contenutoDetails, setContenutoDetails] = useState(null);
 
   useEffect(() => {
@@ -28,8 +27,7 @@ export default function CarroDetailPage({ params }) {
         if (data && data.data) {
 
           setContenutoDetails(data.data[0]);
-
-          console.log(data.data[0]);
+          //console.log(data.data[0]);
 
         } else {
           console.warn("Nessun contenuto trovato per l'id fornito.");
@@ -67,7 +65,7 @@ export default function CarroDetailPage({ params }) {
       <Box sx={{ width: '100%', height: '400px', mb: 4 }}>
         
           <img
-            src={contenutoDetails.Immagine?.url ? `${STRAPI_API_URL}${contenutoDetails.Immagine.url}`: 'https://placehold.co/600x400'} /* STUB - || 'https://placehold.co/600x400'*/
+            src={contenutoDetails.Immagine?.url ? `${STRAPI_API_URL}${contenutoDetails.Immagine.url}`: `https://placehold.co/600x400`} /* STUB - || 'https://placehold.co/600x400'*/
             alt="Immagine di copertura"
             style={{
               width: '100%',
