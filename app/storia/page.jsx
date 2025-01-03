@@ -15,7 +15,7 @@ const Storia = () => {
       const fetchContenutiDetails = async () => {
         try {
           const response = await fetch(
-            `${STRAPI_API_URL}/api/contenuti`
+            `${STRAPI_API_URL}/api/contenuti?populate=Immagine`
           );
           const data = await response.json();
   
@@ -149,7 +149,7 @@ const Storia = () => {
                   <ContenutoCard
                     title={contenuto.titolo}
                     data={contenuto.publishedAt}
-                    image={contenuto.Immagine || `https://placehold.co/600x400?text=${contenuto.titolo.slice(0,30) + "..."}`}
+                    image={contenuto.Immagine?.url ? `${STRAPI_API_URL}${contenuto.Immagine.url}` : `https://placehold.co/600x400?text=${contenuto.titolo.slice(0,30) + "..."}`}
                     altText={`Immagine del contenuto`}
                   />
                 </Link>

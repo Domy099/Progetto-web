@@ -21,7 +21,7 @@ export default function CarroDetailPage({ params }) {
     const fetchContenutoDetails = async () => {
       try {
         const response = await fetch(
-          `${STRAPI_API_URL}/api/contenuti?filters[idContenuto][$eq]=${idContenuto}`
+          `${STRAPI_API_URL}/api/contenuti?filters[idContenuto][$eq]=${idContenuto}&populate=Immagine`
         );
         const data = await response.json();
 
@@ -67,7 +67,7 @@ export default function CarroDetailPage({ params }) {
       <Box sx={{ width: '100%', height: '400px', mb: 4 }}>
         
           <img
-            src={contenutoDetails.Immagine} /* STUB - || 'https://placehold.co/600x400'*/
+            src={contenutoDetails.Immagine?.url ? `${STRAPI_API_URL}${contenutoDetails.Immagine.url}`: 'https://placehold.co/600x400'} /* STUB - || 'https://placehold.co/600x400'*/
             alt="Immagine di copertura"
             style={{
               width: '100%',
