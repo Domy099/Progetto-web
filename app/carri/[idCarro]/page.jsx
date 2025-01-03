@@ -27,7 +27,7 @@ export default function CarroDetailPage({ params }) {
     const fetchCarroDetails = async () => {
       try {
         const response = await fetch(
-          `${STRAPI_API_URL}/api/carri?filters[idCarro][$eq]=${idCarro}&populate=artigiani`
+          `${STRAPI_API_URL}/api/carri?filters[idCarro][$eq]=${idCarro}&populate=artigiani&populate=immagine`
         );
         const data = await response.json();
         setCarroDetails(data.data[0]);
@@ -164,7 +164,7 @@ export default function CarroDetailPage({ params }) {
             }}
           >
             <img
-              src={carroDetails.urlFoto}
+              src={carroDetails.immagine?.url || `https://placehold.co/150?text=${carroDetails.nome}`}
               alt={`Foto del carro ${carroDetails.nome}`}
               style={{
                 width: "100%",

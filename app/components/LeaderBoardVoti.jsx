@@ -14,9 +14,7 @@ const LeaderBoardVoti = ({ carri }) => {
         id: carro.id,
         name: carro.nome,
         votes: carro.voti?.count || 0,
-        image: carro.urlFoto
-            ? carro.urlFoto
-            : `https://placehold.co/150?text=${carro.nome}`
+        image: carro.immagine?.url ? `${STRAPI_API_URL}${carro.immagine.url}` : `https://placehold.co/600x400?text=${carro.nome}`
     }));
 
     const topCarri = ([...formattedData].sort((a, b) => b.votes - a.votes).slice(0, 3));

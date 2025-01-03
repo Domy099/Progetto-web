@@ -15,7 +15,7 @@ const Page = () => {
   useEffect(() => {
     const fetchCarri = async () => {
       try {
-        const response = await fetch(`${STRAPI_API_URL}/api/carri?populate[voti][count]=true`); // Sostituisci con l'endpoint reale
+        const response = await fetch(`${STRAPI_API_URL}/api/carri?populate[voti][count]=true&populate=immagine`); // Sostituisci con l'endpoint reale
         const jsonData = await response.json();
         console.log('Dati ricevuti:', jsonData);    
         setCarri(jsonData.data); // Accedi a jsonData.data per l'array corretto
@@ -42,7 +42,7 @@ const Page = () => {
               <CarriCard
                 title={carro.nome}
                 description={carro.descrizione}
-                image={carro.urlFoto}
+                image={carro.immagine?.url ? `${STRAPI_API_URL}${carro.immagine.url}` : `https://placehold.co/600x400?text=${carro.nome}`}
                 altText={`Immagine del carro ${carro.nome}`}
               />
             </Link>
