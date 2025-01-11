@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import TicketCard from "../components/Biglietto/TicketCard";
 import FeedbackCard from "../components/FeedbackCard";
+import { color } from "framer-motion";
 
 export default function DashboardNuova() {
   const router = useRouter();
@@ -98,54 +99,57 @@ export default function DashboardNuova() {
       }
     };
 
-    const fetchFeedbacks = async () => {
-      try {
-        const response = await fetch(
-          `${STRAPI_API_URL}/api/users/me?populate[feedbacks][populate]=evento`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(
-            `Errore nel recupero dei feedback: ${response.status}`
-          );
-        }
-
-        const responseData = await response.json();
-
-        // Verifica la struttura della risposta
-        if (!responseData.feedbacks || !Array.isArray(responseData.feedbacks)) {
-          throw new Error("Formato risposta non valido");
-        }
-
-        console.log("Feedback fetchati:", responseData.feedbacks);
-
-        // Mappa i dati dei feedback nel formato richiesto
-        const formattedFeedbacks = responseData.feedbacks.map((feedback) => ({
-          id: feedback.documentId, // Usa il campo corretto dal JSON
-          evento: feedback.evento?.nome || "Evento sconosciuto",
-          descrizione: feedback.descrizione || "Nessuna descrizione disponibile",
-        }));
-
-        setUserFeedbacks(formattedFeedbacks);
-      } catch (error) {
-        console.error("Errore nel recupero dei feedback:", error);
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+    fetchFeedbacks();
 
     Promise.all([fetchUserData(), fetchAllTickets(), fetchFeedbacks()]).catch((err) => {
       setError(err.message);
       setLoading(false);
     });
   }, [router]);
+
+  const fetchFeedbacks = async () => {
+    const token = sessionStorage.getItem("token");
+    try {
+      const response = await fetch(
+        `${STRAPI_API_URL}/api/users/me?populate[feedbacks][populate]=evento`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(
+          `Errore nel recupero dei feedback: ${response.status}`
+        );
+      }
+
+      const responseData = await response.json();
+
+      // Verifica la struttura della risposta
+      if (!responseData.feedbacks || !Array.isArray(responseData.feedbacks)) {
+        throw new Error("Formato risposta non valido");
+      }
+
+      console.log("Feedback fetchati:", responseData.feedbacks);
+
+      // Mappa i dati dei feedback nel formato richiesto
+      const formattedFeedbacks = responseData.feedbacks.map((feedback) => ({
+        id: feedback.documentId, // Usa il campo corretto dal JSON
+        evento: feedback.evento?.nome || "Evento sconosciuto",
+        descrizione: feedback.descrizione || "Nessuna descrizione disponibile",
+      }));
+
+      setUserFeedbacks(formattedFeedbacks);
+    } catch (error) {
+      console.error("Errore nel recupero dei feedback:", error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     console.log("Feedback aggiornati:", userFeedbacks);
@@ -324,12 +328,14 @@ export default function DashboardNuova() {
                   <FeedbackCard
                     nomeEvento={feedback.evento}
                     descrizioneFeedback={feedback.descrizione}
+                    documentId={feedback.id}
+                    onFeedbackDeleted={fetchFeedbacks}
                   />
                 </Grid>
               ))}
           </Grid>
         ) : (
-          <p>Nessun feedback disponibile</p>
+          <Typography sx={{color: "black"}}>Nessun feedback disponibile</Typography>
         )}
       </Box>
 
