@@ -330,6 +330,8 @@ export default function DashboardNuova() {
                     descrizioneFeedback={feedback.descrizione}
                     documentId={feedback.id}
                     onFeedbackDeleted={fetchFeedbacks}
+                    onFeedbackUpdated={fetchFeedbacks}
+                    token = {sessionStorage.getItem("token")}
                   />
                 </Grid>
               ))}

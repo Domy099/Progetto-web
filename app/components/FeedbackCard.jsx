@@ -1,49 +1,55 @@
 import React, { useState } from "react";
-import Card from "@mui/material/Card";
-import CardContent from "@mui/material/CardContent";
-import Typography from "@mui/material/Typography";
-import CardActions from "@mui/material/CardActions";
-import Button from "@mui/material/Button";
-import Box from "@mui/material/Box";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Snackbar from "@mui/material/Snackbar"; // Import Snackbar
+import {
+  Card,
+  CardContent,
+  Typography,
+  CardActions,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Snackbar,
+} from "@mui/material";
 
-const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackDeleted }) => {
-  const [openDialog, setOpenDialog] = useState(false);
-  const [openSnackbar, setOpenSnackbar] = useState(false); // State for Snackbar visibility
+const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackDeleted, onFeedbackUpdated, token }) => {
+  const [openDialog, setOpenDeleteDialog] = useState(false);
+  const [openEditDialog, setOpenEditDialog] = useState(false);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [newFeedback, setNewFeedback] = useState(descrizioneFeedback);
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
-  const token = sessionStorage.getItem("token");
 
-  const handleClickOpen = () => {
-    setOpenDialog(true);
+  const handleDeleteClickOpen = () => {
+    setOpenDeleteDialog(true);
   };
 
-  const handleClose = () => {
-    setOpenDialog(false);
+  const handleDeleteClickClose = () => {
+    setOpenDeleteDialog(false);
   };
+
+  const handleEditClickOpen = () => setOpenEditDialog(true);
+  const handleEditClose = () => setOpenEditDialog(false);
 
   const handleConfirmDelete = () => {
-    cancellaFeedback(); 
+    cancellaFeedback();
     setOpenDialog(false);
     setOpenSnackbar(true); // Show snackbar after confirmation
   };
 
   // Funzione di cancellazione
   const cancellaFeedback = async () => {
-    
+
     try {
-      const response = await fetch(`${STRAPI_API_URL}/api/feedbacks/${documentId}`, 
+      const response = await fetch(`${STRAPI_API_URL}/api/feedbacks/${documentId}`,
         {
-        method: 'DELETE',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
-        },
-      });
-  
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+
       if (response.ok) {
         console.log('Feedback cancellato con successo');
         onFeedbackDeleted(); //Callback per aggiornare la lista
@@ -54,7 +60,46 @@ const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackD
       console.error('Errore nella richiesta:', error);
     }
   };
- 
+
+  const handleConfirmUpdate = () => {
+    modificaFeedback();
+    setOpenDialog(false);
+    setOpenSnackbar(true); // Show snackbar after confirmation
+  };
+
+  // Funzione di cancellazione
+  const modificaFeedback = async () => {
+
+    try {
+      const response = await fetch(`${STRAPI_API_URL}/api/feedbacks/${documentId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            data: { // Strapi richiede il campo `data`
+              descrizione: newFeedback,
+            },
+          }),
+        });
+
+      if (response.ok) {
+        console.log('Feedback modificato con successo');
+        if (onFeedbackUpdated) onFeedbackUpdated();
+        setOpenSnackbar(true);
+      } else {
+        console.error('Errore durante modifica:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Errore nella richiesta:', error);
+    }
+    finally {
+      setOpenEditDialog(false);
+    }
+  };
+
 
   // Handle snackbar close
   const handleCloseSnackbar = () => {
@@ -97,19 +142,18 @@ const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackD
         </Typography>
       </CardContent>
       <CardActions>
-        <Button
-          size="small"
-          color="error"
-          onClick={handleClickOpen}
-        >
+        <Button size="small" color="primary" onClick={handleEditClickOpen}>
+          Modifica Feedback
+        </Button>
+        <Button size="small" color="error" onClick={handleDeleteClickOpen}>
           Cancella Feedback
         </Button>
       </CardActions>
 
-      {/* Overlay di conferma */}
+      {/* Overlay di conferma cancellazione */}
       <Dialog
         open={openDialog}
-        onClose={handleClose}
+        onClose={handleDeleteClickClose}
       >
         <DialogTitle>Conferma Cancellazione</DialogTitle>
         <DialogContent>
@@ -121,7 +165,7 @@ const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackD
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button onClick={handleDeleteClickClose} color="primary">
             Annulla
           </Button>
           <Button onClick={handleConfirmDelete} color="error">
@@ -130,12 +174,37 @@ const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackD
         </DialogActions>
       </Dialog>
 
+      {/* Overlay per modifica feedback */}
+      <Dialog open={openEditDialog} onClose={handleEditClose}>
+        <DialogTitle>Modifica Feedback</DialogTitle>
+        <DialogContent>
+          <TextField
+            fullWidth
+            label="Nuovo Feedback"
+            variant="outlined"
+            value={newFeedback}
+            onChange={(e) => setNewFeedback(e.target.value)}
+            sx={{ marginTop: 2 }}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleEditClose} color="primary">
+            Annulla
+          </Button>
+          <Button onClick={modificaFeedback} color="success">
+            Conferma
+          </Button>
+        </DialogActions>
+      </Dialog>
+
       {/* Snackbar di conferma */}
       <Snackbar
         open={openSnackbar}
-        autoHideDuration={3000} // Duration in milliseconds (3 seconds)
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        autoHideDuration={3000}
         onClose={handleCloseSnackbar}
-        message="Feedback cancellato con successo!"
+        message="Azione completata con successo!"
+        sx={{ textAlign: "center" }}
       />
     </Card>
   );
