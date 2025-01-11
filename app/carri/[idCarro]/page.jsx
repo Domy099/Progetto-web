@@ -67,7 +67,7 @@ export default function CarroDetailPage({ params }) {
       setLoading(true);
 
       const response = await fetch(
-        `https://strapiweb.duckdns.org/api/voti?filters[votante][id][$eq]=${idUtente}`,
+        `${STRAPI_API_URL}/api/voti?filters[votante][id][$eq]=${idUtente}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -80,7 +80,7 @@ export default function CarroDetailPage({ params }) {
 
       const voti = await response.json();
       const hasVoted = voti.data && voti.data.length > 0;
-
+      console.log("Voti utente:", voti.data);
       setLoading(false);
       return { hasVoted, votiDetails: hasVoted ? voti.data[0] : null };
     } catch (error) {
@@ -119,7 +119,7 @@ export default function CarroDetailPage({ params }) {
         },
       };
 
-      const response = await fetch("https://strapiweb.duckdns.org/api/voti", {
+      const response = await fetch(`${STRAPI_API_URL}/api/voti`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
