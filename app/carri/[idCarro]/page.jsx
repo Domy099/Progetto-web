@@ -16,8 +16,9 @@ export default function CarroDetailPage({ params }) {
   const [hasVoted, setHasVoted] = useState(false);
   const [loading, setLoading] = useState(true);
   const [carroDetails, setCarroDetails] = useState(null);
+  const [error, setError] = useState(null);
   const oggi = new Date();
-  const [idUtente, setIdUtente] = useState(null);
+  //const [idUtente, setIdUtente] = useState(null);
   const [VotiDetails, setVotiDetails] = useState(null);
   const [idCarroVoto, setIdCarroVoto] = useState(null);
 
@@ -42,54 +43,88 @@ export default function CarroDetailPage({ params }) {
       }
     };
 
-    fetchCarroDetails();
-  }, [idCarro]);
-
-  const fetchVoti = async () => {
-    try {
-      const token = sessionStorage.getItem("token");
-      if (!token) {
-        alert("Devi effettuare l'accesso per inviare un voto");
-        router.push("/login");
-        return { hasVoted: false, votiDetails: null };
-      }
-
-      const decoded = jwt.decode(token);
-      if (!decoded || !decoded.id) {
-        alert("Errore durante l'autenticazione, accedi nuovamente.");
-        router.push("/login");
-        return { hasVoted: false, votiDetails: null };
-      }
-
-      const idUtente = decoded.id;
-      setIdUtente(idUtente);
-
-      setLoading(true);
-
-      const response = await fetch(
-        `${STRAPI_API_URL}/api/voti?filters[votante][id][$eq]=${idUtente}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
+    const fetchVoti = async () => {
+      try {
+        const token = sessionStorage.getItem("token");
+        if (!token) {
+          alert("Devi effettuare l'accesso per inviare un voto");
+          router.push("/login");
+          //return hasVoted;
         }
-      );
 
-      if (!response.ok) throw new Error("Errore nella risposta della API");
+        const decoded = jwt.decode(token);
+        if (!decoded || !decoded.id) {
+          alert("Errore durante l'autenticazione, accedi nuovamente.");
+          router.push("/login");
+          //return hasVoted;
+        }
 
-      const voti = await response.json();
-      const hasVoted = voti.data && voti.data.length > 0;
-      console.log("Voti utente:", voti.data);
+        //const idUtente = decoded.id;
+        //setIdUtente(idUtente);
+
+        setLoading(true);
+        const response = await fetch(
+          `${STRAPI_API_URL}/api/users/me?populate[voto][populate]=carri`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `Errore nel recupero dei voti: ${response.status}`
+          );
+        }
+
+        const responseData = await response.json();
+
+        // Verifica la struttura della risposta
+        /*if (!responseData.voto) {
+          throw new Error("Non ci sono voti nella risposta");
+        }
+        */
+
+        console.log("Voti fetchati:", responseData.voto);
+        if (responseData.voto ) {
+          if(responseData.voto.length > 0)
+          {
+            setHasVoted(true);
+          }
+        }
+
+        // Mappa i dati dei voti nel formato richiesto
+        /*const formattedVoti = {
+          id: responseData.voto.id, // Usa il campo id del voto
+          carro: responseData.voto.carri?.idCarro || "Evento sconosciuto",
+        };
+        */
+
+        setVotiDetails(responseData.voto);
+        return hasVoted;
+      } catch (error) {
+        console.error("Errore nel recupero dei voti:", error);
+        setError(error.message);
+        return hasVoted;
+      } finally {
+        setLoading(false);
+      }
+    };
+
+
+    //fetchCarroDetails();
+
+    Promise.all([fetchCarroDetails(), fetchVoti()]).catch((err) => {
+      setError(err.message);
       setLoading(false);
-      return { hasVoted, votiDetails: hasVoted ? voti.data[0] : null };
-    } catch (error) {
-      console.error("Errore nel recuperare i feedback utente:", error);
-      setLoading(false);
-      return { hasVoted: false, votiDetails: null };
-    }
-  };
+    });
+  }, [idCarro, hasVoted]);
 
+  useEffect(() => {
+    console.log("Voti aggiornati:", VotiDetails);
+  }, [VotiDetails]);
 
   const handleVotaClick = async () => {
     const token = sessionStorage.getItem("token");
@@ -101,15 +136,15 @@ export default function CarroDetailPage({ params }) {
 
     const decoded = jwt.decode(token);
     const userId = decoded.id;
-    setIdUtente(userId);
+    //setIdUtente(userId);
 
-    const { hasVoted } = await fetchVoti();
+    /*const { hasVoted } = await fetchVoti();
 
     if (hasVoted) {
       alert("Hai già votato per un carro.");
       return;
     }
-
+    */
     setLoading(true);
     try {
       const votoData = {
@@ -165,8 +200,8 @@ export default function CarroDetailPage({ params }) {
             }}
           >
             <img
-            
-              src={carroDetails.immagine?.url ? `${STRAPI_API_URL}${carroDetails.immagine.url}` :`https://placehold.co/150?text=${carroDetails.nome}`}
+
+              src={carroDetails.immagine?.url ? `${STRAPI_API_URL}${carroDetails.immagine.url}` : `https://placehold.co/150?text=${carroDetails.nome}`}
               alt={`Foto del carro ${carroDetails.nome}`}
               style={{
                 width: "100%",
@@ -189,14 +224,53 @@ export default function CarroDetailPage({ params }) {
             <Typography variant="body1" color="text.secondary">
               {carroDetails.descrizione}
             </Typography>
-            <Button
-              variant="contained"
-              sx={{ mt: 2, backgroundColor: '#FFC107', '&:hover': { backgroundColor: '#FFB300' }}}
-              onClick={handleVotaClick}
-              
-            >
-              Vota
-            </Button>
+            {VotiDetails ? (
+              VotiDetails?.carri?.idCarro == idCarro ? (
+                <>
+                  <Button
+                    variant="disabled"
+                    sx={{
+                      mt: 2,
+                      backgroundColor: '#D3D3D3',
+                    }}
+                  >
+                    Vota
+                  </Button>
+                  <Typography variant="body1" color="text.secondary" marginTop={2}>
+                    Hai già votato per questo carro.
+                  </Typography>
+                </>
+              ) : (
+                <>
+                  <Button
+                    variant="disabled"
+                    sx={{
+                      mt: 2,
+                      backgroundColor: '#D3D3D3',
+                    }}
+                  >
+                    Vota
+                  </Button>
+                  <Typography variant="body1" color="text.secondary" marginTop={2}>
+                    Hai già votato per un altro carro.
+                  </Typography>
+                </>
+              )
+            ) : (
+              <Button
+                variant="contained"
+                sx={{
+                  mt: 2,
+                  backgroundColor: '#FFC107',
+                  '&:hover': { backgroundColor: '#FFB300' },
+                }}
+                onClick={handleVotaClick}
+                
+              >
+                Vota
+              </Button>
+            )}
+
 
           </Box>
         </Box>
@@ -219,17 +293,17 @@ export default function CarroDetailPage({ params }) {
                 xs={12}   // Una colonna su schermi molto piccoli
                 sm={6}    // Due colonne su schermi medi
                 md={4}    // Tre colonne su schermi grandi
-                
+
               >
                 <Link href={`/artigiani/${artigiano.idArtigiano}`} passHref>
-                <ArtigianoCard
-                  nome={artigiano.nome}
-                  cognome={artigiano.cognome}
-                  storia={artigiano.storia}
-                  immagine={  artigiano.immagine?.url ? 
-                  `${STRAPI_API_URL}${artigiano.immagine.url}` 
-                  : 'https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg'}
-                />
+                  <ArtigianoCard
+                    nome={artigiano.nome}
+                    cognome={artigiano.cognome}
+                    storia={artigiano.storia}
+                    immagine={artigiano.immagine?.url ?
+                      `${STRAPI_API_URL}${artigiano.immagine.url}`
+                      : 'https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg'}
+                  />
                 </Link>
               </Grid>
             ))}
