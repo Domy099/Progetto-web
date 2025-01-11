@@ -196,7 +196,7 @@ export default function EventoDetailPage({ params }) {
         >
           <img
             src={
-              eventoDetails.Locandina.url 
+              eventoDetails?.Locandina?.url 
                 ? `${STRAPI_API_URL}${eventoDetails.Locandina.url}` 
                 : `https://placehold.co/400x600?text=${eventoDetails.nome}`
             }
