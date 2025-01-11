@@ -321,7 +321,7 @@ export default function DashboardNuova() {
       <Box sx={{ mb: 3 }}>
         <Typography variant="h6" sx={{ color: "black", }} marginBottom={2}>I tuoi Feedback:</Typography>
         {userFeedbacks.length > 0 ? (
-          <Grid container spacing={20}>
+          <Grid container spacing={3}>
             {userFeedbacks
               .map((feedback) => (
                 <Grid item xs={12} sm={6} md={4} lg={3} key={feedback.id}>

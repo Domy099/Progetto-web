@@ -11,7 +11,12 @@ import {
   DialogActions,
   TextField,
   Snackbar,
+  Divider,
+  IconButton,
 } from "@mui/material";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+
 
 const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackDeleted, onFeedbackUpdated, token }) => {
   const [openDialog, setOpenDeleteDialog] = useState(false);
@@ -133,22 +138,25 @@ const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackD
             marginTop: 1,
             overflow: "hidden",
             display: "-webkit-box",
-            WebkitLineClamp: 3,
+            WebkitLineClamp: 2,  // Limita il testo a 2 righe
             WebkitBoxOrient: "vertical",
             textOverflow: "ellipsis",
+            minHeight: "3em",  // Imposta l'altezza minima per garantire 2 righe
           }}
         >
-          Cosa ne pensi: {descrizioneFeedback}
+          <strong>Cosa ne pensi:</strong> {descrizioneFeedback}
         </Typography>
       </CardContent>
-      <CardActions>
-        <Button size="small" color="primary" onClick={handleEditClickOpen}>
-          Modifica Feedback
-        </Button>
-        <Button size="small" color="error" onClick={handleDeleteClickOpen}>
-          Cancella Feedback
-        </Button>
+      <Divider />
+      <CardActions sx={{ justifyContent: 'flex-end' }}>
+        <IconButton size="small" color="primary" onClick={handleEditClickOpen}>
+          <EditIcon />
+        </IconButton>
+        <IconButton size="small" color="error" onClick={handleDeleteClickOpen}>
+          <DeleteIcon />
+        </IconButton>
       </CardActions>
+
 
       {/* Overlay di conferma cancellazione */}
       <Dialog
