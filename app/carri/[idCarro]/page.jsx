@@ -7,6 +7,7 @@ import BottoneIndietro from "@/app/components/IndietroButton";
 import jwt from "jsonwebtoken";
 import ArtigianoCard from "@/app/components/ArtigianoCard";
 import Link from "next/link";
+import LeggiDiPiù from "@/app/components/LeggiDiPiu";
 
 export default function CarroDetailPage({ params }) {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
@@ -222,7 +223,7 @@ export default function CarroDetailPage({ params }) {
               Descrizione:
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              {carroDetails.descrizione}
+              <LeggiDiPiù text={carroDetails.descrizione} />
             </Typography>
             {VotiDetails ? (
               VotiDetails?.carri?.idCarro == idCarro ? (
