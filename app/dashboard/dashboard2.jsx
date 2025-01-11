@@ -12,6 +12,7 @@ import {
   TextField,
 } from "@mui/material";
 import TicketCard from "../components/Biglietto/TicketCard";
+import FeedbackCard from "../components/FeedbackCard";
 
 export default function DashboardNuova() {
   const router = useRouter();
@@ -22,6 +23,7 @@ export default function DashboardNuova() {
   const [error, setError] = useState(null);
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   const [matricola, setMatricola] = useState("");
+  const [userFeedbacks, setUserFeedbacks] = useState([]);
 
   /* SECTION - Effetto per il caricamento iniziale */
   useEffect(() => {
@@ -47,6 +49,8 @@ export default function DashboardNuova() {
         const userData = await response.json();
         setUser(userData);
         setUserTickets(userData.bigliettis || []);
+       // setUserFeedbacks(userData.feedbacks);
+       //console.log(userFeedbacks);
       } catch (err) {
         setError(err.message);
       }
@@ -89,13 +93,61 @@ export default function DashboardNuova() {
         setLoading(false);
       }
     };
-
-    Promise.all([fetchUserData(), fetchAllTickets()]).catch((err) => {
+    
+    const fetchFeedbacks = async () => {
+      try {
+        const response = await fetch(
+          `${STRAPI_API_URL}/api/users/me?populate[feedbacks][populate]=evento`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+    
+        if (!response.ok) {
+          throw new Error(
+            `Errore nel recupero dei feedback: ${response.status}`
+          );
+        }
+    
+        const responseData = await response.json();
+    
+        // Verifica la struttura della risposta
+        if (!responseData.feedbacks || !Array.isArray(responseData.feedbacks)) {
+          throw new Error("Formato risposta non valido");
+        }
+    
+        console.log("Feedback fetchati:", responseData.feedbacks);
+    
+        // Mappa i dati dei feedback nel formato richiesto
+        const formattedFeedbacks = responseData.feedbacks.map((feedback) => ({
+          id: feedback.documentId, // Usa il campo corretto dal JSON
+          evento: feedback.evento?.nome || "Evento sconosciuto",
+          descrizione: feedback.descrizione || "Nessuna descrizione disponibile",
+        }));
+    
+        setUserFeedbacks(formattedFeedbacks);
+      } catch (error) {
+        console.error("Errore nel recupero dei feedback:", error);
+        setError(error.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    Promise.all([fetchUserData(), fetchAllTickets(), fetchFeedbacks()]).catch((err) => {
       setError(err.message);
       setLoading(false);
     });
   }, [router]);
 
+  useEffect(() => {
+    console.log("Feedback aggiornati:", userFeedbacks);
+  }, [userFeedbacks]);
+  
+  
   /* SECTION - Funzione per assegnare il biglietto */
   const handleSendTicket = async (ticket) => {
     const token = sessionStorage.getItem("token");
@@ -221,7 +273,7 @@ export default function DashboardNuova() {
       </Box>
 
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h6">I tuoi Biglietti:</Typography>
+        <Typography variant="h6"sx={{color: "black",}} marginBottom={2}>I tuoi biglietti:</Typography>
         {userTickets.length > 0 ? (
           <Grid container spacing={20}>
             {userTickets
@@ -241,6 +293,25 @@ export default function DashboardNuova() {
           </Grid>
         ) : (
           <p>Nessun biglietto disponibile</p>
+        )}
+      </Box>
+
+      <Box sx={{ mb: 3 }}>
+        <Typography variant="h6"sx={{color: "black",}} marginBottom={2}>I tuoi Feedback:</Typography>
+        {userFeedbacks.length > 0 ? (
+          <Grid container spacing={20}>
+            {userFeedbacks
+              .map((feedback) => (
+                <Grid item xs={12} sm={6} md={4} lg={3} key={feedback.id}>
+                  <FeedbackCard
+                    nomeEvento={feedback.evento}
+                    descrizioneFeedback={feedback.descrizione}
+                  />
+                </Grid>
+              ))}
+          </Grid>
+        ) : (
+          <p>Nessun feedback disponibile</p>
         )}
       </Box>
 
