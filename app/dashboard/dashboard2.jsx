@@ -49,8 +49,8 @@ export default function DashboardNuova() {
         const userData = await response.json();
         setUser(userData);
         setUserTickets(userData.bigliettis || []);
-       // setUserFeedbacks(userData.feedbacks);
-       //console.log(userFeedbacks);
+        // setUserFeedbacks(userData.feedbacks);
+        //console.log(userFeedbacks);
       } catch (err) {
         setError(err.message);
       }
@@ -93,7 +93,7 @@ export default function DashboardNuova() {
         setLoading(false);
       }
     };
-    
+
     const fetchFeedbacks = async () => {
       try {
         const response = await fetch(
@@ -105,29 +105,29 @@ export default function DashboardNuova() {
             },
           }
         );
-    
+
         if (!response.ok) {
           throw new Error(
             `Errore nel recupero dei feedback: ${response.status}`
           );
         }
-    
+
         const responseData = await response.json();
-    
+
         // Verifica la struttura della risposta
         if (!responseData.feedbacks || !Array.isArray(responseData.feedbacks)) {
           throw new Error("Formato risposta non valido");
         }
-    
+
         console.log("Feedback fetchati:", responseData.feedbacks);
-    
+
         // Mappa i dati dei feedback nel formato richiesto
         const formattedFeedbacks = responseData.feedbacks.map((feedback) => ({
           id: feedback.documentId, // Usa il campo corretto dal JSON
           evento: feedback.evento?.nome || "Evento sconosciuto",
           descrizione: feedback.descrizione || "Nessuna descrizione disponibile",
         }));
-    
+
         setUserFeedbacks(formattedFeedbacks);
       } catch (error) {
         console.error("Errore nel recupero dei feedback:", error);
@@ -136,7 +136,7 @@ export default function DashboardNuova() {
         setLoading(false);
       }
     };
-    
+
     Promise.all([fetchUserData(), fetchAllTickets(), fetchFeedbacks()]).catch((err) => {
       setError(err.message);
       setLoading(false);
@@ -146,8 +146,8 @@ export default function DashboardNuova() {
   useEffect(() => {
     console.log("Feedback aggiornati:", userFeedbacks);
   }, [userFeedbacks]);
-  
-  
+
+
   /* SECTION - Funzione per assegnare il biglietto */
   const handleSendTicket = async (ticket) => {
     const token = sessionStorage.getItem("token");
@@ -253,7 +253,7 @@ export default function DashboardNuova() {
 
       {/* Sezione per aggiungere un biglietto */}
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h6" sx={{ mb: 2 }}>
+        <Typography variant="h6" sx={{ mb: 2, color: "black" }} >
           Aggiungi Biglietto:
         </Typography>
         <TextField
@@ -273,7 +273,7 @@ export default function DashboardNuova() {
       </Box>
 
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h6"sx={{color: "black",}} marginBottom={2}>I tuoi biglietti:</Typography>
+        <Typography variant="h6" sx={{ color: "black", }} marginBottom={2}>I tuoi biglietti:</Typography>
         {userTickets.length > 0 ? (
           <Grid container spacing={20}>
             {userTickets
@@ -297,7 +297,7 @@ export default function DashboardNuova() {
       </Box>
 
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h6"sx={{color: "black",}} marginBottom={2}>I tuoi Feedback:</Typography>
+        <Typography variant="h6" sx={{ color: "black", }} marginBottom={2}>I tuoi Feedback:</Typography>
         {userFeedbacks.length > 0 ? (
           <Grid container spacing={20}>
             {userFeedbacks
