@@ -11,6 +11,7 @@ import {
   Container,
   TextField,
 } from "@mui/material";
+import Link from "next/link";
 import TicketCard from "../components/Biglietto/TicketCard";
 import FeedbackCard from "../components/FeedbackCard";
 
@@ -24,6 +25,7 @@ export default function DashboardNuova() {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   const [matricola, setMatricola] = useState("");
   const [userFeedbacks, setUserFeedbacks] = useState([]);
+  const [userVoto, setUserVoto] = useState(null);
 
   /* SECTION - Effetto per il caricamento iniziale */
   useEffect(() => {
@@ -36,7 +38,7 @@ export default function DashboardNuova() {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          `${STRAPI_API_URL}/api/users/me?populate=*`,
+          `${STRAPI_API_URL}/api/users/me?populate[feedbacks]=*&populate[bigliettis]=*&populate[voto][populate]=carri`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -49,6 +51,8 @@ export default function DashboardNuova() {
         const userData = await response.json();
         setUser(userData);
         setUserTickets(userData.bigliettis || []);
+        setUserVoto(userData.voto);
+        console.log("Voto:", userVoto);
         // setUserFeedbacks(userData.feedbacks);
         //console.log(userFeedbacks);
       } catch (err) {
@@ -146,6 +150,10 @@ export default function DashboardNuova() {
   useEffect(() => {
     console.log("Feedback aggiornati:", userFeedbacks);
   }, [userFeedbacks]);
+
+  useEffect(() => {
+    console.log("Voto aggiornato:", userVoto);
+  }, [userVoto]);
 
 
   /* SECTION - Funzione per assegnare il biglietto */
@@ -249,6 +257,16 @@ export default function DashboardNuova() {
         >
           Bentornato, {user.username}!
         </Typography>
+        <Typography variant="h6" sx={{ color: "black" }}>
+          Il tuo carro preferito:{" "}
+          {userVoto ? userVoto.carri.nome : <>
+      Nessun carro preferito?{" "}
+      <Link href={`/carri`} passHref style={{ textDecoration: 'none', color: '#d9622a' }}>
+        Corri a votare!
+      </Link>
+    </>}
+        </Typography>
+
       </Box>
 
       {/* Sezione per aggiungere un biglietto */}
