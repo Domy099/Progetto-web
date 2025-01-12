@@ -1,11 +1,12 @@
 import React from 'react';
+import Link from 'next/link';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
-const POICard = ({ nome, descrizione, marker }) => {
+const POICard = ({ nome, descrizione, marker, longitudine, latitudine }) => {
   return (
-    <Card 
-      sx={{ 
+    <Card
+      sx={{
         mb: 2,
         maxWidth: 400,
         height: '100%',
@@ -14,8 +15,8 @@ const POICard = ({ nome, descrizione, marker }) => {
       }}
     >
 
-      <CardContent 
-        sx={{ 
+      <CardContent
+        sx={{
           display: 'flex',
           alignItems: 'center',
           gap: 3,
@@ -23,7 +24,7 @@ const POICard = ({ nome, descrizione, marker }) => {
           '&:last-child': { pb: 3 }  // Override default padding bottom
         }}
       >
-        <Box 
+        <Box
           sx={{
             display: 'flex',
             alignItems: 'center',
@@ -32,33 +33,32 @@ const POICard = ({ nome, descrizione, marker }) => {
           }}
         >
           {/* Se è presente un marker, viene visualizzato altrimenti viene mostrata l'icona di default */}
-          { marker ? (
-          <img 
-            src= {marker} 
-            alt="Marker" 
-            style={{ 
-              width: 64,
-              height: 64,
-              objectFit: 'cover'
-            }}
-          />) : (
+          {marker ? (
+            <img
+              src={marker}
+              alt="Marker"
+              style={{
+                width: 64,
+                height: 64,
+                objectFit: 'cover'
+              }}
+            />) : (
 
-          <LocationOnIcon 
-            sx={{ 
-              fontSize: 64,
-              color: 'red',  // Colore dell'icona (puoi sostituire 'primary.main' con qualsiasi colore desiderato)
-            }} 
+            <LocationOnIcon
+              sx={{
+                fontSize: 64,
+                color: 'red',  // Colore dell'icona (puoi sostituire 'primary.main' con qualsiasi colore desiderato)
+              }}
             />)
           }
-          
+
         </Box>
 
         <Box sx={{ minWidth: 0 }}>  {/* Per gestire correttamente il text overflow */}
-          <Typography 
-            variant="h6" 
+          <Typography
+            variant="h6"
             component="h3"
-            sx={{ 
-              mb: 1,
+            sx={{
               textOverflow: 'ellipsis',
               overflow: 'hidden',
               whiteSpace: 'nowrap'
@@ -66,14 +66,36 @@ const POICard = ({ nome, descrizione, marker }) => {
           >
             {nome}
           </Typography>
-          <Typography 
-            variant="body2" 
+
+          <Typography
+            component="a"
+            href={`https://www.google.com/maps/dir/?api=1&destination=${latitudine},${longitudine}`}
+            target="_blank"
+            sx={{
+              color: 'primary.main',
+              fontWeight: 'bold',
+              textDecoration: 'none',
+              
+              fontSize: 15,
+              '&:hover': {
+                textDecoration: 'underline',
+              }
+
+            }}
+          >
+            Vai a Google Maps
+          </Typography>
+
+          <Typography
+            variant="body2"
             color="text.secondary"
             sx={{
               display: '-webkit-box',
               WebkitLineClamp: 2,
               WebkitBoxOrient: 'vertical',
-              overflow: 'hidden'
+              overflow: 'hidden',
+              fontSize: 16,
+              mt: 1.5,
             }}
           >
             {descrizione}
