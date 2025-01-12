@@ -124,12 +124,15 @@ const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackD
       }}
     >
       <CardContent>
+        <Typography variant="body2" color="text.secondary">
+        Evento:
+        </Typography>
         <Typography
           variant="h6"
           component="div"
           sx={{ fontWeight: "bold", color: "#1976d2" }}
         >
-          Evento: {nomeEvento}
+          {nomeEvento}
         </Typography>
         <Typography
           variant="body2"
