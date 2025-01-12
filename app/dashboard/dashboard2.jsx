@@ -56,7 +56,7 @@ export default function DashboardNuova() {
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          `${STRAPI_API_URL}/api/users/me?populate[feedbacks]=*&populate[bigliettis]=*&populate[voto][populate]=carri`,
+          `${STRAPI_API_URL}/api/users/me?populate[feedbacks]=*&populate[bigliettis][populate]=evento&populate[voto][populate]=carri`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -167,6 +167,10 @@ export default function DashboardNuova() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    console.log("Biglietti aggiornati:", userTickets);
+  }, [userTickets]);
 
   useEffect(() => {
     console.log("Feedback aggiornati:", userFeedbacks);
@@ -382,6 +386,7 @@ export default function DashboardNuova() {
                   }}
                 >
                   <TicketCard
+                    nomeEvento={ticket.evento?.nome}
                     dataEmissione={ticket.createdAt}
                     codice={ticket.codice}
                   />

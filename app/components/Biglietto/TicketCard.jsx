@@ -4,9 +4,9 @@ import { Card, CardMedia, CardContent, Typography, Box } from "@mui/material";
 import Barcode from 'react-barcode';
 import './TicketCard.css';
 
-export default function TicketCard({ dataEmissione, codice, immagine }) {
+export default function TicketCard({ nomeEvento, dataEmissione, codice, immagine }) {
   const [isFlipped, setIsFlipped] = useState(false);
-  
+
   // Formattazione della data e dell'ora
   const dateOptions = { day: "2-digit", month: "2-digit", year: "numeric" };
   const timeOptions = { hour: "2-digit", minute: "2-digit" };
@@ -18,33 +18,40 @@ export default function TicketCard({ dataEmissione, codice, immagine }) {
     : "N/A";
 
   return (
-    <div 
+    <div
       className="w-[400px] h-[150px] cursor-pointer perspective-1000"
       onClick={() => setIsFlipped(!isFlipped)}
     >
-      <div className={`relative w-full h-full transition-transform duration-500 transform-style-preserve-3d ${
-        isFlipped ? 'rotate-y-180' : ''
-      }`}>
+      <div className={`relative w-full h-full transition-transform duration-500 transform-style-preserve-3d ${isFlipped ? 'rotate-y-180' : ''
+        }`}>
         {/* Front of the card */}
         <div className="absolute w-full h-full backface-hidden">
           <Card className="flex bg-white text-black rounded-lg overflow-hidden w-full h-full shadow-lg">
             {immagine && (
               <div className="w-[150px]">
-                <img 
-                  src={immagine} 
-                  alt="Ticket" 
+                <img
+                  src={immagine}
+                  alt="Ticket"
                   className="w-full h-full object-cover"
                 />
               </div>
             )}
             <Box className="flex flex-col flex-grow">
               <CardContent className="flex flex-col justify-center p-4">
-                <Typography className="text-black">
-                  Matricola: <br />
+                <Typography
+                  variant="h6" color="primary" sx={{ fontWeight: 'bold', fontSize: '1.25rem' }}>
+                  {nomeEvento}
                 </Typography>
-                <Typography className="text-xl font-bold text-[#1E7B36]">
-                  {codice}
-                </Typography>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <Typography className="text-black">
+                    Matricola:
+                  </Typography>
+                  <Typography className="text-xl font-bold text-[#1E7B36]">
+                    {codice}
+                  </Typography>
+                </div>
+
                 <Typography className="text-sm text-gray-600">
                   Data di emissione: {formattedDate}
                 </Typography>
@@ -79,5 +86,5 @@ export default function TicketCard({ dataEmissione, codice, immagine }) {
     </div>
   );
 };
-          
+
 
