@@ -25,6 +25,7 @@
     "react-dom": "^18.0.0",
     "react-icons": "^4.11.0",
     "react-material-ui-carousel": "^3.4.2",
+    "react-qr-barcode-scanner": "^2.0.0",
     "react-responsive-carousel": "^3.2.23",
     "widget-ccat": "^1.0.61"
   },

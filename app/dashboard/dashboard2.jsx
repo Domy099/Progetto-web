@@ -16,6 +16,9 @@ import TicketCard from "../components/Biglietto/TicketCard";
 import FeedbackCard from "../components/FeedbackCard";
 import { color } from "framer-motion";
 
+// Import per la scansione della camera
+import BarcodeScannerComponent from "react-qr-barcode-scanner";
+
 export default function DashboardNuova() {
   const router = useRouter();
   const [user, setUser] = useState(null);
@@ -27,6 +30,20 @@ export default function DashboardNuova() {
   const [matricola, setMatricola] = useState("");
   const [userFeedbacks, setUserFeedbacks] = useState([]);
   const [userVoto, setUserVoto] = useState(null);
+
+  // mosta nasconti lo scanner
+  const [showScanner, setShowScanner] = useState(false);
+
+  // Gestione lettura da scanner
+  const handleScan = async (error, result) => {
+    if (result) {
+      setMatricola(result.text);
+      setShowScanner(false);
+    }
+    if (error) {
+      console.error("Errore durante la scansione:", error);
+    }
+  };
 
   /* SECTION - Effetto per il caricamento iniziale */
   useEffect(() => {
@@ -87,7 +104,7 @@ export default function DashboardNuova() {
         const formattedTickets = responseData.data.map((ticket) => ({
           id: ticket.documentId,
           matricola: ticket.codice,
-          userRelation: ticket.user || null, /*NOTE - Per evitare errori*/
+          userRelation: ticket.user || null /*NOTE - Per evitare errori*/,
         }));
 
         setAllTickets(formattedTickets);
@@ -101,10 +118,12 @@ export default function DashboardNuova() {
 
     fetchFeedbacks();
 
-    Promise.all([fetchUserData(), fetchAllTickets(), fetchFeedbacks()]).catch((err) => {
-      setError(err.message);
-      setLoading(false);
-    });
+    Promise.all([fetchUserData(), fetchAllTickets(), fetchFeedbacks()]).catch(
+      (err) => {
+        setError(err.message);
+        setLoading(false);
+      }
+    );
   }, [router]);
 
   const fetchFeedbacks = async () => {
@@ -121,9 +140,7 @@ export default function DashboardNuova() {
       );
 
       if (!response.ok) {
-        throw new Error(
-          `Errore nel recupero dei feedback: ${response.status}`
-        );
+        throw new Error(`Errore nel recupero dei feedback: ${response.status}`);
       }
 
       const responseData = await response.json();
@@ -158,7 +175,6 @@ export default function DashboardNuova() {
   useEffect(() => {
     console.log("Voto aggiornato:", userVoto);
   }, [userVoto]);
-
 
   /* SECTION - Funzione per assegnare il biglietto */
   const handleSendTicket = async (ticket) => {
@@ -263,21 +279,25 @@ export default function DashboardNuova() {
         </Typography>
         <Typography variant="h6" sx={{ color: "black" }}>
           Il tuo carro preferito:{" "}
-          {userVoto ? userVoto.carri.nome : <>
-      Nessun carro preferito?{" "}
-      <Link href={`/carri`} passHref style={{ textDecoration: 'none', color: '#d9622a' }}>
-        Corri a votare!
-      </Link>
-    </>}
+          {userVoto ? (
+            userVoto.carri.nome
+          ) : (
+            <>
+              Nessun carro preferito?{" "}
+              <Link
+                href={`/carri`}
+                passHref
+                style={{ textDecoration: "none", color: "#d9622a" }}
+              >
+                Corri a votare!
+              </Link>
+            </>
+          )}
         </Typography>
-
       </Box>
 
       {/* Sezione per aggiungere un biglietto */}
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h6" sx={{ mb: 2, color: "black" }} >
-          Aggiungi Biglietto:
-        </Typography>
+      <Box sx={{ mb: 3 }}>
         <TextField
           label="Inserisci Matricola"
           variant="outlined"
@@ -285,27 +305,82 @@ export default function DashboardNuova() {
           onChange={(e) => setMatricola(e.target.value)}
           sx={{ mb: 2, width: "100%" }}
         />
-        <Button
-          className="bg-orange-600 hover:bg-orange-700"
-          variant="contained"
-          onClick={handleAddTicket}
-        >
-          Aggiungi Biglietto
-        </Button>
+        {/* Area per l'aggiunta dei biglietti */}
+        <Box sx={{ display: "flex", justifyContent: "left", mb: 3 }}>
+          <Button
+            className="bg-orange-600 hover:bg-orange-700"
+            variant="contained"
+            onClick={() => setShowScanner(!showScanner)}
+            sx={{ mr: 2 }}
+          >
+            {showScanner ? "Chiudi Scanner" : "Scansiona Codice"}
+          </Button>
+          <Button
+            className="bg-orange-600 hover:bg-orange-700"
+            variant="contained"
+            onClick={handleAddTicket}
+          >
+            Aggiungi Biglietto
+          </Button>
+        </Box>
+
+        {showScanner && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              marginTop: "20px",
+              marginBottom: "20px",
+            }}
+          >
+            <BarcodeScannerComponent
+              width={500}
+              height={500}
+              onUpdate={(err, result) => handleScan(err, result)}
+            />
+          </div>
+        )}
       </Box>
 
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h6" sx={{ color: "black", }} marginBottom={2}>I tuoi biglietti:</Typography>
+      {/*Area che mostra i biglietti*/}
+      <Box sx={{ mb: 3, p: 2 }}>
+        {" "}
+        {/* Aggiunto padding */}
+        <Typography variant="h6" sx={{ color: "black" }} marginBottom={2}>
+          I tuoi biglietti:
+        </Typography>
         {userTickets.length > 0 ? (
-          <Grid container spacing={20}>
+          <Grid
+            container
+            spacing={2} // Ridotto spacing
+            sx={{
+              display: "flex",
+              justifyContent: "flex-start",
+              "& .MuiGrid-item": {
+                pl: 2, // Ridotto padding
+                pr: 2, // Ridotto padding
+              },
+            }}
+          >
             {userTickets
-              .filter((ticket, index, self) =>
-                // Filtra solo il primo biglietto con un codice unico
-                index === self.findIndex((t) => t.codice === ticket.codice)
+              .filter(
+                (ticket, index, self) =>
+                  index === self.findIndex((t) => t.codice === ticket.codice)
               )
               .map((ticket) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={ticket.codice}>
-                  {/* Utilizza il componente Ticket per ogni biglietto */}
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={6} // Modificato da 4 a 6
+                  lg={4} // Modificato da 3 a 4
+                  key={ticket.codice}
+                  sx={{
+                    mb: 2, // Ridotto margin bottom
+                    display: "flex",
+                    justifyContent: "center",
+                  }}
+                >
                   <TicketCard
                     dataEmissione={ticket.createdAt}
                     codice={ticket.codice}
@@ -319,25 +394,28 @@ export default function DashboardNuova() {
       </Box>
 
       <Box sx={{ mb: 3 }}>
-        <Typography variant="h6" sx={{ color: "black", }} marginBottom={2}>I tuoi Feedback:</Typography>
+        <Typography variant="h6" sx={{ color: "black" }} marginBottom={2}>
+          I tuoi Feedback:
+        </Typography>
         {userFeedbacks.length > 0 ? (
           <Grid container spacing={3}>
-            {userFeedbacks
-              .map((feedback) => (
-                <Grid item xs={12} sm={6} md={4} lg={3} key={feedback.id}>
-                  <FeedbackCard
-                    nomeEvento={feedback.evento}
-                    descrizioneFeedback={feedback.descrizione}
-                    documentId={feedback.id}
-                    onFeedbackDeleted={fetchFeedbacks}
-                    onFeedbackUpdated={fetchFeedbacks}
-                    token = {sessionStorage.getItem("token")}
-                  />
-                </Grid>
-              ))}
+            {userFeedbacks.map((feedback) => (
+              <Grid item xs={12} sm={6} md={4} lg={3} key={feedback.id}>
+                <FeedbackCard
+                  nomeEvento={feedback.evento}
+                  descrizioneFeedback={feedback.descrizione}
+                  documentId={feedback.id}
+                  onFeedbackDeleted={fetchFeedbacks}
+                  onFeedbackUpdated={fetchFeedbacks}
+                  token={sessionStorage.getItem("token")}
+                />
+              </Grid>
+            ))}
           </Grid>
         ) : (
-          <Typography sx={{color: "black"}}>Nessun feedback disponibile</Typography>
+          <Typography sx={{ color: "black" }}>
+            Nessun feedback disponibile
+          </Typography>
         )}
       </Box>
 
