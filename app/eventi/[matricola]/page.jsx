@@ -32,7 +32,7 @@ export default function EventoDetailPage({ params }) {
     const fetchEventoDetails = async () => {
       try {
         const response = await fetch(
-          `${STRAPI_API_URL}/api/eventi?filters[matricola][$eq]=${matricola}&populate[pois][populate]=Marker&populate=Locandina`
+          `${STRAPI_API_URL}/api/eventi?filters[matricola][$eq]=${matricola}&populate[pois][populate]=*&populate=Locandina`
         );
         const data = await response.json();
 
@@ -186,9 +186,9 @@ export default function EventoDetailPage({ params }) {
       <Box
         display="flex"
         flexDirection={{ xs: "column", sm: "row" }}
-        alignItems="center"
+        alignItems="flex-start"
         gap={4}
-        mt={7}
+        mt={3}
       >
         {/* Immagine dell'evento a sinistra (opzionale se esiste un'immagine) */}
         <Box
@@ -217,6 +217,10 @@ export default function EventoDetailPage({ params }) {
 
         {/* Dettagli dell'evento a destra */}
         <Box flex={1}>
+          
+          <Typography variant="h4" component="h1" gutterBottom color="text.secondary" sx={{ marginBottom: 1 }}>
+            {eventoDetails.nome}
+          </Typography>
           <Chip
             label={eventoDetails.tipo}
             sx={{
@@ -227,23 +231,6 @@ export default function EventoDetailPage({ params }) {
               marginTop: 0,     // Rimosso lo spazio sopra il Chip
             }}
           />
-          <Typography variant="h4" component="h1" gutterBottom color="text.secondary" sx={{ marginBottom: 1 }}>
-            {eventoDetails.nome}
-          </Typography>
-
-          <Grid container spacing={2} alignItems="center" mt={1}> {/* Ridotto lo spazio sopra il Grid */}
-            {/* Descrizione */}
-            <Grid item xs={12} sm={6} display="flex" alignItems="center">
-              <Typography variant="h6" gutterBottom color="text.secondary">
-                Descrizione:
-              </Typography>
-            </Grid>
-            <Grid item xs={12}>
-              <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-                {eventoDetails.Descrizione}
-              </Typography>
-            </Grid>
-          </Grid>
 
           <Grid container spacing={2} mt={1} direction="column"> {/* Ridotto lo spazio sopra il secondo Grid */}
             {/* Data */}
@@ -277,6 +264,23 @@ export default function EventoDetailPage({ params }) {
             </Grid>
 
           </Grid>
+
+          
+          <Grid container spacing={2} alignItems="center" mt={1}> {/* Ridotto lo spazio sopra il Grid */}
+            {/* Descrizione */}
+            <Grid item xs={12} sm={6} display="flex" alignItems="center">
+              <Typography variant="h6" gutterBottom color="text.secondary">
+                Descrizione:
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+                {eventoDetails.Descrizione}
+              </Typography>
+            </Grid>
+          </Grid>
+
+          
         </Box>
 
       </Box>
@@ -287,13 +291,15 @@ export default function EventoDetailPage({ params }) {
       </Typography>
 
       {eventoDetails && eventoDetails.pois && eventoDetails.pois.length > 0 ? (
-        <Box mt={4}>
+        <Box mt={2}>
           {eventoDetails.pois.map((poi) => (
             <POICard
               key={poi.idPOI}
               nome={poi.nome}
               descrizione={poi.descrizione}
               marker= {`${STRAPI_API_URL}${poi?.Marker.url}` || null}
+              longitudine={poi.Longitudine}
+              latitudine={poi.Latitudine}
             />
           ))}
         </Box>
