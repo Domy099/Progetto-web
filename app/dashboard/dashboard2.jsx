@@ -10,7 +10,9 @@ import {
   Grid,
   Container,
   TextField,
+  Icon,
 } from "@mui/material";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import Link from "next/link";
 import TicketCard from "../components/Biglietto/TicketCard";
 import FeedbackCard from "../components/FeedbackCard";
@@ -30,6 +32,8 @@ export default function DashboardNuova() {
   const [matricola, setMatricola] = useState("");
   const [userFeedbacks, setUserFeedbacks] = useState([]);
   const [userVoto, setUserVoto] = useState(null);
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+
 
   // mosta nasconti lo scanner
   const [showScanner, setShowScanner] = useState(false);
@@ -277,10 +281,17 @@ export default function DashboardNuova() {
             mb: 2,
             color: "black",
             fontFamily: "Arial, sans-serif",
+            fontWeight: "bold",
           }}
         >
           Bentornato, {user.username}!
         </Typography>
+        
+        {/* Carro preferito */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+        <Icon sx={{ color: 'red', mr: 1, fontSize: 30, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <FavoriteIcon />
+        </Icon>
         <Typography variant="h6" sx={{ color: "black" }}>
           Il tuo carro preferito:{" "}
           {userVoto ? (
@@ -298,56 +309,11 @@ export default function DashboardNuova() {
             </>
           )}
         </Typography>
-      </Box>
-
-      {/* Sezione per aggiungere un biglietto */}
-      <Box sx={{ mb: 3 }}>
-        <TextField
-          label="Inserisci Matricola"
-          variant="outlined"
-          value={matricola}
-          onChange={(e) => setMatricola(e.target.value)}
-          sx={{ mb: 2, width: "100%" }}
-        />
-        {/* Area per l'aggiunta dei biglietti */}
-        <Box sx={{ display: "flex", justifyContent: "left", mb: 3 }}>
-          <Button
-            className="bg-orange-600 hover:bg-orange-700"
-            variant="contained"
-            onClick={() => setShowScanner(!showScanner)}
-            sx={{ mr: 2 }}
-          >
-            {showScanner ? "Chiudi Scanner" : "Scansiona Codice"}
-          </Button>
-          <Button
-            className="bg-orange-600 hover:bg-orange-700"
-            variant="contained"
-            onClick={handleAddTicket}
-          >
-            Aggiungi Biglietto
-          </Button>
         </Box>
-
-        {showScanner && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "center",
-              marginTop: "20px",
-              marginBottom: "20px",
-            }}
-          >
-            <BarcodeScannerComponent
-              width={500}
-              height={500}
-              onUpdate={(err, result) => handleScan(err, result)}
-            />
-          </div>
-        )}
       </Box>
 
       {/*Area che mostra i biglietti*/}
-      <Box sx={{ mb: 3, p: 2 }}>
+      <Box sx={{ mb: 3}}>
         {" "}
         {/* Aggiunto padding */}
         <Typography variant="h6" sx={{ color: "black" }} marginBottom={2}>
@@ -396,6 +362,105 @@ export default function DashboardNuova() {
         ) : (
           <p>Nessun biglietto disponibile</p>
         )}
+
+<Button
+  variant="contained"
+  onClick={() => setIsOverlayOpen(!isOverlayOpen)}
+  sx={{ mb: 2 }}
+>
+  Aggiungi Biglietto
+</Button>
+
+      {/* Sezione per aggiungere un biglietto */}
+      {isOverlayOpen && (
+  <Box
+    sx={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      backgroundColor: "rgba(0, 0, 0, 0.5)", // Trasparenza nera per l'overlay
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: 9999, // Assicurati che l'overlay sia sopra gli altri elementi
+    }}
+  >
+    <Box
+      sx={{
+        backgroundColor: "white",
+        padding: 3,
+        borderRadius: 2,
+        width: "80%", // Imposta la larghezza desiderata
+        maxWidth: "500px", // Imposta la larghezza massima
+        boxShadow: 3, // Aggiungi una leggera ombra
+      }}
+    >
+      <Typography variant="h6" sx={{ color: "black", mb: 2 }}>
+        Aggiungi un biglietto
+      </Typography>
+      <Typography variant="body2" sx={{ color: "grey", mb: 2, marginTop: 1 }}>
+        Aggiungi i tuoi biglietti al portafoglio per recuperarli in qualsiasi momento.
+      </Typography>
+      <TextField
+        label="Inserisci Matricola"
+        variant="outlined"
+        value={matricola}
+        onChange={(e) => setMatricola(e.target.value)}
+        sx={{ mb: 2, width: "100%" }}
+      />
+      {/* Area per l'aggiunta dei biglietti */}
+      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
+        <Button
+          variant="contained"
+          onClick={() => setShowScanner(!showScanner)}
+          sx={{ mr: 2,  }}
+        >
+          {showScanner ? "Chiudi Scanner" : "Scansiona Codice"}
+        </Button>
+        <Button
+          variant="contained"
+          onClick={handleAddTicket}
+          sx={{ background: "green", }}
+        >
+          Aggiungi Biglietto
+        </Button>
+      </Box>
+
+      {showScanner && (
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "20px",
+            marginBottom: "20px",
+          }}
+        >
+          <BarcodeScannerComponent
+            width={500}
+            height={500}
+            onUpdate={(err, result) => handleScan(err, result)}
+          />
+        </div>
+      )}
+
+      <Button
+        variant="outlined"
+        onClick={() => setIsOverlayOpen(false)}
+        sx={{
+          mt: 2,
+          display: "block",
+          marginLeft: "auto",
+          marginRight: "auto",
+        }}
+      >
+        Chiudi
+      </Button>
+    </Box>
+  </Box>
+)}
+
       </Box>
 
       <Box sx={{ mb: 3 }}>
