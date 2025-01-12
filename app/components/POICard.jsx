@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 
-const POICard = ({ nome, descrizione }) => {
+const POICard = ({ nome, descrizione, marker }) => {
   return (
     <Card 
       sx={{ 
@@ -13,6 +13,7 @@ const POICard = ({ nome, descrizione }) => {
         borderRadius: 3,  // Arrotondamento dei bordi
       }}
     >
+
       <CardContent 
         sx={{ 
           display: 'flex',
@@ -30,12 +31,26 @@ const POICard = ({ nome, descrizione }) => {
             flexShrink: 0
           }}
         >
+          {/* Se è presente un marker, viene visualizzato altrimenti viene mostrata l'icona di default */}
+          { marker ? (
+          <img 
+            src= {marker} 
+            alt="Marker" 
+            style={{ 
+              width: 64,
+              height: 64,
+              objectFit: 'cover'
+            }}
+          />) : (
+
           <LocationOnIcon 
             sx={{ 
               fontSize: 64,
               color: 'red',  // Colore dell'icona (puoi sostituire 'primary.main' con qualsiasi colore desiderato)
             }} 
-          />
+            />)
+          }
+          
         </Box>
 
         <Box sx={{ minWidth: 0 }}>  {/* Per gestire correttamente il text overflow */}

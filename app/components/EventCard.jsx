@@ -9,7 +9,6 @@ import Chip from '@mui/material/Chip';
 
 export default function EventCard(props) {
   const { title, description, image, altText, tipo, data, orario, posizione } = props;
-  const truncatedDescription = description.length > 100 ? description.slice(0, 100) + '...' : description;
 
   return (
     <Card sx={{ maxWidth: 345, position: 'relative', borderRadius: '10px'}}>

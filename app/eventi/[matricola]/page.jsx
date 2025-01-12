@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { TextField, Container, Typography, Card, CardContent, CardMedia, Box, Button, Grid, Icon, Chip } from '@mui/material';
-import { Event, LocationOn, DateRange, Description } from '@mui/icons-material';
+import { Event, LocationOn, DateRange, Description, LockClock, AccessTime } from '@mui/icons-material';
 import jwt from 'jsonwebtoken';
 import BottoneIndietro from '../../components/IndietroButton';
 import { use } from 'react';
@@ -32,7 +32,7 @@ export default function EventoDetailPage({ params }) {
     const fetchEventoDetails = async () => {
       try {
         const response = await fetch(
-          `${STRAPI_API_URL}/api/eventi?filters[matricola][$eq]=${matricola}&populate=pois&populate=Locandina`
+          `${STRAPI_API_URL}/api/eventi?filters[matricola][$eq]=${matricola}&populate[pois][populate]=Marker&populate=Locandina`
         );
         const data = await response.json();
 
@@ -49,7 +49,13 @@ export default function EventoDetailPage({ params }) {
     };
 
     fetchEventoDetails();
-  }, []);
+    fetchFeedback();
+
+    Promise.all([fetchEventoDetails(), fetchFeedback()]).catch((err) => {
+      setError(err.message);
+      setLoading(false);
+    });
+  }, [idEvento, hasVoted]);
 
   // FETCH DATI DEI VOTI PER VERIFICARE SE L'UTENTE HA GIA' VOTATO
   const fetchFeedback = async () => {
@@ -90,21 +96,18 @@ export default function EventoDetailPage({ params }) {
       }
 
       const voti = await response.json();
+      console.log("Voti utente:", voti);
       const hasVoted = voti.data && voti.data.length > 0;
 
       setLoading(false);
 
-      return { hasVoted, feedbackDetails: hasVoted ? voti.data[0] : null };
+      return { hasVoted, feedbackDetails: hasVoted ? setFeedbackDetails(voti.data[0]) : null };
     } catch (error) {
       console.error("Errore nel recuperare i feedback utente:", error);
       setLoading(false);
       return { hasVoted: false, feedbackDetails: null };
     }
   };
-
-
-  //fetchFeedback();
-  //}, [idEvento]);
 
   //Gestisce l'invio del feedback
   const handleFeedbackClick = async () => {
@@ -183,9 +186,9 @@ export default function EventoDetailPage({ params }) {
       <Box
         display="flex"
         flexDirection={{ xs: "column", sm: "row" }}
-        alignItems="flex-start"
+        alignItems="center"
         gap={4}
-        mt={12}
+        mt={7}
       >
         {/* Immagine dell'evento a sinistra (opzionale se esiste un'immagine) */}
         <Box
@@ -196,9 +199,9 @@ export default function EventoDetailPage({ params }) {
         >
           <img
             src={
-              eventoDetails?.Locandina?.url 
-                ? `${STRAPI_API_URL}${eventoDetails.Locandina.url}` 
-                : `https://placehold.co/400x600?text=${eventoDetails.nome}`
+              eventoDetails?.Locandina?.url
+                ? `${STRAPI_API_URL}${eventoDetails.Locandina.url}`
+                : `https://placehold.co/400x500?text=${eventoDetails.nome}`
             }
             alt={`Locandina dell'evento ${eventoDetails.nome}`}
             style={{
@@ -214,7 +217,7 @@ export default function EventoDetailPage({ params }) {
 
         {/* Dettagli dell'evento a destra */}
         <Box flex={1}>
-        <Chip
+          <Chip
             label={eventoDetails.tipo}
             sx={{
               alignSelf: 'flex-start',
@@ -245,7 +248,7 @@ export default function EventoDetailPage({ params }) {
           <Grid container spacing={2} mt={1} direction="column"> {/* Ridotto lo spazio sopra il secondo Grid */}
             {/* Data */}
             <Grid item xs={12} display="flex" alignItems="center">
-              <Icon sx={{ color: 'text.secondary', mr: 1, fontSize: 28, lineHeight: 'normal' }}>
+              <Icon sx={{ color: 'text.secondary', mr: 1, fontSize: 30, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <DateRange />
               </Icon>
               <Typography variant="body1" color="text.secondary">
@@ -255,13 +258,24 @@ export default function EventoDetailPage({ params }) {
 
             {/* Posizione */}
             <Grid item xs={12} display="flex" alignItems="center">
-              <Icon sx={{ color: 'text.secondary', mr: 1, fontSize: 28, lineHeight: 'normal' }}>
+              <Icon sx={{ color: 'text.secondary', mr: 1, fontSize: 30, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <LocationOn />
               </Icon>
               <Typography variant="body1" color="text.secondary">
                 Posizione: {eventoDetails.posizione || 'Non specificata'}
               </Typography>
             </Grid>
+
+            {/* Orario */}
+            <Grid item xs={12} display="flex" alignItems="center">
+              <Icon sx={{ color: 'text.secondary', mr: 1, fontSize: 30, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <AccessTime />
+              </Icon>
+              <Typography variant="body1" color="text.secondary">
+                Ora: {eventoDetails.Orario ? new Date('1970-01-01T' + eventoDetails.Orario).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Non specificato'}
+              </Typography>
+            </Grid>
+
           </Grid>
         </Box>
 
@@ -276,10 +290,11 @@ export default function EventoDetailPage({ params }) {
         <Box mt={4}>
           {eventoDetails.pois.map((poi) => (
             <POICard
-            key={poi.idPOI}
-            nome={poi.nome}
-            descrizione={poi.descrizione}
-          />
+              key={poi.idPOI}
+              nome={poi.nome}
+              descrizione={poi.descrizione}
+              marker= {`${STRAPI_API_URL}${poi?.Marker.url}` || null}
+            />
           ))}
         </Box>
       ) : (
@@ -288,47 +303,63 @@ export default function EventoDetailPage({ params }) {
         </Typography>
       )}
 
+      <Typography variant="h6" gutterBottom color="text.secondary" sx={{ mt: 4 }}>
+        Hai da dirci qualcosa sull'evento?
+      </Typography>
       {/* Confronta la data odierna con quella dell'evento per il feedback */}
-      {oggi >= eventoDetails?.data && (
-        <>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleFeedbackClick}
-            sx={{ mt: 2 }}
-          >
-            Lascia un feedback
-          </Button>
-
-          {showForm && (
-            <Box mt={2}>
-              <Typography variant="h6" gutterBottom sx={{ color: 'black' }}>
-                Scrivi il tuo feedback
-              </Typography>
-              <TextField
-                multiline
-                rows={3} // Numero di righe visibili
-                fullWidth // Per occupare tutta la larghezza del container
-                value={feedbackText}
-                onChange={(e) => setFeedbackText(e.target.value)}
-                placeholder="Inserisci qui il tuo feedback..."
-              />
+      {feedbackDetails ? (
+        <Typography variant="body1" color="text.secondary">
+          Hai già inviato un feedback per questo evento.
+        </Typography>
+      )
+        : (
+          oggi >= eventoDetails?.data ? (
+            <>
               <Button
                 variant="contained"
-                color="secondary"
-                onClick={handleSubmitFeedback}
-                sx={{
-                  mt: 2, // Margine superiore
-                  backgroundColor: '#EA580C', // Colore di sfondo personalizzato
-                  '&:hover': { backgroundColor: '#D1550A' } // Colore al passaggio del mouse
-                }}
+                color="primary"
+                onClick={handleFeedbackClick}
+                sx={{ mt: 2 }}
               >
-                Invia
+                Lascia un feedback
               </Button>
-            </Box>
-          )}
-        </>
-      )}
+          
+              {showForm && (
+                <Box mt={2}>
+                  <Typography variant="h6" gutterBottom sx={{ color: 'black' }}>
+                    Scrivi il tuo feedback
+                  </Typography>
+                  <TextField
+                    multiline
+                    rows={3} // Numero di righe visibili
+                    fullWidth // Per occupare tutta la larghezza del container
+                    value={feedbackText}
+                    onChange={(e) => setFeedbackText(e.target.value)}
+                    placeholder="Inserisci qui il tuo feedback..."
+                  />
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={handleSubmitFeedback}
+                    sx={{
+                      mt: 2, // Margine superiore
+                      backgroundColor: '#EA580C', // Colore di sfondo personalizzato
+                      '&:hover': { backgroundColor: '#D1550A' }, // Colore al passaggio del mouse
+                    }}
+                  >
+                    Invia
+                  </Button>
+                </Box>
+              )}
+            </>
+          ) : (
+            <Typography variant="body1" color="text.secondary">
+              Torna dopo l'evento per farci sapere che ne pensi!
+            </Typography>
+          )
+          
+        )
+      }
     </Container>
   );
 
