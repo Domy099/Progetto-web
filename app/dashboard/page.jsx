@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import DashboardNuova from './dashboard2';
+import Dashboard from './dashboard2';
 
 
 
@@ -11,7 +11,7 @@ function App() {
 
 	return (
 	<>
-	<DashboardNuova />
+	<Dashboard />
 	</>
 	);
 	

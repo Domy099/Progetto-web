@@ -21,7 +21,7 @@ import { color } from "framer-motion";
 // Import per la scansione della camera
 import BarcodeScannerComponent from "react-qr-barcode-scanner";
 
-export default function DashboardNuova() {
+export default function Dashboard() {
   const router = useRouter();
   const [user, setUser] = useState(null);
   const [userTickets, setUserTickets] = useState([]);
