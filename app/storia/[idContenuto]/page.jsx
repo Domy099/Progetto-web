@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { use } from 'react';
 import BottoneIndietro from '@/app/components/IndietroButton';
 
-export default function CarroDetailPage({ params }) {
+export default function ContenutoDetailPage({ params }) {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   //const {idContenuto} = params;
   //const idArtigiano = params?.idArtigiano;
