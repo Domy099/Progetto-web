@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-import Dashboard from './dashboard2';
+import Dashboard from './dashboard';
 
 
 
