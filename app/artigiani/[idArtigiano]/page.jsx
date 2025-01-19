@@ -8,7 +8,7 @@ import Link from 'next/link';
 import BottoneIndietro from '@/app/components/IndietroButton';
 import CarriCard from '@/app/components/CarriCard';
 
-export default function CarroDetailPage ({ params }){
+export default function ArtigianoDetailPage ({ params }){
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
     const idArtigiano = use(params).idArtigiano;
     //const idArtigiano = params?.idArtigiano;
