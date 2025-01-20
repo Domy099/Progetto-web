@@ -172,10 +172,12 @@ export default function Dashboard() {
     }
   };
 
+  
   useEffect(() => {
     console.log("Biglietti aggiornati:", userTickets);
   }, [userTickets]);
 
+  /*
   useEffect(() => {
     console.log("Feedback aggiornati:", userFeedbacks);
   }, [userFeedbacks]);
@@ -183,6 +185,7 @@ export default function Dashboard() {
   useEffect(() => {
     console.log("Voto aggiornato:", userVoto);
   }, [userVoto]);
+  */
 
   /* SECTION - Funzione per assegnare il biglietto */
   const handleSendTicket = async (ticket) => {
@@ -355,6 +358,7 @@ export default function Dashboard() {
                     nomeEvento={ticket.evento?.nome}
                     dataEmissione={ticket.createdAt}
                     codice={ticket.codice}
+                    id={ticket.evento?.documentId}
                   />
                 </Grid>
               ))}
