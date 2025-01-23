@@ -51,7 +51,7 @@ const Header = ({ menuItems }) => {
             <Link href="/" passHref>
               <Typography variant="h6" className="flex-grow">
                 <img
-                  src= "/logoCarnevale.png"
+                  src= "/faviconCarnevale.png"
                   alt="Logo"
                   className="h-10"
                 />
