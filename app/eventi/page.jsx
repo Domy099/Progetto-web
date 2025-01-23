@@ -47,7 +47,7 @@ const Page = () => {
               description={evento.Descrizione}
               image={evento.Locandina?.url ? `${STRAPI_API_URL}${evento.Locandina.url}` : `https://placehold.co/600x400?text=${evento.nome}`}
               altText={evento.nome}
-              tipo={evento.tipo}
+              tipo={evento.tipo || 'Evento'}
               data={evento.data}
               orario={evento.Orario}
               posizione={evento.posizione}

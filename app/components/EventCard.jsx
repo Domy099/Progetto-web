@@ -10,6 +10,24 @@ import Chip from '@mui/material/Chip';
 export default function EventCard(props) {
   const { title, description, image, altText, tipo, data, orario, posizione } = props;
 
+  const titoloAbbreviato = title.length > 20 ? title.substring(0, 20) + '...' : title;
+
+  const getColoriChip = (tipo) => {
+    switch (tipo?.trim().toLowerCase()) {
+      case 'concerto':
+        return { backgroundColor: '#4caf50', color: 'white' }; // Verde
+      case 'sfilata':
+        return { backgroundColor: '#2196f3', color: 'white' }; // Blu
+      case 'convivialità':
+        return { backgroundColor: '#ff9800', color: 'white' }; // Arancione
+      case 'presentazione':
+        return { backgroundColor: 'orange', color: 'white' }; // Arancione
+      default:
+        return { backgroundColor: 'gray', color: 'white' }; // Default
+    }
+  };
+  
+
   return (
     <Card sx={{ maxWidth: 345, position: 'relative', borderRadius: '10px'}}>
       <CardActionArea>
@@ -29,20 +47,20 @@ export default function EventCard(props) {
           />
 
           {/* Chip sopra il titolo */}
-          <Chip
+            <Chip
             label={tipo}
             sx={{
               alignSelf: 'flex-start', // Posiziona il chip a sinistra
-              backgroundColor: '#fdd835', // Colore giallo ocra
-              color: 'white', // Colore del testo bianco
+              ...getColoriChip(tipo),
               marginBottom: 2, // Distanza dal titolo
               marginTop: 2,
             }}
           />
+          
 
           {/* Titolo e descrizione */}
           <Typography gutterBottom variant="h5" component="div">
-            {title}
+            {titoloAbbreviato}
           </Typography>
 
           {/* Didascalia per la data dell'evento */}
