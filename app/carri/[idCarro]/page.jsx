@@ -48,9 +48,10 @@ export default function CarroDetailPage({ params }) {
       try {
         const token = sessionStorage.getItem("token");
         if (!token) {
-          alert("Devi effettuare l'accesso per inviare un voto");
-          router.push("/login");
+          //alert("Devi effettuare l'accesso per inviare un voto");
+          //router.push("/login");
           //return hasVoted;
+          return;
         }
 
         const decoded = jwt.decode(token);
