@@ -2,7 +2,7 @@ import React from 'react';
 import { Card, CardMedia, CardContent, Typography } from '@mui/material';
 
 const ArtigianoCard = ({ nome, cognome, storia, immagine }) => {
-    const storiaAbbreviata = storia.length > 100 ? storia.substring(0, 100) + "..." : storia;
+    const storiaAbbreviata = storia && storia.length > 100 ? storia.substring(0, 100) + "..." : (storia || "");
     return (
         <Card
         sx={{
