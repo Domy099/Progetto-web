@@ -47,6 +47,17 @@ const ClickableCard = ({ item }) => (
               width: '100px',
               height: '100px',            }}
           />
+
+<img
+            src="./pattern-rombi.png"
+            alt="ROMBI"
+            style={{
+              position: 'absolute',
+              bottom: '-150px',
+              left: '-300px',
+              width: '200px',
+              height: '100px',            }}
+          />
         </div>
 
 
