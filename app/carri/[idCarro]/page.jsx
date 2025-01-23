@@ -51,6 +51,7 @@ export default function CarroDetailPage({ params }) {
           //alert("Devi effettuare l'accesso per inviare un voto");
           //router.push("/login");
           //return hasVoted;
+          console.log("Utente non autenticato!");
           return;
         }
 
