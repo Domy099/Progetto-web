@@ -1,11 +1,12 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect, use } from "react";
 import { Card, CardMedia, CardContent, Typography, Box } from "@mui/material";
 import Barcode from 'react-barcode';
 import './TicketCard.css';
 
-export default function TicketCard({ nomeEvento, dataEmissione, codice, immagine }) {
+export default function TicketCard({ nomeEvento, dataEmissione, codice, id, immagine }) {
   const [isFlipped, setIsFlipped] = useState(false);
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 
   // Formattazione della data e dell'ora
   const dateOptions = { day: "2-digit", month: "2-digit", year: "numeric" };
@@ -17,6 +18,56 @@ export default function TicketCard({ nomeEvento, dataEmissione, codice, immagine
     ? new Intl.DateTimeFormat("it-IT", timeOptions).format(new Date(dataEmissione))
     : "N/A";
 
+  const [evento, setEvento] = useState(null);
+  const [error, setError] = useState(null);
+
+
+  useEffect(() => {
+    const fetchEvento = async () => {
+      const token = sessionStorage.getItem("token");
+      try {
+        const response = await fetch(
+          `${STRAPI_API_URL}/api/eventi?filters[documentId][$eq]=${id}&populate=Locandina`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(
+            `Errore nel recupero dell'evento: ${response.status}`
+          );
+        }
+
+        const responseData = await response.json();
+        if (responseData.data && responseData.data.length > 0) {
+          const evento = responseData.data[0];
+
+          const formattedEvento = {
+            id: evento?.documentId,
+            nome: evento?.nome,
+            urlImmagine: evento?.Locandina?.url,
+          };
+
+          setEvento(formattedEvento);
+        } else {
+          console.warn("Nessun evento trovato nella risposta:", responseData);
+          setError("Evento non trovato.");
+        }
+      } catch (error) {
+        console.error("Errore nel recupero dell'evento:", error);
+        setError(error.message);
+      }
+    };
+
+    if (id) {
+      fetchEvento(); // Chiama solo se `id` è definito
+    }
+  }, [id]);
+
   return (
     <div
       className="w-[400px] h-[150px] cursor-pointer perspective-1000"
@@ -27,10 +78,10 @@ export default function TicketCard({ nomeEvento, dataEmissione, codice, immagine
         {/* Front of the card */}
         <div className="absolute w-full h-full backface-hidden">
           <Card className="flex bg-white text-black rounded-lg overflow-hidden w-full h-full shadow-lg">
-            {immagine && (
+            {evento?.urlImmagine && (
               <div className="w-[150px]">
                 <img
-                  src={immagine}
+                  src={`${STRAPI_API_URL}${evento?.urlImmagine}`}
                   alt="Ticket"
                   className="w-full h-full object-cover"
                 />
@@ -65,6 +116,7 @@ export default function TicketCard({ nomeEvento, dataEmissione, codice, immagine
             </div>
           </Card>
         </div>
+
 
         {/* Back of the card */}
         <div className="absolute w-full h-full backface-hidden rotate-y-180">
