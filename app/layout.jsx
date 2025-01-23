@@ -9,6 +9,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
+      <title>Carnevale di Putignano</title>
       <body className="antialiased">
         <div
           style={{
