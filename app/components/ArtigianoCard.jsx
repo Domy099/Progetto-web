@@ -54,9 +54,12 @@ const ArtigianoCard = ({ nome, cognome, storia, immagine }) => {
           >
             {nome} {cognome}
           </Typography>
-          <Typography variant="body1" component="p" sx={{ marginBottom: 1 }}>
+          {storia && (
+            <Typography variant="body1" component="p" sx={{ marginBottom: 1 }}>
             Storia dell'artigiano:
-          </Typography>
+            </Typography>
+          )}
+          
           <Typography
             variant="body2"
             component="p"
@@ -70,6 +73,9 @@ const ArtigianoCard = ({ nome, cognome, storia, immagine }) => {
           >
             {storiaAbbreviata}
           </Typography>
+          <Typography variant="body1" component="p" sx={{ marginBottom: 0.5, color: "grey", textAlign: "left", fontSize: "0.8rem" }}>
+            Clicca per scoprire di più
+            </Typography>
         </CardContent>
       </Card>
       
