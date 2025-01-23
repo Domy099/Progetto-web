@@ -62,10 +62,11 @@ export default function EventoDetailPage({ params }) {
     try {
       const token = sessionStorage.getItem("token");
       if (!token) {
-        console.error("Utente non autenticato!");
-        alert("Devi effettuare l'accesso per inviare un feedback");
-        router.push("/login");
-        return { hasVoted: false, feedbackDetails: null };
+        console.log("Utente non autenticato!");
+        //alert("Devi effettuare l'accesso per inviare un feedback");
+        //router.push("/login");
+        //return { hasVoted: false, feedbackDetails: null };
+        return;
       }
 
       const decoded = jwt.decode(token);
@@ -100,8 +101,8 @@ export default function EventoDetailPage({ params }) {
       const hasVoted = voti.data && voti.data.length > 0;
 
       setLoading(false);
-
-      return { hasVoted, feedbackDetails: hasVoted ? setFeedbackDetails(voti.data[0]) : null };
+      hasVoted ? setFeedbackDetails(voti.data[0]) : null;
+      return hasVoted;
     } catch (error) {
       console.error("Errore nel recuperare i feedback utente:", error);
       setLoading(false);
@@ -111,7 +112,14 @@ export default function EventoDetailPage({ params }) {
 
   //Gestisce l'invio del feedback
   const handleFeedbackClick = async () => {
-    const { hasVoted, feedbackDetails } = await fetchFeedback();
+    const token = sessionStorage.getItem("token");
+
+    if (!token) {
+      console.log("Utente non autenticato!");
+      alert("Devi effettuare l'accesso per inviare un feedback");
+      router.push("/login");
+      return;
+    }
 
     if (hasVoted) {
       setShowForm(false);
@@ -126,7 +134,7 @@ export default function EventoDetailPage({ params }) {
     const token = sessionStorage.getItem("token");
 
     if (!token) {
-      console.error("Utente non autenticato!");
+      console.log("Utente non autenticato!");
       alert("Devi effettuare l'accesso per inviare un feedback");
       router.push("/login");
       return;
@@ -221,16 +229,18 @@ export default function EventoDetailPage({ params }) {
           <Typography variant="h4" component="h1" gutterBottom color="text.secondary" sx={{ marginBottom: 1 }}>
             {eventoDetails.nome}
           </Typography>
+          {eventoDetails.tipo &&
           <Chip
-            label={eventoDetails.tipo}
-            sx={{
-              alignSelf: 'flex-start',
-              backgroundColor: '#fdd835',
-              color: 'white',
-              marginBottom: 1,  // Ridotto lo spazio sotto il Chip
-              marginTop: 0,     // Rimosso lo spazio sopra il Chip
-            }}
-          />
+          label={eventoDetails.tipo}
+          sx={{
+            alignSelf: 'flex-start',
+            backgroundColor: '#fdd835',
+            color: 'white',
+            marginBottom: 1,  // Ridotto lo spazio sotto il Chip
+            marginTop: 0,     // Rimosso lo spazio sopra il Chip
+          }}
+        /> }
+          
 
           <Grid container spacing={2} mt={1} direction="column"> {/* Ridotto lo spazio sopra il secondo Grid */}
             {/* Data */}
