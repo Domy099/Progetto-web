@@ -6,8 +6,8 @@ import Typography from '@mui/material/Typography';
 const Footer = () => (
   <Box
     component="footer"
-    className="bg-orange-600 text-white p-4 mt-4 text-center"
-    sx={{ margin: 0, padding: 0 }}
+    className="text-white p-4 mt-4 text-center"
+    sx={{ backgroundColor: '#408eb5', margin: 0, padding: 0 }}
   >
     <Typography variant="body1">&copy; 2024 Carnevale di Putignano. Tutti i diritti riservati.</Typography>
   </Box>

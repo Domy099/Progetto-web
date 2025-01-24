@@ -262,8 +262,8 @@ export default function CarroDetailPage({ params }) {
                 variant="contained"
                 sx={{
                   mt: 2,
-                  backgroundColor: '#FFC107',
-                  '&:hover': { backgroundColor: '#FFB300' },
+                  backgroundColor: '#408eb5',
+                  '&:hover': { backgroundColor: '#ed96c8' },
                 }}
                 onClick={handleVotaClick}
                 

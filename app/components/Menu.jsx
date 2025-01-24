@@ -35,8 +35,8 @@ const CarnivaleParadeMenus = ({ onSelect }) => {
         endIcon={<KeyboardArrowDownIcon />}
         sx={{
           mt: 2, // Margine superiore
-          backgroundColor: '#EA580C', // Colore di sfondo personalizzato
-          '&:hover': { backgroundColor: '#D1550A' } // Colore al passaggio del mouse
+          backgroundColor: '#408eb5', // Colore di sfondo personalizzato
+          '&:hover': { backgroundColor: '#ed96c8' } // Colore al passaggio del mouse
         }}
       >
         {selectedParade}

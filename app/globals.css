@@ -25,3 +25,16 @@ body {
   height: 300px;
   object-fit: cover;
 }
+
+@font-face {
+  font-family: 'KaioSuper';
+  src: url('/fonts/kaio-super.otf') format('opentype'),
+       url('/fonts/kaio-super.woff2') format('woff2'),
+       url('/fonts/kaio-super.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+body {
+  font-family: 'KaioSuper', Arial, Helvetica, sans-serif;
+}

@@ -8,10 +8,33 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import MeteoCard from './components/MeteoCard/MeteoCard';
 
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const theme = createTheme({
+  typography: {
+    fontFamily: 'KaioSuper, Arial, Helvetica, sans-serif', // Font globale
+    h1: {
+      fontFamily: 'KaioSuper, Arial, Helvetica, sans-serif', // Font specifico per gli H1
+      fontSize: '2rem', // Dimensione personalizzata
+      fontWeight: 'bold', // Peso
+    },
+    h2: {
+      fontSize: '1.75rem',
+      fontWeight: 'bold',
+    },
+    body1: {
+      fontSize: '1rem',
+    },
+  },
+});
+
 function App() {
   const menuItems = ['Home', 'Eventi', 'Mappa', 'Storia', 'Carri', 'Artigiani'];
 
   return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
     <div>
       {/* Main Content */}
       <Container className="mt-4">
@@ -87,6 +110,8 @@ function App() {
         </Grid>
       </Container>
     </div>
+    
+    </ThemeProvider>
   );
 }
 

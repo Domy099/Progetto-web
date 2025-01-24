@@ -56,7 +56,7 @@ const ResetPassword = () => {
           style={{
             width: "100%",
             padding: "10px",
-            backgroundColor: "#EA580C",
+            backgroundColor: "#408eb5",
             color: "white",
             border: "none",
             borderRadius: "4px",

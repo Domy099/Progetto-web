@@ -35,7 +35,7 @@ const Header = ({ menuItems }) => {
       <AppBar
         position="static"
         color="transparent"
-        sx={{ backgroundColor: "#d03526" }}
+        sx={{ backgroundColor: "#408eb5" }}
       >
         <Toolbar className="flex justify-between">
           <div className="flex items-center">

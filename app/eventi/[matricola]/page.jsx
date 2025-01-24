@@ -333,12 +333,18 @@ export default function EventoDetailPage({ params }) {
             <>
               <Button
                 variant="contained"
-                color="primary"
                 onClick={handleFeedbackClick}
-                sx={{ mt: 2 }}
+                sx={{
+                  mt: 2,
+                  backgroundColor: '#408eb5',
+                  '&:hover': {
+                    backgroundColor: '#ed96c8', // Colore per lo stato hover
+                  },
+                }}
               >
-                Lascia un feedback
+              Lascia un feedback
               </Button>
+
           
               {showForm && (
                 <Box mt={2}>

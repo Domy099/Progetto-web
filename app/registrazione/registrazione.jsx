@@ -104,7 +104,7 @@ const Registrazione = () => {
           style={{
             width: '100%',
             padding: '10px',
-            backgroundColor: '#EA580C',
+            backgroundColor: '#408eb5',
             color: 'white',
             fontWeight: 'bold',
             border: 'none',
