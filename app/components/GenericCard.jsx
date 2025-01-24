@@ -9,7 +9,8 @@ import Chip from '@mui/material/Chip';
 
 export default function GenericCard(props) {
   const { title, description, image, altText, tipo } = props;
-  const truncatedDescription = description.length > 100 ? description.slice(0, 100) + '...' : description;
+  
+  const truncatedDescription = description && description.length > 100 ? description.slice(0, 100) + '...' : description;
 
   return (
     <Card sx={{ maxWidth: 345, position: 'relative', height: 400 }}>
