@@ -15,7 +15,7 @@ const ClickableCard = ({ item }) => (
           transition: 'transform 0.2s',
           borderRadius: '16px', // Angoli arrotondati
           overflow: 'hidden',
-          position: 'relative',
+          position: 'relative', // Posizionamento relativo per ancorare gli elementi assoluti
           width: '100%',
           height: '200px', // Imposta un'altezza maggiore per ogni card
           display: 'flex',
@@ -29,12 +29,11 @@ const ClickableCard = ({ item }) => (
         <div
           style={{
             position: 'absolute',
-            top: '0px', 
+            top: '0px',
             right: '-20px',
             width: '80px',
             overflow: 'visible',
             rotate: '-15deg',
-            
           }}
         >
           <img
@@ -45,27 +44,38 @@ const ClickableCard = ({ item }) => (
               top: '-20px',
               left: '-20px',
               width: '100px',
-              height: '100px',            }}
-          />
-
-<img
-            src="./pattern-rombi.png"
-            alt="ROMBI"
-            style={{
-              position: 'absolute',
-              bottom: '-150px',
-              left: '-300px',
-              width: '200px',
-              height: '100px',            }}
+              height: '100px',
+            }}
           />
         </div>
 
+        <div
+          style={{
+            position: 'absolute',
+            bottom: '-130px',
+            left: '-40px',
+            width: '100px',
+            height: '200px',
+            overflow: 'visible',
+            rotate: '30deg',
+          }}
+        >
+          <img
+          src="./pattern-rombi.png"
+          alt="ROMBI"
+          style={{}}
+        />
+        </div>
+
+        
 
         <Typography variant="h6" className="text-black">{item}</Typography>
       </Paper>
     </Link>
   </Grid>
 );
+
+
 
 
 export default ClickableCard;
