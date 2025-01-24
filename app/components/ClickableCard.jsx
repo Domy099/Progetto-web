@@ -61,7 +61,7 @@ const ClickableCard = ({ item }) => (
           }}
         >
           <img
-          src="./pattern-rombi.png"
+          src="./pattern-rombi-rosa.png"
           alt="ROMBI"
           style={{}}
         />
