@@ -269,6 +269,30 @@ export default function Dashboard() {
     router.push("/login");
   };
 
+  const handleBlockUser = async () => {
+    try {
+      const token = sessionStorage.getItem("token");
+      const response = await fetch(`${STRAPI_API_URL}/users/${user.id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+        },
+        body: JSON.stringify({ blocked: true }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Errore durante il blocco dell\'utente');
+      }
+  
+      // Reindirizza alla pagina principale dopo il blocco
+      router.push('/');
+    } catch (error) {
+      console.error('Errore:', error);
+      setError(error.message);
+    }
+  };
+
   if (loading) return <Typography>Caricamento in corso...</Typography>;
   if (error) return <Typography>Errore: {error}</Typography>;
   if (!user) return null;
@@ -370,7 +394,12 @@ export default function Dashboard() {
 <Button
   variant="contained"
   onClick={() => setIsOverlayOpen(!isOverlayOpen)}
-  sx={{ mb: 2 }}
+  sx={{
+    backgroundColor: "#408eb5", // Colore personalizzato
+    '&:hover': {
+    backgroundColor: "#ed96c8", // Colore per l'hover
+  },
+  }}
 >
   Aggiungi Biglietto
 </Button>
@@ -426,7 +455,12 @@ export default function Dashboard() {
         <Button
           variant="contained"
           onClick={handleAddTicket}
-          sx={{ background: "green", }}
+          sx={{
+            backgroundColor: "#408eb5", // Colore personalizzato
+            '&:hover': {
+            backgroundColor: "#ed96c8", // Colore per l'hover
+          },
+          }}
         >
           Aggiungi Biglietto
         </Button>
@@ -497,25 +531,50 @@ export default function Dashboard() {
         {/* Logout Button */}
         <Button
           variant="contained"
-          className="bg-orange-600 hover:bg-orange-700"
           onClick={() => {
             sessionStorage.removeItem("token");
             router.push("/login");
           }}
+          sx={{
+            backgroundColor: "#408eb5", // Colore personalizzato
+            '&:hover': {
+            backgroundColor: "#ed96c8", // Colore per l'hover
+          },
+        }}
         >
-          Logout
+        Logout
         </Button>
+
 
         {/* Reset Password Button */}
         <Button
           variant="contained"
-          className="bg-orange-600 hover:bg-orange-700"
           onClick={() => {
             sessionStorage.removeItem("token");
             router.push("/reset-password");
           }}
+          sx={{
+            backgroundColor: "#408eb5", // Colore personalizzato
+            '&:hover': {
+            backgroundColor: "#ed96c8", // Colore per l'hover
+          },
+        }}
         >
           Reset Password
+        </Button>
+
+        {/* Delete User Button */}
+        <Button
+          variant="contained"
+          onClick={handleBlockUser}
+          sx={{
+            backgroundColor: "#ff0000", // Colore personalizzato
+            '&:hover': {
+            backgroundColor: "#ed96c8", // Colore per l'hover
+          },
+        }}
+        >
+          Cancella Utente
         </Button>
       </Box>
     </Container>

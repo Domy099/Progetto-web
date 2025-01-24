@@ -98,7 +98,7 @@ export default function TicketCard({ nomeEvento, dataEmissione, codice, id, imma
                   <Typography className="text-black">
                     Matricola:
                   </Typography>
-                  <Typography className="text-xl font-bold text-[#1E7B36]">
+                  <Typography className="text-xl font-bold text-[#408eb5]">
                     {codice}
                   </Typography>
                 </div>
@@ -111,7 +111,7 @@ export default function TicketCard({ nomeEvento, dataEmissione, codice, id, imma
                 </Typography>
               </CardContent>
             </Box>
-            <div className="bg-[#FF9800] flex justify-center items-center px-4 writing-vertical-rl text-center text-white border-l-2 border-[#f57c00]">
+            <div className="bg-[#ed96c8] flex justify-center items-center px-4 writing-vertical-rl text-center text-white border-l-2 border-[#408eb5]">
               <span className="font-bold">BIGLIETTO</span>
             </div>
           </Card>
@@ -120,7 +120,7 @@ export default function TicketCard({ nomeEvento, dataEmissione, codice, id, imma
 
         {/* Back of the card */}
         <div className="absolute w-full h-full backface-hidden rotate-y-180">
-          <Card className="flex bg-[#FF9800] text-black rounded-lg overflow-hidden w-full h-full shadow-lg justify-center items-center">
+          <Card className="flex bg-[#ed96c8] text-black rounded-lg overflow-hidden w-full h-full shadow-lg justify-center items-center">
             <CardContent className="text-center transform rotate-y-180">
               <div className="bg-white p-4 rounded-lg shadow-lg">
                 <Barcode
