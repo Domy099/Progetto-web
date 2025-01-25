@@ -41,6 +41,20 @@ body {
 }
 
 @font-face {
+  font-family: 'kaio-bold';
+  src: url('/fonts/kaio-bold.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'kaio-black';
+  src: url('/fonts/kaio-black.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'kaio-regular';
   src: url('/fonts/kaio-regular.woff') format('woff');
   font-weight: normal;
