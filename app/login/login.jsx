@@ -10,25 +10,59 @@ const Login = () => {
   const [error, setError] = useState("");
   const [failedAttempts, setFailedAttempts] = useState(0);
   const router = useRouter();
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
+  const [disattivato, setDisattivato] = useState(false);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(""); // Reset previous errors
-
+  
     try {
-      const response = await axios.post("https://strapiweb.duckdns.org/api/auth/local", {
+      const response = await axios.post(`${STRAPI_API_URL}/api/auth/local`, {
         identifier: email,
         password: password,
       });
-
+  
       console.log("User profile:", response.data.user);
       console.log("User token:", response.data.jwt);
-
+      console.log("Disattivato:", response.data.user.disattivato);
+  
+      // Recupera il valore di "disattivato"
+      
+  
+      if (response.data.user.disattivato) {
+        alert("Utente disattivato. Se credi ci sia un errore, contatta l'amministratore.");
+        return;
+      }
+  
       sessionStorage.setItem("token", response.data.jwt);
       router.push("/dashboard");
     } catch (err) {
       setFailedAttempts(failedAttempts + 1); // Increment failed attempts
       setError(err.response?.data?.message || "Errore. Credenziali non valide.");
+    }
+  };
+
+  const fetchUserData = async () => {
+    try {
+      const response = await fetch(
+        `${STRAPI_API_URL}/api/users/me`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error("Impossibile recuperare i dati utente");
+      }
+  
+      const userData = await response.json();
+      if (userData.disattivato) {
+        setDisattivato(true);
+      }
+    } catch (err) {
+      setError(err.message);
+      return null; // Gestisci l'errore restituito
     }
   };
 
