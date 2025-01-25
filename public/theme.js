@@ -22,7 +22,22 @@ const theme = createTheme({
       fontSize: '1rem', // Dimensione personalizzata
       color: '#333', 
     },
-  },
+    body1Bold: {
+      fontFamily: 'kaio-medium, Arial, Helvetica, sans-serif', // Font per body1
+      fontSize: '1rem', // Dimensione personalizzata
+      color: '#333', 
+    },
+    body2: {
+      fontFamily: 'kaio-light, Arial, Helvetica, sans-serif', // Font per body2
+      fontSize: '0.9rem', // Dimensione personalizzata
+      color: '#333',
+    },
+    label: {
+      fontFamily: 'kaio-medium, Arial, Helvetica, sans-serif', // Font per body2
+      fontSize: '0.9rem', // Dimensione personalizzata
+      color: '#333',
+    }
+  }
 });
 
 export default theme;
