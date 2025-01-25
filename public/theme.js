@@ -12,6 +12,11 @@ const theme = createTheme({
       fontSize: '1.40rem', // Dimensione personalizzata
       color: '#333', 
     },
+    h3: {
+      fontFamily: 'kaio-bold, Arial, Helvetica, sans-serif', // Font per h2
+      fontSize: '1.40rem', // Dimensione personalizzata
+      color: '#333', 
+    },
     body1: {
       fontFamily: 'kaio-regular, Arial, Helvetica, sans-serif', // Font per body1
       fontSize: '1rem', // Dimensione personalizzata
