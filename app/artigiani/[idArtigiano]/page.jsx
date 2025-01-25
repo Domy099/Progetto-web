@@ -65,7 +65,7 @@ export default function ArtigianoDetailPage ({ params }){
           }}
         >
           <img
-            src={`${STRAPI_API_URL}${artigianoDetails.immagine.url}`|| 'https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg'}
+            src={artigianoDetails.immagine?.url ? `${STRAPI_API_URL}${artigianoDetails.immagine.url}` : 'https://static.vecteezy.com/system/resources/thumbnails/004/511/281/small/default-avatar-photo-placeholder-profile-picture-vector.jpg'}
             alt={`Foto di ${artigianoDetails.nome} ${artigianoDetails.cognome}`}
             style={{
               width: "100%",
