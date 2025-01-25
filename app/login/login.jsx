@@ -12,6 +12,7 @@ const Login = () => {
   const router = useRouter();
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   const [disattivato, setDisattivato] = useState(false);
+  const mailAssistenza = process.env.NEXT_PUBLIC_MAIL_ASSISTENZA;
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -31,7 +32,7 @@ const Login = () => {
       
   
       if (response.data.user.disattivato) {
-        alert("Utente disattivato. Se credi ci sia un errore, contatta l'amministratore.");
+        alert("Utente disattivato. Se credi ci sia un errore, contatta l'amministratore: " + `${mailAssistenza}`);
         return;
       }
   

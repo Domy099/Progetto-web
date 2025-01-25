@@ -11,6 +11,10 @@ import {
   Container,
   TextField,
   Icon,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
 } from "@mui/material";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Link from "next/link";
@@ -33,6 +37,16 @@ export default function Dashboard() {
   const [userFeedbacks, setUserFeedbacks] = useState([]);
   const [userVoto, setUserVoto] = useState(null);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+
+  const [openDialog, setOpenDialog] = useState(false); // Stato per la visibilità del dialog
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true); // Mostra il dialog
+  };
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false); // Nascondi il dialog
+  };
 
 
   // mosta nasconti lo scanner
@@ -272,26 +286,30 @@ export default function Dashboard() {
   const handleBlockUser = async () => {
     try {
       const token = sessionStorage.getItem("token");
-      const response = await fetch(`${STRAPI_API_URL}/users/${user.id}`, {
+      const response = await fetch(`${STRAPI_API_URL}/api/users/${user.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${token}`,
         },
-        body: JSON.stringify({ blocked: true }),
+        body: JSON.stringify({
+          disattivato: true,
+        }),
       });
-  
+    
       if (!response.ok) {
         throw new Error('Errore durante il blocco dell\'utente');
       }
-  
+      console.log('Utente bloccato con successo');
       // Reindirizza alla pagina principale dopo il blocco
+      sessionStorage.removeItem('token');
       router.push('/');
     } catch (error) {
       console.error('Errore:', error);
       setError(error.message);
     }
   };
+  
 
   if (loading) return <Typography>Caricamento in corso...</Typography>;
   if (error) return <Typography>Errore: {error}</Typography>;
@@ -564,18 +582,35 @@ export default function Dashboard() {
         </Button>
 
         {/* Delete User Button */}
-        <Button
-          variant="contained"
-          onClick={handleBlockUser}
-          sx={{
-            backgroundColor: "#ff0000", // Colore personalizzato
-            '&:hover': {
+        {/* Bottone per cancellare l'utente */}
+      <Button
+        variant="contained"
+        onClick={handleOpenDialog} // Apre il dialog al click
+        sx={{
+          backgroundColor: "#ff0000", // Colore personalizzato
+          '&:hover': {
             backgroundColor: "#ed96c8", // Colore per l'hover
           },
         }}
-        >
-          Cancella Utente
-        </Button>
+      >
+        Cancella Utente
+      </Button>
+
+      {/* Dialog di conferma cancellazione */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
+        <DialogTitle>Conferma cancellazione</DialogTitle>
+        <DialogContent>
+          Sei sicuro di voler cancellare il profilo? Questa azione non può essere annullata.
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseDialog} color="primary">
+            Annulla
+          </Button>
+          <Button onClick={handleBlockUser} color="error">
+            Conferma
+          </Button>
+        </DialogActions>
+      </Dialog>
       </Box>
     </Container>
   );
