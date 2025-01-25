@@ -8,26 +8,10 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import MeteoCard from './components/MeteoCard/MeteoCard';
 
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
+import CssBaseline  from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from './theme';
 
-const theme = createTheme({
-  typography: {
-    fontFamily: 'KaioSuper, Arial, Helvetica, sans-serif', // Font globale
-    h1: {
-      fontFamily: 'KaioSuper, Arial, Helvetica, sans-serif', // Font specifico per gli H1
-      fontSize: '2rem', // Dimensione personalizzata
-      fontWeight: 'bold', // Peso
-    },
-    h2: {
-      fontSize: '1.75rem',
-      fontWeight: 'bold',
-    },
-    body1: {
-      fontSize: '1rem',
-    },
-  },
-});
 
 function App() {
   const menuItems = ['Home', 'Eventi', 'Mappa', 'Storia', 'Carri', 'Artigiani'];
@@ -40,10 +24,10 @@ function App() {
       <Container className="mt-4">
         <Grid container spacing={4}>
           <Grid item xs={12} md={8}>
-            <Typography variant="h4" gutterBottom className="text-black">
-              Benvenuti al Carnevale di Putignano!
+            <Typography variant="h1" gutterBottom>
+              Benvenuti al Carnevale di Putignano
             </Typography>
-            <Typography variant="body1" paragraph className="text-black">
+            <Typography variant="h2" paragraph className="text-black">
               Unisciti a noi per una celebrazione colorata e vivace con costumi, musica e tanto divertimento!
             </Typography>
             <Typography variant="body1" paragraph className="text-black">

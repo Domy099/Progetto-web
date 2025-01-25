@@ -27,14 +27,31 @@ body {
 }
 
 @font-face {
-  font-family: 'KaioSuper';
-  src: url('/fonts/kaio-super.otf') format('opentype'),
-       url('/fonts/kaio-super.woff2') format('woff2'),
-       url('/fonts/kaio-super.woff') format('woff');
+  font-family: 'kaio-super';
+  src: url('/fonts/kaio-super.woff') format('woff');
   font-weight: normal;
   font-style: normal;
 }
 
-body {
-  font-family: 'KaioSuper', Arial, Helvetica, sans-serif;
+@font-face {
+  font-family: 'kaio-medium';
+  src: url('/fonts/kaio-medium.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
+
+@font-face {
+  font-family: 'kaio-regular';
+  src: url('/fonts/kaio-regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'kaio-light';
+  src: url('/fonts/kaio-light.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
