@@ -5,12 +5,18 @@ import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 
+import CssBaseline  from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '@/public/theme';
+
 const ClickableCard = ({ item }) => (
+  <ThemeProvider theme={theme}>
+    <CssBaseline/>
   <Grid item xs={12} sm={6} md={4} lg={3} key={item}>
     <Link href={`/${item.toLowerCase()}`} passHref>
       <Paper
         elevation={3}
-        className="p-4 text-center cursor-pointer card"
+        className="text-center cursor-pointer card"
         sx={{
           transition: 'transform 0.2s',
           borderRadius: '16px', // Angoli arrotondati
@@ -22,7 +28,7 @@ const ClickableCard = ({ item }) => (
           justifyContent: 'center',
           alignItems: 'center',
           '&:hover': {
-            transform: 'scale(1.05)',
+            animation: 'bounce 0.5s ease-in-out',
           },
         }}
       >
@@ -69,10 +75,11 @@ const ClickableCard = ({ item }) => (
 
         
 
-        <Typography variant="h6" className="text-black">{item}</Typography>
+        <Typography variant="h3">{item}</Typography>
       </Paper>
     </Link>
   </Grid>
+  </ThemeProvider>
 );
 
 

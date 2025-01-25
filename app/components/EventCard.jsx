@@ -7,6 +7,10 @@ import Typography from '@mui/material/Typography';
 import CardActionArea from '@mui/material/CardActionArea';
 import Chip from '@mui/material/Chip';
 
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '../../public/theme';
+
 export default function EventCard(props) {
   const { title, description, image, altText, tipo, data, orario, posizione } = props;
 
@@ -15,20 +19,22 @@ export default function EventCard(props) {
   const getColoriChip = (tipo) => {
     switch (tipo?.trim().toLowerCase()) {
       case 'concerto':
-        return { backgroundColor: '#4caf50', color: 'white' }; // Verde
+        return { backgroundColor: '#4caf50',}; // Verde
       case 'sfilata':
-        return { backgroundColor: '#2196f3', color: 'white' }; // Blu
+        return { backgroundColor: '#2196f3',}; // Blu
       case 'convivialità':
-        return { backgroundColor: '#ff9800', color: 'white' }; // Arancione
+        return { backgroundColor: '#ff9800',  }; // Arancione
       case 'presentazione':
-        return { backgroundColor: 'orange', color: 'white' }; // Arancione
+        return { backgroundColor: 'orange', }; // Arancione
       default:
-        return { backgroundColor: 'gray', color: 'white' }; // Default
+        return { backgroundColor: 'gray', }; // Default
     }
   };
   
 
   return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
     <Card sx={{ maxWidth: 345, position: 'relative', borderRadius: '10px'}}>
       <CardActionArea>
         <CardContent sx={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
@@ -54,33 +60,54 @@ export default function EventCard(props) {
               ...getColoriChip(tipo),
               marginBottom: 2, // Distanza dal titolo
               marginTop: 2,
+              typography: 'label', 
+              color: 'white', 
             }}
           />
           
 
           {/* Titolo e descrizione */}
-          <Typography gutterBottom variant="h5" component="div">
+          <Typography variant="h2" component="div">
             {titoloAbbreviato}
           </Typography>
 
           {/* Didascalia per la data dell'evento */}
-          <Typography variant="body2" sx={{ color: 'text.primary', marginTop: 1 }}>
-            <strong>Data:</strong> {data ? new Date(data).toLocaleDateString() : 'Non disponibile'}
+          <span style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 6}}>
+            <Typography variant="body1Bold" sx={{marginTop: 1, }}>
+            Data:
           </Typography>
+          <Typography variant="body1" sx={{ color: 'text.primary', marginTop: 1 }}>
+            {data ? new Date(data).toLocaleDateString() : 'Non disponibile'}
+          </Typography>
+          </span>
+          
 
           {/* Didascalia per l'ora dell'evento */}
-          <Typography variant="body2" sx={{ color: 'text.primary', marginTop: 1 }}>
-            <strong>Ora:</strong> {orario ? new Date('1970-01-01T' + orario).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Non disponibile'}
+          <span style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 6}}>
+            <Typography variant="body1Bold" sx={{marginTop: 1, }}>
+            Ora:
           </Typography>
+          <Typography variant="body1" sx={{ color: 'text.primary', marginTop: 1 }}>
+            {orario ? new Date('1970-01-01T' + orario).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Non disponibile'}
+          </Typography>
+          </span>
 
           {/* Didascalia per la posizione dell'evento */}
-          <Typography variant="body2" sx={{ color: 'text.primary', marginTop: 1 }}>
-            <strong>Posizione:</strong> {posizione || 'Non disponibile'}
+          
+          <span style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 6}}>
+            <Typography variant="body1Bold" sx={{marginTop: 1, }}>
+            Posizione:
           </Typography>
+          <Typography variant="body1" sx={{marginTop: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', }}>
+            {posizione || 'Non disponibile'}
+          </Typography>
+          </span>
+          
 
         </CardContent>
       </CardActionArea>
     </Card>
+    </ThemeProvider>
   );
 
 

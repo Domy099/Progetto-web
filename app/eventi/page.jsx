@@ -1,9 +1,14 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import EventCard from '../components/EventCard'; // Importa il componente ActionAreaCard
-import CarnivaleParadeMenus from '../components/Menu';
-import { Container, Grid } from '@mui/material';
+import SfilateSelector from '../components/Menu';
+import { Container, Grid, Typography, Box, Divider } from '@mui/material';
 import Link from 'next/link';
+
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '../../public/theme';
+import { HorizontalRule } from '@mui/icons-material';
 
 const Page = () => {
   const [eventi, setEventi] = useState([]); // Stato per i dati dei carri
@@ -33,19 +38,34 @@ const Page = () => {
 
 
   return (
-    <>
-  <Container style={{ paddingTop: '20px' }}>
-    <CarnivaleParadeMenus onSelect={handleParadeSelect} />
+  <ThemeProvider theme={theme}>
+  <CssBaseline />
+  <Container sx={{ marginTop: 4}}>
+  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+    <Typography variant="h3">
+      A Putignano il divertimento non finisce mai
+    </Typography>
+    <Typography variant="body1">
+      Esplora un mondo di eventi e tradizioni
+    </Typography>
+  </Box>
   </Container>
+  <Container style={{ marginTop: '20px', marginBottom: '30px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', }}>
+        <SfilateSelector onSelect={handleParadeSelect} />
+        <Divider sx={{ borderRadius: '20px', marginTop: '20px', width: '100%' }} />
+      </Box>
+    </Container>
   <Container style={{ paddingTop: '20px' }}>
     <Grid container spacing={4}>
+      {/* https://placehold.co/600x400?text=${evento.nome} */}
       {eventi.map((evento) => (
         <Grid item key={evento.matricola || evento.id} xs={12} sm={6} md={4}>
           <Link href={`/eventi/${evento.matricola}`} passHref>
             <EventCard
               title={evento.nome}
               description={evento.Descrizione}
-              image={evento.Locandina?.url ? `${STRAPI_API_URL}${evento.Locandina.url}` : `https://placehold.co/600x400?text=${evento.nome}`}
+              image={evento.Locandina?.url ? `${STRAPI_API_URL}${evento.Locandina.url}` : `https://picsum.photos/seed/${evento.matricola}/200/300`} 
               altText={evento.nome}
               tipo={evento.tipo || 'Evento'}
               data={evento.data}
@@ -64,7 +84,7 @@ const Page = () => {
       ))}
     </Grid>
   </Container>
-</>
+</ThemeProvider>
 
   );
   
