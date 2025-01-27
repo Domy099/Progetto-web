@@ -34,6 +34,7 @@ const DEFAULT_CENTER = {
 };
 
 const GoogleMapComponent = () => {
+  // Stati 
   const [userLocation, setUserLocation] = useState(null);
   const [mapPoints, setMapPoints] = useState([]);
   const [selectedMarker, setSelectedMarker] = useState(null);
@@ -46,8 +47,10 @@ const GoogleMapComponent = () => {
     Eventi: true,
     Concerti: true,
     Ristoranti: true,
+    Varco: true,
   });
 
+  // Funzione per ottenere la posizione dell'utente
   const getUserLocation = useCallback(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -68,15 +71,17 @@ const GoogleMapComponent = () => {
     }
   }, []);
 
+  // Funzione per recuperare i punti di interesse
   const fetchPointsOfInterest = useCallback(async () => {
     try {
+      // Fetch dei POI dal server  
       const response = await axios.get(
-        `${STRAPI_POI_API_URL}/api/pois?populate=*&filters[eventos][$null]=true`
+        `${STRAPI_POI_API_URL}/api/pois?populate=*&filters[eventos][$null]=true&pagination[pageSize]=100`
       );
 
       return response.data.data
-        .filter((point) => !point.evento)
-        .map((point) => ({
+        .filter((point) => !point.evento) // Filtra i punti che non sono eventi
+        .map((point) => ({ // Per ogni punto, crea un oggetto con le informazioni necessarie
           id: point.idPOI,
           tipo: "Punto di interesse",
           tipologia_POI: point.tipo_poi,
@@ -87,7 +92,7 @@ const GoogleMapComponent = () => {
           title: point.nome || "Server Point",
           description: point.descrizione || "Nessuna descrizione",
           icon: {
-            url: point.Marker?.url
+            url: point.Marker?.url // controlla se il punto ha un'icona personalizzata altrimenti usa quella di default
               ? `https://strapiweb.duckdns.org${point.Marker.url}`
               : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
             scaledSize: { width: 30, height: 30 },
@@ -100,15 +105,18 @@ const GoogleMapComponent = () => {
     }
   }, []);
 
+  // Funzione per recuperare gli eventi
   const fetchEvents = useCallback(async () => {
     try {
+      // Formatta la date nel formato opportuno
       const today = new Date().toISOString().split("T")[0];
+      // Fetch degli eventi dal server
       const response = await axios.get(
         `${STRAPI_POI_API_URL}/api/eventi?populate[0]=Locandina&populate[1]=pois.Marker&pagination[pageSize]=100`
       );
 
       return response.data.data
-        .flatMap((evento) =>
+        .flatMap((evento) =>  // Per ogni evento, crea un array di punti di interesse
           evento.pois ? evento.pois.map((point) => ({
             id: point.idPOI,
             tipologia_POI: point.tipo_poi,
@@ -125,7 +133,7 @@ const GoogleMapComponent = () => {
                 : "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
               scaledSize: { width: 30, height: 30 },
             },
-            eventImg: evento.Locandina?.url
+            eventImg: evento.Locandina?.url  // Controlla se l'evento ha un'immagine altrimenti usa null
               ? `${STRAPI_POI_API_URL}${evento.Locandina.url}`
               : null,
             eventDate: evento.data,
@@ -134,24 +142,29 @@ const GoogleMapComponent = () => {
             eventCode: evento.matricola,
           })) : []
         )
-        .filter((point) => point.eventDate === today);
+        .filter((point) => point.eventDate === today); // Filtra solo gli eventi di oggi
     } catch (error) {
       console.error("Errore nel fetch degli eventi:", error);
       return [];
     }
   }, []);
 
+  // useEffect per caricare i dati
   useEffect(() => {
     const loadData = async () => {
       try {
         setIsLoading(true);
         getUserLocation();
 
+        // fa un fetch dei punti di interesse e degli eventi in parallelo per velocizzare il caricamento (errore caricamento dati con solo useEffect)
         const [poiPoints, eventPoints] = await Promise.all([
           fetchPointsOfInterest(),
           fetchEvents(),
         ]);
 
+        console.log("Punti di interesse:", poiPoints);
+
+        // Salvo i punti di interesse e gli eventi nello stato
         setMapPoints([...poiPoints, ...eventPoints]);
       } catch (error) {
         console.error("Errore nel caricamento dati:", error);
@@ -161,23 +174,28 @@ const GoogleMapComponent = () => {
     };
 
     loadData();
-  }, [fetchPointsOfInterest, fetchEvents, getUserLocation]);
+  }, [fetchPointsOfInterest, fetchEvents, getUserLocation]); // Controllo quando dipendenze cambiano
 
+  // Funzione per gestire il cambio dei filtri
   const handleFilterChange = (filterName) => {
     setFilters((prevFilters) => ({
       ...prevFilters,
-      [filterName]: !prevFilters[filterName],
+      [filterName]: !prevFilters[filterName], // Inverte il valore del filtro selezionato
     }));
   };
 
+  // Filtra i punti in base ai filtri selezionati
   const filteredPoints = mapPoints.filter((point) => {
     return filters[point.tipologia_POI];
   });
 
   return (
+    // wrapper per il tema e il CSS
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Box sx={{ position: "relative", width: "100vw", height: "100vh" }}>
+
+        {/* Controlla se la mappa è caricata*/}
         {isLoading ? (
           <Typography variant="h1">Caricamento...</Typography>
         ) : (
@@ -207,18 +225,19 @@ const GoogleMapComponent = () => {
                   zIndex: 1,
                 }}
               >
+                {/* Bottone per mostrare/nascondere i filtri */}
                 <Button
                   onClick={() => setShowFilterMenu(!showFilterMenu)}
                   sx={{
                     padding: "7px",
-                    backgroundColor: "var(--azzurro)", // Colore di default
+                    backgroundColor: "var(--azzurro)", 
                     color: "white",
-                    borderRadius: "10px", // Usa il raggio definito
+                    borderRadius: "10px", 
                     display: "flex",
                     alignItems: "center",
                     gap: "5px",
                     "&:hover": {
-                      backgroundColor: "var(--rosa)", // Colore al passaggio del mouse
+                      backgroundColor: "var(--rosa)", 
                     },
                   }}
                 >
@@ -238,6 +257,7 @@ const GoogleMapComponent = () => {
                       gap: "8px", // Aggiunge spazio tra le checkbox
                     }}
                   >
+                    {/* Crea una checkbox per ogni filtro */}
                     {Object.keys(filters).map((filterName) => (
                       <FormControlLabel
                         key={filterName}
@@ -258,6 +278,7 @@ const GoogleMapComponent = () => {
                 )}
               </Box>
 
+              {/* Crea un Marker per la posizione dell'utente */}  
               {userLocation && (
                 <Marker
                   position={userLocation}
@@ -268,7 +289,7 @@ const GoogleMapComponent = () => {
                   }}
                 />
               )}
-
+              {/* Crea un Marker per ogni punto di interesse o evento  */}
               {filteredPoints.map((point) => (
                 <Marker
                   key={`${point.id}-${point.eventCode}`}
@@ -279,11 +300,13 @@ const GoogleMapComponent = () => {
                 />
               ))}
 
+              {/* Crea un InfoWindow per il Marker selezionato */}
               {selectedMarker && (
                 <InfoWindow
                   position={selectedMarker.position}
                   onCloseClick={() => setSelectedMarker(null)}
                 >
+                  {/* Passo props alla card */}
                   <MultiActionAreaCard
                     image={selectedMarker.eventImg}
                     title={selectedMarker.title}

@@ -12,6 +12,7 @@ import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import theme from "../../../public/theme"; // Importa il tema personalizzato
+import { Description } from "@mui/icons-material";
 
 // Funzione per determinare i colori dei chip in base al tipo di evento
 const getColoriChip = (tipo) => {
@@ -38,6 +39,7 @@ const MultiActionAreaCard = ({
   hour,
   eventCode,
   tipo,
+  description,
 }) => {
   const [address, setAddress] = useState(""); // Stato per memorizzare l'indirizzo
   const [loading, setLoading] = useState(false); // Stato per gestire il caricamento
@@ -193,16 +195,7 @@ const MultiActionAreaCard = ({
                 sx={{ display: "flex", gap: 1, alignItems: "center", mb: 1 }}
               >
                 <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  📅 {date ? new Date(date).toLocaleDateString() : "N/D"}
-                </Typography>
-                <Typography variant="body2" sx={{ color: "text.secondary" }}>
-                  🕒{" "}
-                  {hour
-                    ? new Date(`1970-01-01T${hour}`).toLocaleTimeString([], {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                      })
-                    : "N/D"}
+                  {description}
                 </Typography>
               </Box>
               {loading && <CircularProgress size={20} />}
@@ -235,10 +228,10 @@ const MultiActionAreaCard = ({
               size="small"
               variant="contained"
               sx={{
-                backgroundColor: "var(--azzurro)", // Colore di default
-                "&:hover": { backgroundColor: "var(--rosa)" }, // Colore al passaggio del mouse
+                backgroundColor: "var(--azzurro)",
+                "&:hover": { backgroundColor: "var(--rosa)" },
                 textTransform: "none",
-                borderRadius: "10px", // Usa il raggio definito
+                borderRadius: "10px",
               }}
             >
               Apri Mappe
