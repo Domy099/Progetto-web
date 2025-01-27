@@ -8,7 +8,6 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 
 const LeaderBoardVoti = ({ carri }) => {
-    // Ordiniamo i carri in base ai voti e prendiamo i primi 3
     const formattedData = carri.map(carro => ({
         id: carro.id,
         name: carro.nome,
@@ -21,11 +20,9 @@ const LeaderBoardVoti = ({ carri }) => {
     // Duplichiamo gli elementi per creare l'effetto di loop infinito
     const caroselloItems = [...topCarri, ...topCarri, ...topCarri];
 
-    // Usiamo useRef per mantenere l'indice corrente
     const currentIndexRef = useRef(topCarri.length); // Partiamo dal primo elemento "reale"
     const [isTransitioning, setIsTransitioning] = useState(false);
 
-    // Funzione per navigare al prossimo carro
     const handleNext = () => {
         if (isTransitioning) return;
         setIsTransitioning(true);
@@ -33,7 +30,6 @@ const LeaderBoardVoti = ({ carri }) => {
         updateCarosello();
     };
 
-    // Funzione per navigare al carro precedente
     const handlePrev = () => {
         if (isTransitioning) return;
         setIsTransitioning(true);
@@ -41,7 +37,6 @@ const LeaderBoardVoti = ({ carri }) => {
         updateCarosello();
     };
 
-    // Funzione per aggiornare la visualizzazione del carosello
     const updateCarosello = () => {
         const carosello = document.getElementById("carosello");
         if (carosello) {

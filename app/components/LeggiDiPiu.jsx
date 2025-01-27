@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 
-const LeggiDiPiu = ({ text }) => {
+const LeggiDiPiu = ({ text, lunghezza }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  const maxLength = 600; // Lunghezza massima per troncare
 
   const handleToggle = () => {
     setIsExpanded((prev) => !prev);
@@ -13,10 +12,10 @@ const LeggiDiPiu = ({ text }) => {
   return (
     <div>
       <Typography variant="body1" color="text.secondary" textAlign={'justify'}>
-        {isExpanded ? text : `${text.slice(0, maxLength)}...`} {/* Mostra il testo troncato o completo */}
+        {isExpanded ? text : `${text.slice(0, lunghezza)}...`} {/* Mostra il testo troncato o completo */}
       </Typography>
-      {text.length > maxLength && (
-        <Link component="button" onClick={handleToggle} sx={{ textDecoration: 'none', color: '#1976d2' }}>
+      {text.length > lunghezza && (
+        <Link component="button" onClick={handleToggle} sx={{ textDecoration: 'none', typography: 'label', color: '#628caf', }}>
           {isExpanded ? 'Leggi meno' : 'Leggi di più'}
         </Link>
       )}

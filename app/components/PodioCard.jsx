@@ -2,30 +2,31 @@ import React from "react";
 import { Card, CardContent, Typography, Avatar, Box } from "@mui/material";
 
 const PodioCard = ({ position, name, votes, image }) => {
-  const truncatedName = name.length > 30 ? `${name.substring(0, 30)}...` : name;
 
   return (
     <Card
       sx={{
         display: "flex",
-        flexDirection: { xs: "column", sm: "row" }, // Cambia layout in base alla larghezza
+        flexDirection: { xs: "column", sm: "row" },
         alignItems: "center",
-        padding: 2,
+        justifyContent: "center",
+        padding: 1,
         margin: 1,
-        height: "auto", // Altezza dinamica
+        height: "auto", 
         maxHeight: "100%",
-        maxWidth: "100%", // Larghezza massima
-        borderRadius: "16px", // Bordi arrotondati
-        boxShadow: 3, // Aggiungi ombra per un effetto più visibile
-        backgroundColor: "#f5f5f5", // Colore di sfondo leggero
+        width: "45%",
+        minWidth: "300px",
+        maxWidth: "60%",
+        borderRadius: "20px",
+        backgroundColor: "#f5f5f5",
       }}
     >
       <Avatar
         src={image}
         alt={name}
         sx={{
-          width: 80,
-          height: 80,
+          width: 100,
+          height: 100,
           marginBottom: { xs: 2, sm: 0 }, // Aggiunge margine solo su schermi stretti
           marginRight: { sm: 2, xs: 0 }, // Sposta a destra solo su schermi ampi
         }}
@@ -35,50 +36,49 @@ const PodioCard = ({ position, name, votes, image }) => {
           display: "flex",
           flexDirection: "column",
           justifyContent: "center",
-          overflow: "hidden", // Nasconde il testo in eccesso
-          textAlign: "center", // Allinea il testo al centro per la versione mobile
+          overflow: "hidden",
+          textAlign: "left", 
+          
         }}
       >
         <Typography
-          variant="h6"
-          color="text.primary"
+          variant="body1Bold"
           sx={{
-            whiteSpace: "nowrap", // Evita che il testo vada a capo
-            overflow: "hidden", // Nasconde il testo in eccesso
-            textOverflow: "ellipsis", // Aggiunge i puntini di sospensione
-            width: "200px", // Imposta una larghezza massima per il testo
-            maxWidth: "100%", // Limita la larghezza della card
-            marginBottom: 1, // Spazio tra le righe
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            width: "200px",
+            maxWidth: "100%", 
+            marginBottom: 1, 
           }}
         >
           {`${position}° Posizione`}
         </Typography>
 
         <Typography
-          variant="h5" // Aumenta la dimensione per enfatizzare il nome
-          color="primary" // Colore principale per enfatizzare
+          variant="h3"
+          color={"#408eb5"}
           sx={{
-            whiteSpace: "nowrap", // Evita che il testo vada a capo
-            overflow: "hidden", // Nasconde il testo in eccesso
-            textOverflow: "ellipsis", // Aggiunge i puntini di sospensione
-            width: "200px", // Imposta una larghezza massima per il testo
-            maxWidth: "100%", // Limita la larghezza della card
-            marginBottom: 1, // Spazio tra le righe
-            fontWeight: "bold", // Rende il testo più evidenziato
+            whiteSpace: "nowrap",
+            overflow: "hidden", 
+            textOverflow: "ellipsis",
+            width: "200px", 
+            maxWidth: "100%", 
+            marginBottom: 1,
           }}
         >
-          {truncatedName}
+          {name}
         </Typography>
 
         <Typography
-          variant="body2"
+          variant="body1"
           color="text.secondary"
           sx={{
-            whiteSpace: "nowrap", // Evita che il testo vada a capo
-            overflow: "hidden", // Nasconde il testo in eccesso
-            textOverflow: "ellipsis", // Aggiunge i puntini di sospensione
-            width: "200px", // Imposta una larghezza massima per il testo
-            maxWidth: "100%", // Limita la larghezza della card
+            whiteSpace: "nowrap",
+            overflow: "hidden", 
+            textOverflow: "ellipsis",
+            width: "200px",
+            maxWidth: "100%", 
           }}
         >
           Voti: {votes}

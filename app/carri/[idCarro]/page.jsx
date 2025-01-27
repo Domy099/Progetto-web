@@ -8,6 +8,9 @@ import jwt from "jsonwebtoken";
 import ArtigianoCard from "@/app/components/ArtigianoCard";
 import Link from "next/link";
 import LeggiDiPiu from "@/app/components/LeggiDiPiu";
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from "@/public/theme";
 
 export default function CarroDetailPage({ params }) {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
@@ -184,6 +187,8 @@ export default function CarroDetailPage({ params }) {
   }
 
   return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
     <Container>
       <BottoneIndietro destinazione="/carri" />
       <Container>
@@ -218,13 +223,13 @@ export default function CarroDetailPage({ params }) {
 
           {/* Dettagli del carro a destra */}
           <Box flex={1}>
-            <Typography variant="h4" component="h1" gutterBottom color="text.secondary">
+            <Typography variant="h1" component="h1" gutterBottom color="text.secondary">
               {carroDetails.nome}
             </Typography>
-            <Typography variant="h6" gutterBottom color="text.secondary">
+            <Typography variant="h2" gutterBottom color="text.secondary">
               Descrizione:
             </Typography>
-            <LeggiDiPiu text={carroDetails.descrizione} />
+            <LeggiDiPiu text={carroDetails.descrizione} lunghezza={600} />
             {VotiDetails ? (
               VotiDetails?.carri?.idCarro == idCarro ? (
                 <>
@@ -233,6 +238,7 @@ export default function CarroDetailPage({ params }) {
                     sx={{
                       mt: 2,
                       backgroundColor: '#D3D3D3',
+                      borderRadius: '20px',
                     }}
                   >
                     Vota
@@ -248,6 +254,7 @@ export default function CarroDetailPage({ params }) {
                     sx={{
                       mt: 2,
                       backgroundColor: '#D3D3D3',
+                      borderRadius: '20px',
                     }}
                   >
                     Vota
@@ -264,6 +271,7 @@ export default function CarroDetailPage({ params }) {
                   mt: 2,
                   backgroundColor: '#408eb5',
                   '&:hover': { backgroundColor: '#ed96c8' },
+                  borderRadius: '20px',
                 }}
                 onClick={handleVotaClick}
                 
@@ -280,21 +288,21 @@ export default function CarroDetailPage({ params }) {
 
       {/* Sezione Artigiani sotto i dettagli */}
       <Container sx={{ mt: 4 }}>
-        <Typography variant="h6" gutterBottom color="text.secondary">
-          Artigiani:
+        <Typography variant="h2" sx={{ marginTop: 3, marginBottom: 2 }}>
+          Realizzato da:
         </Typography>
 
         {/* Grid container per gestire il layout a griglia */}
         {carroDetails.artigiani.length > 0 ? (
-          <Grid container spacing={2}>
+          <Container>
+            <Grid container spacing={4} sx={{justifyContent: 'flex-start'}} columnGap={4}>
             {carroDetails.artigiani.map((artigiano) => (
               <Grid
                 key={artigiano.idArtigiano}
                 item
-                xs={12}   // Una colonna su schermi molto piccoli
+                xs={10}   // Una colonna su schermi molto piccoli
                 sm={6}    // Due colonne su schermi medi
                 md={4}    // Tre colonne su schermi grandi
-
               >
                 <Link href={`/artigiani/${artigiano.idArtigiano}`} passHref>
                   <ArtigianoCard
@@ -307,8 +315,10 @@ export default function CarroDetailPage({ params }) {
                   />
                 </Link>
               </Grid>
+             
             ))}
           </Grid>
+          </Container>
         ) : (
           <Typography variant="body2" color="textSecondary">
             Nessuna informazione sugli artigiani.
@@ -317,6 +327,7 @@ export default function CarroDetailPage({ params }) {
       </Container>
 
     </Container>
+    </ThemeProvider>
   );
 
 }
