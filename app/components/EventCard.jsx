@@ -14,8 +14,6 @@ import theme from '../../public/theme';
 export default function EventCard(props) {
   const { title, description, image, altText, tipo, data, orario, posizione } = props;
 
-  //const titoloAbbreviato = title.length > 20 ? title.substring(0, 20) + '...' : title;
-
   const getColoriChip = (tipo) => {
     switch (tipo?.trim().toLowerCase()) {
       case 'concerto':

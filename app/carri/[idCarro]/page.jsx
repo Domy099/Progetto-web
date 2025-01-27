@@ -224,7 +224,7 @@ export default function CarroDetailPage({ params }) {
             <Typography variant="h6" gutterBottom color="text.secondary">
               Descrizione:
             </Typography>
-            <LeggiDiPiu text={carroDetails.descrizione} />
+            <LeggiDiPiu text={carroDetails.descrizione} lunghezza={600} />
             {VotiDetails ? (
               VotiDetails?.carri?.idCarro == idCarro ? (
                 <>
