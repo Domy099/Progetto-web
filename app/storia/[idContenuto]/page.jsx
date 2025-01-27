@@ -6,6 +6,9 @@ import { Container, Typography, Card, CardContent, CardMedia, Box } from '@mui/m
 import Link from 'next/link';
 import { use } from 'react';
 import BottoneIndietro from '@/app/components/IndietroButton';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '@/public/theme';
 
 export default function ContenutoDetailPage({ params }) {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
@@ -57,6 +60,8 @@ export default function ContenutoDetailPage({ params }) {
   });
 
   return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
     <Container>
       <BottoneIndietro destinazione="/storia" />
 
@@ -81,7 +86,7 @@ export default function ContenutoDetailPage({ params }) {
 
       {/* Titolo del contenuto */}
       <Typography
-        variant="h4"
+        variant="h2"
         sx={{ color: 'text.primary', fontWeight: 'bold', mb: 2 }}
       >
         {contenutoDetails.titolo}
@@ -103,8 +108,7 @@ export default function ContenutoDetailPage({ params }) {
         {contenutoDetails.testo}
       </Typography>
     </Container>
+    </ThemeProvider>
   );
-
-
 }
 

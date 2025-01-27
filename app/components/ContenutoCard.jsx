@@ -11,21 +11,20 @@ export default function ContenutoCard(props) {
   const { title, image, altText, data } = props;
 
   return (
-    <Card sx={{ width: 345, height: 350, position: 'relative', borderRadius: '10px' }}>
-      <CardActionArea sx={{ height: '100%' }}>
-        <CardContent sx={{ display: 'flex', flexDirection: 'column', position: 'relative', height: '100%' }}>
-          {/* CardMedia per la locandina */}
+    <Card sx={{ minWidth:270, maxWidth: 345, position: 'relative', borderRadius: '20px'}}>
+      <CardActionArea>
+        <CardContent  sx={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
           {image && (
             <CardMedia
               component="img"
-              height="140" // Imposta l'altezza dell'immagine
-              image={image} // URL dell'immagine della locandina
-              alt={altText} // Alt text per l'immagine
+              height="140"
+              image={image}
+              alt={altText}
               sx={{
-                borderRadius: '10px', // Arrotonda gli angoli dell'immagine
-                width: '100%', // Assicura che l'immagine prenda tutta la larghezza disponibile
-                height: 140, // Imposta l'altezza dell'immagine
-                objectFit: 'cover', // Scala l'immagine per coprire l'intero rettangolo senza deformarsi
+                borderRadius: '10px',
+                width: '100%',
+                height: 150,
+                objectFit: 'cover',
               }}
             />
           )}
@@ -35,23 +34,18 @@ export default function ContenutoCard(props) {
             <Chip
               label={new Date(data).toLocaleDateString('it-IT')}
               sx={{
-                alignSelf: 'flex-start', // Posiziona il chip a sinistra
-                backgroundColor: '#fdd835', // Colore giallo ocra
-                color: 'white', // Colore del testo bianco
-                marginBottom: 2, // Distanza dal titolo
+                alignSelf: 'flex-start',
+                backgroundColor: '#fdd835',  
+                marginBottom: 2, 
                 marginTop: 2,
+                typography: 'label',
+                color: 'white',
               }}
             />
           )}
 
           {/* Titolo e descrizione */}
-          <Typography gutterBottom variant="h5" component="div" 
-          sx={{
-            flexGrow: 0,
-            overflow: 'hidden', // Nasconde il testo che eccede
-            textOverflow: 'ellipsis', // Aggiunge i puntini di sospensione
-            
-          }}>
+          <Typography variant="h2" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
             {title}
           </Typography>
 
