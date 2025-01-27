@@ -1,15 +1,14 @@
 "use client";
-import React from "react";
-import { useState } from "react";
-import { Box } from "@mui/material";
-import Carousel from "react-material-ui-carousel";
+import React, { useRef, useState, useEffect } from "react";
+import { Box, IconButton } from "@mui/material";
 import PodioCard from "./PodioCard";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 
 const LeaderBoardVoti = ({ carri }) => {
     // Ordiniamo i carri in base ai voti e prendiamo i primi 3
-
     const formattedData = carri.map(carro => ({
         id: carro.id,
         name: carro.nome,
@@ -19,48 +18,122 @@ const LeaderBoardVoti = ({ carri }) => {
 
     const topCarri = ([...formattedData].sort((a, b) => b.votes - a.votes).slice(0, 3));
 
-    const [currentPosition, setCurrentPosition] = useState(0);
+    // Duplichiamo gli elementi per creare l'effetto di loop infinito
+    const caroselloItems = [...topCarri, ...topCarri, ...topCarri];
 
+    // Usiamo useRef per mantenere l'indice corrente
+    const currentIndexRef = useRef(topCarri.length); // Partiamo dal primo elemento "reale"
+    const [isTransitioning, setIsTransitioning] = useState(false);
+
+    // Funzione per navigare al prossimo carro
     const handleNext = () => {
-        setCurrentPosition((prevPosition) => (prevPosition + 1) % topCarri.length);
+        if (isTransitioning) return;
+        setIsTransitioning(true);
+        currentIndexRef.current += 1;
+        updateCarosello();
     };
 
+    // Funzione per navigare al carro precedente
     const handlePrev = () => {
-        setCurrentPosition((prevPosition) => (prevPosition - 1 + topCarri.length) % topCarri.length);
+        if (isTransitioning) return;
+        setIsTransitioning(true);
+        currentIndexRef.current -= 1;
+        updateCarosello();
     };
 
+    // Funzione per aggiornare la visualizzazione del carosello
+    const updateCarosello = () => {
+        const carosello = document.getElementById("carosello");
+        if (carosello) {
+            const offset = -currentIndexRef.current * 100; // 100% per ogni slide
+            carosello.style.transition = "transform 0.5s ease-in-out";
+            carosello.style.transform = `translateX(${offset}%)`;
+        }
+    };
+
+    // Effetto per gestire il reset del carosello
+    useEffect(() => {
+        const carosello = document.getElementById("carosello");
+        const handleTransitionEnd = () => {
+            setIsTransitioning(false);
+
+            // Se siamo alla fine della lista duplicata, torniamo alla posizione "reale"
+            if (currentIndexRef.current >= topCarri.length * 2) {
+                currentIndexRef.current = topCarri.length;
+                carosello.style.transition = "none";
+                carosello.style.transform = `translateX(${-currentIndexRef.current * 100}%)`;
+            }
+
+            // Se siamo all'inizio della lista duplicata, torniamo alla posizione "reale"
+            if (currentIndexRef.current < topCarri.length) {
+                currentIndexRef.current = topCarri.length;
+                carosello.style.transition = "none";
+                carosello.style.transform = `translateX(${-currentIndexRef.current * 100}%)`;
+            }
+        };
+
+        carosello.addEventListener("transitionend", handleTransitionEnd);
+        return () => carosello.removeEventListener("transitionend", handleTransitionEnd);
+    }, [topCarri.length]);
 
     return (
-        <Box sx={{ maxWidth: "80%", padding: 2, margin: "auto" }}>
-          <Carousel
-            index={currentPosition} // Imposta la posizione corrente
-            onChange={(newIndex) => setCurrentPosition(newIndex)} // Gestisce il cambio di posizione
-            navButtonsAlwaysVisible
-            indicators={false}
-            autoPlay={true} // Se non vuoi che si muova automaticamente
-            timeout={10000} 
-            sx={{
-              overflow: "hidden",
-              width: "100%", // Assicura che il carosello prenda tutta la larghezza disponibile
-              position: "relative", // Posizione relativa per il carosello
-            }}
-          >
-            {topCarri.map((carro, index) => (
-              <Box key={carro.id} sx={{ display: "flex", justifyContent: "center" }}>
-                <PodioCard
-                  position={index + 1}
-                  name={carro.name}
-                  votes={carro.votes}
-                  image={carro.image}
-                />
-              </Box>
-            ))}
-          </Carousel>
+        <Box sx={{ width: "100%", overflow: "hidden", position: "relative" }}>
+            {/* Container del carosello */}
+            <Box
+                id="carosello"
+                sx={{
+                    display: "flex",
+                }}
+            >
+                {caroselloItems.map((carro, index) => (
+                    <Box
+                        key={`${carro.id}-${index}`}
+                        sx={{
+                            flex: "0 0 100%",
+                            display: "flex",
+                            justifyContent: "center",
+                            alignItems: "center",
+                        }}
+                    >
+                        <PodioCard
+                            position={(index % topCarri.length) + 1}
+                            name={carro.name}
+                            votes={carro.votes}
+                            image={carro.image}
+                        />
+                    </Box>
+                ))}
+            </Box>
+
+            {/* Pulsanti di navigazione */}
+            <IconButton
+                onClick={handlePrev}
+                sx={{
+                    position: "absolute",
+                    left: 0,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    backgroundColor: "rgba(255, 255, 255, 0.8)",
+                    "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.9)" },
+                }}
+            >
+                <ArrowBackIosIcon />
+            </IconButton>
+            <IconButton
+                onClick={handleNext}
+                sx={{
+                    position: "absolute",
+                    right: 0,
+                    top: "50%",
+                    transform: "translateY(-50%)",
+                    backgroundColor: "rgba(255, 255, 255, 0.8)",
+                    "&:hover": { backgroundColor: "rgba(255, 255, 255, 0.9)" },
+                }}
+            >
+                <ArrowForwardIosIcon />
+            </IconButton>
         </Box>
-      );
-      
-
-
+    );
 };
 
 export default LeaderBoardVoti;
