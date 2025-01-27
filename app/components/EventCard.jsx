@@ -14,7 +14,7 @@ import theme from '../../public/theme';
 export default function EventCard(props) {
   const { title, description, image, altText, tipo, data, orario, posizione } = props;
 
-  const titoloAbbreviato = title.length > 20 ? title.substring(0, 20) + '...' : title;
+  //const titoloAbbreviato = title.length > 20 ? title.substring(0, 20) + '...' : title;
 
   const getColoriChip = (tipo) => {
     switch (tipo?.trim().toLowerCase()) {
@@ -35,7 +35,7 @@ export default function EventCard(props) {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-    <Card sx={{ maxWidth: 345, position: 'relative', borderRadius: '10px'}}>
+    <Card sx={{ minWidth:270, maxWidth: 345, position: 'relative', borderRadius: '20px'}}>
       <CardActionArea>
         <CardContent sx={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
           {/* CardMedia per la locandina */}
@@ -67,15 +67,13 @@ export default function EventCard(props) {
           
 
           {/* Titolo e descrizione */}
-          <Typography variant="h2" component="div">
-            {titoloAbbreviato}
+          <Typography variant="h2" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+            {title}
           </Typography>
 
           {/* Didascalia per la data dell'evento */}
-          <span style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 6}}>
-            <Typography variant="body1Bold" sx={{marginTop: 1, }}>
-            Data:
-          </Typography>
+          <span style={{display: 'flex', flexDirection: 'row', alignItems: 'baseline', gap: 10}}>
+          <Typography fontSize={20}>📅</Typography>
           <Typography variant="body1" sx={{ color: 'text.primary', marginTop: 1 }}>
             {data ? new Date(data).toLocaleDateString() : 'Non disponibile'}
           </Typography>
@@ -83,10 +81,8 @@ export default function EventCard(props) {
           
 
           {/* Didascalia per l'ora dell'evento */}
-          <span style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 6}}>
-            <Typography variant="body1Bold" sx={{marginTop: 1, }}>
-            Ora:
-          </Typography>
+          <span style={{display: 'flex', flexDirection: 'row', alignItems: 'baseline', gap: 10}}>
+          <Typography fontSize={20}>🕒</Typography>
           <Typography variant="body1" sx={{ color: 'text.primary', marginTop: 1 }}>
             {orario ? new Date('1970-01-01T' + orario).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Non disponibile'}
           </Typography>
@@ -94,10 +90,8 @@ export default function EventCard(props) {
 
           {/* Didascalia per la posizione dell'evento */}
           
-          <span style={{display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 6}}>
-            <Typography variant="body1Bold" sx={{marginTop: 1, }}>
-            Posizione:
-          </Typography>
+          <span style={{display: 'flex', flexDirection: 'row', alignItems: 'baseline', gap: 10}}>
+          <Typography fontSize={20}>📍</Typography>
           <Typography variant="body1" sx={{marginTop: 1, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', }}>
             {posizione || 'Non disponibile'}
           </Typography>

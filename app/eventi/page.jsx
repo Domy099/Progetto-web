@@ -57,10 +57,10 @@ const Page = () => {
       </Box>
     </Container>
   <Container style={{ paddingTop: '20px' }}>
-    <Grid container spacing={4}>
+    <Grid container spacing={4} justifyContent="center">
       {/* https://placehold.co/600x400?text=${evento.nome} */}
       {eventi.map((evento) => (
-        <Grid item key={evento.matricola || evento.id} xs={12} sm={6} md={4}>
+        <Grid item key={evento.matricola || evento.id} xs={10} sm={6} md={4}>
           <Link href={`/eventi/${evento.matricola}`} passHref>
             <EventCard
               title={evento.nome}

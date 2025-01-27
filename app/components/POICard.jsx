@@ -8,10 +8,12 @@ const POICard = ({ nome, descrizione, marker, longitudine, latitudine }) => {
     <Card
       sx={{
         mb: 2,
+        minHeight: 150,
+        maxHeight: 150,
         maxWidth: 400,
         height: '100%',
         backgroundColor: 'background.paper',
-        borderRadius: 3,  // Arrotondamento dei bordi
+        borderRadius: 5,  // Arrotondamento dei bordi
       }}
     >
 
@@ -40,7 +42,8 @@ const POICard = ({ nome, descrizione, marker, longitudine, latitudine }) => {
               style={{
                 width: 64,
                 height: 64,
-                objectFit: 'cover'
+                objectFit: 'cover',
+                margin: 1,
               }}
             />) : (
 
@@ -54,14 +57,14 @@ const POICard = ({ nome, descrizione, marker, longitudine, latitudine }) => {
 
         </Box>
 
-        <Box sx={{ minWidth: 0 }}>  {/* Per gestire correttamente il text overflow */}
+        <Box sx={{ minWidth: 0 }}>
           <Typography
-            variant="h6"
+            variant="h3"
             component="h3"
             sx={{
               textOverflow: 'ellipsis',
               overflow: 'hidden',
-              whiteSpace: 'nowrap'
+              whiteSpace: 'nowrap',
             }}
           >
             {nome}
@@ -87,15 +90,14 @@ const POICard = ({ nome, descrizione, marker, longitudine, latitudine }) => {
           </Typography>
 
           <Typography
-            variant="body2"
-            color="text.secondary"
+            variant="body1"
             sx={{
               display: '-webkit-box',
               WebkitLineClamp: 2,
               WebkitBoxOrient: 'vertical',
               overflow: 'hidden',
               fontSize: 16,
-              mt: 1.5,
+              mt: 1.2,
             }}
           >
             {descrizione}
