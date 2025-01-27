@@ -15,7 +15,7 @@ const LeggiDiPiu = ({ text, lunghezza }) => {
         {isExpanded ? text : `${text.slice(0, lunghezza)}...`} {/* Mostra il testo troncato o completo */}
       </Typography>
       {text.length > lunghezza && (
-        <Link component="button" onClick={handleToggle} sx={{ textDecoration: 'none', color: '#1976d2' }}>
+        <Link component="button" onClick={handleToggle} sx={{ textDecoration: 'none', typography: 'label', color: '#628caf', }}>
           {isExpanded ? 'Leggi meno' : 'Leggi di più'}
         </Link>
       )}

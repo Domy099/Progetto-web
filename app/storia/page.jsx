@@ -45,7 +45,7 @@ const Storia = () => {
       <CssBaseline />
 
       <Container>
-        <Typography variant="h1" align="center" marginTop={4} marginBottom={6}>
+        <Typography variant="h1" align="center" marginTop={4} marginBottom={6} padding={4}>
           La Storia del Carnevale di Putignano
         </Typography>
 
@@ -81,12 +81,9 @@ const Storia = () => {
         <Box mb={4}>
           <Grid container spacing={2} alignItems="center">
             {/* Testo a destra */}
-            <Grid item xs={12} md={6} order={{ xs: 1, md: 1 }} marginBottom={2}>
+            <Grid item xs={12} md={6} order={{ xs: 1, md: 1 }} marginBottom={2} padding={4}>
               <Typography variant="h2" textAlign="right" marginTop={2}>
                 La Storia
-              </Typography>
-              <Typography color="text.secondary" textAlign="right" marginBottom={2}>
-
               </Typography>
               <LeggiDiPiu
                 text={storia}
@@ -118,12 +115,9 @@ const Storia = () => {
         <Box mb={4}>
 
           <Grid container spacing={2} alignItems="center">
-            <Grid item xs={12} md={6} order={{ xs: 1, md: 1 }}>
+            <Grid item xs={12} md={6} order={{ xs: 1, md: 1 }} padding={4}>
               <Typography variant="h2" >
                 Le Tradizioni
-              </Typography>
-              <Typography color="text.secondary">
-
               </Typography>
               <LeggiDiPiu
                 text={tradizioni}
@@ -153,7 +147,7 @@ const Storia = () => {
         </Typography>
         {contenuti && contenuti.length > 0 ? (
           <Container style={{ paddingTop: '20px' }}>
-            <Grid container spacing={4} justifyContent="flex-start">
+             <Grid container spacing={4} sx={{justifyContent: { xs: 'center', sm: 'flex-start' }}}>
               {contenuti.map((contenuto) => (
                 <Grid
                   item

@@ -8,7 +8,6 @@ import Link from 'next/link';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '../../public/theme';
-import { HorizontalRule } from '@mui/icons-material';
 
 const Page = () => {
   const [eventi, setEventi] = useState([]); // Stato per i dati dei carri
@@ -40,24 +39,24 @@ const Page = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Container sx={{ marginTop: 4 }}>
+      <Container>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <Typography variant="h3">
-            A Putignano il divertimento non finisce mai
+          <Typography variant="h1" align="center" sx={{ marginTop: 4 }}>
+            Gli eventi
           </Typography>
-          <Typography variant="body1">
-            Esplora un mondo di eventi e tradizioni
+          <Typography variant="body1" align="center" >
+            A Putignano il divertimento non finisce mai. Esplora un mondo di eventi e tradizioni
           </Typography>
         </Box>
       </Container>
-      <Container style={{ marginTop: '20px', marginBottom: '30px' }}>
+      <Container style={{ marginBottom: '5px' }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', }}>
+          <Divider sx={{ borderRadius: '20px', marginTop: '20px', width: '60%' }} />
           <SfilateSelector onSelect={handleParadeSelect} />
-          <Divider sx={{ borderRadius: '20px', marginTop: '20px', width: '100%' }} />
         </Box>
       </Container>
       <Container style={{ paddingTop: '20px' }}>
-        <Grid container spacing={4} justifyContent="flex-start">
+        <Grid container spacing={4} sx={{justifyContent: { xs: 'center', sm: 'flex-start' }}}>
           {/* https://placehold.co/600x400?text=${evento.nome} */}
           {eventi.map((evento) => (
             <Grid item key={evento.matricola || evento.id} xs={10} sm={6} md={4}>

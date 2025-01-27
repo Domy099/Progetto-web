@@ -43,10 +43,10 @@ export default function EventCard(props) {
             image={image} // URL dell'immagine della locandina
             alt={altText} // Alt text per l'immagine
             sx={{
-              borderRadius: '10px', // Arrotonda gli angoli dell'immagine
-              width: '100%', // Assicura che l'immagine prenda tutta la larghezza disponibile
-              height: 200, // Imposta l'altezza dell'immagine a 200px
-              objectFit: 'cover', // Scala l'immagine per coprire l'intero rettangolo senza deformarsi
+              borderRadius: '10px', 
+              width: '100%', 
+              height: 200, 
+              objectFit: 'cover',
             }}
           />
 
