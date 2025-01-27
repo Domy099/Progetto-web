@@ -39,61 +39,74 @@ const Header = ({ menuItems }) => {
       <AppBar
         position="static"
         color="transparent"
-        sx={{ backgroundColor: "#d03526" }}
+        sx={{ 
+          backgroundColor: "#d03526",
+          borderBottomLeftRadius: "20px",
+          borderBottomRightRadius: "20px",
+        }}
       >
-        <Toolbar className="flex justify-between">
-          <div className="flex items-center">
-            <IconButton
-              edge="start"
-              color="inherit"
-              aria-label="menu"
-              className="mr-2 md:hidden"
-              onClick={toggleDrawer(true)}
-            >
-              <MenuIcon />
-            </IconButton>
-            <Link href="/" passHref>
-              <Typography variant="h6" className="flex-grow">
-                <img src="/logoCarnevale.png" alt="Logo" className="h-10" />
-              </Typography>
-            </Link>
-          </div>
-          <div className="hidden md:flex space-x-4">
-            {menuItems.map((item) => (
-              <Link
-                key={item}
-                href={
-                  item.toLowerCase() === "home" ? "/" : `/${item.toLowerCase()}`
-                }
-                passHref
+        <Toolbar className="flex">
+          <Box className="flex items-center justify-between w-full">
+            {/* Box per il logo */}
+            <Box className="flex items-center" sx={{ flex: 1 }}>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                className="mr-2 md:hidden"
+                onClick={toggleDrawer(true)}
               >
-                <Button color="inherit" className="menu-button">
-                  <Typography
-                    variant="body1"
-                    color="inherit"
-                    sx={{ textTransform: "none" }}
-                  >
-                    {item}
-                  </Typography>
-                </Button>
+                <MenuIcon />
+              </IconButton>
+              <Link href="/" passHref>
+                <Typography variant="h6">
+                  <img src="/logoCarnevale.png" alt="Logo" className="h-10" />
+                </Typography>
               </Link>
-            ))}
-          </div>
-          <Link href="/dashboard" passHref>
-            <IconButton edge="end" color="inherit" aria-label="profile">
-              <AccountCircle />
-            </IconButton>
-          </Link>
+            </Box>
+
+            {/* Box per i collegamenti */}
+            <Box className="hidden md:flex space-x-4" sx={{ flex: 2, justifyContent: "center" }}>
+              {menuItems.map((item) => (
+                <Link
+                  key={item}
+                  href={
+                    item.toLowerCase() === "home" ? "/" : `/${item.toLowerCase()}`
+                  }
+                  passHref
+                >
+                  <Button color="inherit" className="menu-button">
+                    <Typography
+                      variant="body1"
+                      color="inherit"
+                      sx={{ textTransform: "none" }}
+                    >
+                      {item}
+                    </Typography>
+                  </Button>
+                </Link>
+              ))}
+            </Box>
+
+            {/* Box per l'icona del login */}
+            <Box className="flex items-center justify-end" sx={{ flex: 1 }}>
+              <Link href="/dashboard" passHref>
+                <IconButton edge="end" color="inherit" aria-label="profile">
+                  <AccountCircle />
+                </IconButton>
+              </Link>
+            </Box>
+          </Box>
         </Toolbar>
       </AppBar>
 
       <Drawer anchor="left" open={drawerOpen} onClose={toggleDrawer(false)}>
         <Box
           sx={{
-            width: 256, // Larghezza del drawer
+            width: 256,
             height: "100%",
-            bgcolor: "background.paper", // Sfondo
-            p: 0, // Nessun padding esterno
+            bgcolor: "background.paper",
+            p: 0,
           }}
           role="presentation"
           onClick={toggleDrawer(false)}
@@ -109,13 +122,13 @@ const Header = ({ menuItems }) => {
                       : `/${text.toLowerCase()}`
                   }
                   passHref
-                  style={{ textDecoration: "none", width: "100%" }} // Link occupa tutta la larghezza
+                  style={{ textDecoration: "none", width: "100%" }}
                 >
                   <ListItemButton
                     sx={{
-                      width: "100%", // Espande il bottone
-                      textAlign: "left", // Allineamento del testo
-                      padding: "12px 16px", // Padding interno
+                      width: "100%",
+                      textAlign: "left",
+                      padding: "12px 16px",
                       borderRadius: 3,
                       "&:hover": {
                         background: "#c98ab1",
@@ -139,24 +152,24 @@ const Header = ({ menuItems }) => {
         </Box>
         <div
           style={{
-            position: "absolute", // Posiziona il div in modo assoluto rispetto al contenitore
-            bottom: "0px", // Allinea il div al confine inferiore
-            right: "0px", // Allinea il div al confine destro
-            width: "100%", // Larghezza del div
-            height: "250px", // Altezza del div
-            overflow: "hidden", // Nasconde la parte che eccede dal contenitore
+            position: "absolute",
+            bottom: "0px",
+            right: "0px",
+            width: "100%",
+            height: "250px",
+            overflow: "hidden",
           }}
         >
           <img
             src="/pattern-rombi.png"
             style={{
               position: "absolute",
-              width: "85%", // Rende l'immagine larga quanto il div
-              height: "auto", // Mantiene le proporzioni dell'immagine
+              width: "85%",
+              height: "auto",
               bottom: "-20px",
               right: "-50px",
               opacity: 0.9,
-              transform: "rotate(-15deg)", // Ruota l'immagine di -25 gradi
+              transform: "rotate(-15deg)",
             }}
           />
         </div>

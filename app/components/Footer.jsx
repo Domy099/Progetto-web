@@ -10,13 +10,14 @@ const Footer = () => (
     <Box
       component="footer"
       sx={{
-        backgroundColor: "#d03526", // Colore rosa vivace dal tema
-        textAlign: "center",
+        backgroundColor: "#d03526", // Colore di sfondo
+        textAlign: "center", // Testo centrato
         padding: "24px 16px", // Spaziatura coerente
-        marginTop: "32px",
-        borderRadius: "8px 8px 0 0", // Bordo arrotondato in alto
-        boxShadow: "0 -4px 6px rgba(0, 0, 0, 0.1)", // Leggera ombra
-      }}
+        marginTop: "32px", // Margine superiore
+        borderTopLeftRadius: "20px", // Arrotondamento angolo sinistro superiore
+        borderTopRightRadius: "20px", // Arrotondamento angolo destro superiore
+        boxShadow: "0 -4px 6px rgba(0, 0, 0, 0.1)", // Ombra leggera
+      }}          
     >
       {/* Testo principale */}
       <Typography
