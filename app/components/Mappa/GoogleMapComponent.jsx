@@ -50,6 +50,7 @@ const GoogleMapComponent = () => {
     Varco: true,
   });
 
+  
   // Funzione per ottenere la posizione dell'utente
   const getUserLocation = useCallback(() => {
     if (navigator.geolocation) {
