@@ -79,6 +79,7 @@ const MultiActionAreaCard = ({
 
   const googleMapsLink = `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`; // Crea il link per avviare la  navigazione su Google Maps
 
+  
   return (
     <ThemeProvider theme={theme}>
       {/* Card principale */}
