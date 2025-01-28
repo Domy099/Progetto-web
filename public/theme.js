@@ -37,7 +37,15 @@ const theme = createTheme({
       fontSize: '0.9rem', // Dimensione personalizzata
       color: '#333',
     }
-  }
+  },
+  palette: {
+    coloriCustom: {
+      main: '#f9ee74', // Giallo
+      light: '#ed96c8', // Rosa
+      dark: '#408eb5', // Azzurro
+      contrastText: '#ffffff',
+    },
+  },
 });
 
 export default theme;
