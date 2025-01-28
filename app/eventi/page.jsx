@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from 'react';
 import EventCard from '../components/EventCard'; // Importa il componente ActionAreaCard
-import SfilateSelector from '../components/Menu';
+import SelectorMenu from '../components/SelectorMenu';
 import { Container, Grid, Typography, Box, Divider } from '@mui/material';
 import Link from 'next/link';
 
@@ -51,8 +51,12 @@ const Page = () => {
       </Container>
       <Container style={{ marginBottom: '5px' }}>
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', }}>
-          <Divider sx={{ borderRadius: '20px', marginTop: '20px', width: '60%' }} />
-          <SfilateSelector onSelect={handleParadeSelect} />
+          <Divider sx={{ borderRadius: '20px', marginTop: '20px', width: '60%', marginBottom:'20px' }} />
+          <SelectorMenu 
+            options={['Sfilata 1', 'Sfilata 2', 'Sfilata 3', 'Sfilata 4']}
+            defaultSelected='Sfilata 1'
+            onSelect={(option) => handleParadeSelect(parseInt(option.split(' ')[1]))}
+          />
         </Box>
       </Container>
       <Container style={{ paddingTop: '20px' }}>
