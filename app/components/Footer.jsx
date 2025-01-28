@@ -13,7 +13,6 @@ const Footer = () => (
         backgroundColor: "#d03526", // Colore di sfondo
         textAlign: "center", // Testo centrato
         padding: "24px 16px", // Spaziatura coerente
-        marginTop: "32px", // Margine superiore
         borderTopLeftRadius: "20px", // Arrotondamento angolo sinistro superiore
         borderTopRightRadius: "20px", // Arrotondamento angolo destro superiore
         boxShadow: "0 -4px 6px rgba(0, 0, 0, 0.1)", // Ombra leggera
