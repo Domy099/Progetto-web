@@ -28,7 +28,7 @@ const MAP_CONTAINER_STYLE = {
   height: "100vh",
 };
 
-// Coordinate di default (Brindisi, Italia)
+// Coordinate di default per il centro della mappa
 const DEFAULT_CENTER = {
   lat: 40.849202,
   lng: 17.122637,
