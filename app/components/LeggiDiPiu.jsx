@@ -11,7 +11,7 @@ const LeggiDiPiu = ({ text, lunghezza }) => {
 
   return (
     <div>
-      <Typography variant="body1" color="text.secondary" textAlign={'justify'}>
+      <Typography variant="body1" textAlign={'justify'}>
         {isExpanded ? text : `${text.slice(0, lunghezza)}...`} {/* Mostra il testo troncato o completo */}
       </Typography>
       {text.length > lunghezza && (

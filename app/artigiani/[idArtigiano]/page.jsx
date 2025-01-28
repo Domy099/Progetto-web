@@ -3,10 +3,15 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { use } from 'react';
-import { Container, Typography, Card, CardContent, CardMedia, Box } from '@mui/material';
+import { Container, Typography, Card, CardContent, CardMedia, Box, CircularProgress } from '@mui/material';
 import Link from 'next/link';
 import BottoneIndietro from '@/app/components/IndietroButton';
 import CarriCard from '@/app/components/CarriCard';
+import CssBaseline from '@mui/material/CssBaseline';
+import { ThemeProvider } from '@mui/material/styles';
+import theme from '@/public/theme';
+import LeggiDiPiu from '@/app/components/LeggiDiPiu';
+import LoadingCircle from '@/app/components/LoadingCircle';
 
 export default function ArtigianoDetailPage ({ params }){
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
@@ -42,10 +47,15 @@ export default function ArtigianoDetailPage ({ params }){
   }, [idArtigiano]);
 
   if (!artigianoDetails) {
-    return <Typography>Caricamento...</Typography>;
+    return (
+      <LoadingCircle />
+    );
+    
   }
 
   return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
     <Container>
       <BottoneIndietro destinazione="/artigiani" />
   
@@ -79,22 +89,22 @@ export default function ArtigianoDetailPage ({ params }){
   
         {/* Dettagli del nome, cognome e descrizione */}
         <Box flex={1}>
-          <Typography variant="h4" component="h1" gutterBottom color="text.secondary">
+          <Typography variant="h1" component="h1">
             {artigianoDetails.nome} {artigianoDetails.cognome}
           </Typography>
-          <Typography variant="h6" gutterBottom color="text.secondary">
-            Descrizione:
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            {artigianoDetails.storia}
-          </Typography>
+          <Typography variant="h2" marginTop={2} >
+          Descrizione:
+        </Typography>
+          {artigianoDetails.storia ? (<LeggiDiPiu text= {artigianoDetails.storia} lunghezza={450} />)
+          : (<Typography variant="body2" color="text.secondary">Nessuna descrizione disponibile.</Typography>)
+          }
         </Box>
       </Box>
   
       {/* Sezione Carri */}
       <Container sx={{ mt: 4 }}>
-        <Typography variant="h6" gutterBottom color="text.secondary">
-          Carri:
+        <Typography variant="h2" sx={{ marginTop: 3, marginBottom: 2 }}>
+          Cosa ha realizzato:
         </Typography>
   
         {artigianoDetails && artigianoDetails.carri ? (
@@ -109,12 +119,13 @@ export default function ArtigianoDetailPage ({ params }){
             </Link>
           </Box>
         ) : (
-          <Typography variant="body1" color="text.secondary">
+          <Typography variant="body2" color="text.secondary">
             Nessun carro disponibile.
           </Typography>
         )}
       </Container>
     </Container>
+    </ThemeProvider>
   );
 } 
 

@@ -12,6 +12,7 @@ import MultiActionAreaCard from "./MultiActionAreaCard";
 import { FaFilter } from "react-icons/fa";
 import { ThemeProvider, CssBaseline, Typography, Button, Box, Checkbox, FormControlLabel } from "@mui/material";
 import theme from '../../../public/theme'; // Importa il tema personalizzato
+import LoadingCircle from "../LoadingCircle";
 
 // Configurazioni tramite variabili d'ambiente
 const STRAPI_POI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
@@ -198,7 +199,7 @@ const GoogleMapComponent = () => {
 
         {/* Controlla se la mappa è caricata*/}
         {isLoading ? (
-          <Typography variant="h1">Caricamento...</Typography>
+                <LoadingCircle />
         ) : (
           <LoadScript googleMapsApiKey={GOOGLE_MAPS_API_KEY}>
             <GoogleMap

@@ -39,9 +39,9 @@ export default function EventCard(props) {
           {/* CardMedia per la locandina */}
           <CardMedia
             component="img"
-            height="140" // Imposta l'altezza dell'immagine
-            image={image} // URL dell'immagine della locandina
-            alt={altText} // Alt text per l'immagine
+            height="140"
+            image={image}
+            alt={altText}
             sx={{
               borderRadius: '10px', 
               width: '100%', 
