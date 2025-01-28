@@ -24,7 +24,6 @@ import FeedbackCard from "../components/FeedbackCard";
 
 // Import per la scansione della camera
 import BarcodeScannerComponent from "react-qr-barcode-scanner";
-import DashboardMenu from "../components/dashboardMenu";
 import theme from "../../public/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -380,7 +379,7 @@ export default function Dashboard() {
         
         {activeSection === "Biglietti" && (
           <Box sx={{ mb: 3 }}>
-            <Typography variant="h1" sx={{ color: "black" }} marginBottom={2}>
+            <Typography variant="h2" sx={{ color: "black" }} marginBottom={2}>
               I tuoi biglietti:
             </Typography>
             {userTickets.length > 0 ? (
@@ -641,7 +640,7 @@ export default function Dashboard() {
 
             {/* Sezione Azioni di Sicurezza */}
             <Box sx={{ mb: 4 }}>
-              <Typography variant="h6" sx={{ color: "#333", fontWeight: "bold", mb: 2 }}>
+              <Typography variant="body1Bold" sx={{ color: "#333", fontWeight: "bold", mb: 2 }}>
                 Azioni di Sicurezza
               </Typography>
               <Typography variant="body1" sx={{ color: "#666", mb: 2 }}>
@@ -696,7 +695,7 @@ export default function Dashboard() {
 
             {/* Sezione Cancellazione Account */}
             <Box>
-              <Typography variant="h6" sx={{ color: "#333", fontWeight: "bold", mb: 2 }}>
+              <Typography variant="body1Bold" sx={{ color: "#333", fontWeight: "bold", mb: 2 }}>
                 Cancellazione Account
               </Typography>
               <Typography variant="body1" sx={{ color: "#666", mb: 2 }}>
