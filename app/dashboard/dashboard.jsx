@@ -21,7 +21,6 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import Link from "next/link";
 import TicketCard from "../components/Biglietto/TicketCard";
 import FeedbackCard from "../components/FeedbackCard";
-import { color } from "framer-motion";
 
 // Import per la scansione della camera
 import BarcodeScannerComponent from "react-qr-barcode-scanner";
@@ -381,7 +380,7 @@ export default function Dashboard() {
         
         {activeSection === "Biglietti" && (
           <Box sx={{ mb: 3 }}>
-            <Typography variant="h6" sx={{ color: "black" }} marginBottom={2}>
+            <Typography variant="h1" sx={{ color: "black" }} marginBottom={2}>
               I tuoi biglietti:
             </Typography>
             {userTickets.length > 0 ? (
