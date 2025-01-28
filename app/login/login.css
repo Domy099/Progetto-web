@@ -1,1 +1,54 @@
-/* Da fare */
+#login-container {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+#toggle-password-btn,
+#reset-password-btn {
+  margin-top: 10px;
+  color: #007bff;
+  font-size: 16px;
+}
+
+#toggle-password-btn:hover,
+#reset-password-btn:hover {
+  color: #0056b3;
+  text-decoration: underline;
+  font-size: 17px;
+}
+
+#email-input,
+#password-input {
+  width: 100%;
+  padding: 8px;
+  margin-top: 5px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #000;
+}
+
+#error-message {
+  color: red;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+#login-btn {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 4px;
+  border: none;
+  background-color: #007bff;
+  color: #fff;
+  font-weight: bold;
+}
+
+#login-btn:hover {
+  background-color: #0056b3;
+}

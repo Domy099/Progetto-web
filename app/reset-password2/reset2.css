@@ -1,4 +1,4 @@
-#registrazione-container {
+#reset-password-container {
   max-width: 400px;
   margin: 50px auto;
   padding: 20px;
@@ -7,20 +7,14 @@
   background-color: #f9f9f9;
 }
 
-input[type="email"],
-input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="text"] {
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 4px;
   width: 100%;
   box-sizing: border-box;
-}
-
-#email-input,
-#password-input,
-#username-input{
   color: #000;
 }
 
@@ -30,20 +24,22 @@ input[type="password"] {
   margin-top: 10px;
 }
 
-#password-toggle{
+#password-toggle {
   margin-top: 10px;
   color: #007bff;
   font-size: 16px;
   cursor: pointer;
 }
 
-#password-toggle:hover{
+#password-toggle:hover {
+  margin-top: 10px;
   color: #0056b3;
   text-decoration: underline;
   font-size: 17px;
+  cursor: pointer;
 }
 
-#registrazione-button {
+#reset-password-button {
   width: 100%;
   padding: 10px;
   margin-top: 10px;
@@ -54,6 +50,6 @@ input[type="password"] {
   font-weight: bold;
 }
 
-#registrazione-button:hover {
+#reset-password-button:hover {
   background-color: #0056b3;
 }
