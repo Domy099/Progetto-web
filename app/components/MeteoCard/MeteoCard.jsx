@@ -6,6 +6,7 @@ import { Card, CardContent, Typography, CircularProgress, CardMedia } from '@mui
 import CssBaseline  from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '@/public/theme';
+import LoadingCircle from '../LoadingCircle';
 
 const MeteoCard = () => {
   const [weatherData, setWeatherData] = useState(null);
@@ -33,11 +34,7 @@ const MeteoCard = () => {
 
   if (loading) {
     return (
-      <Card sx={{ maxWidth: 345 }}>
-        <CardContent>
-          <CircularProgress />
-        </CardContent>
-      </Card>
+      <LoadingCircle />
     );
   }
 
