@@ -29,6 +29,7 @@ import DashboardMenu from "../components/dashboardMenu";
 import theme from "../../public/theme";
 import { ThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
+import SelectorMenu from "../components/SelectorMenu";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -369,7 +370,11 @@ export default function Dashboard() {
               flexDirection: "column",
             }}
           >
-            <DashboardMenu onSelect={handleSectionSelect} />
+            <SelectorMenu 
+              options={['Biglietti', 'Feedback', 'Gestione Profilo']}
+              defaultSelected='Biglietti'
+              onSelect={handleSectionSelect}
+            />
           </Box>
         </Container>
 
