@@ -11,7 +11,7 @@ import axios from "axios";
 import MultiActionAreaCard from "./MultiActionAreaCard";
 import { FaFilter } from "react-icons/fa";
 import { ThemeProvider, CssBaseline, Typography, Button, Box, Checkbox, FormControlLabel } from "@mui/material";
-import theme from '../../../public/theme'; // Importa il tema personalizzato
+import theme from '../../../public/theme'; // tema personalizzato
 import LoadingCircle from "../LoadingCircle";
 
 // Configurazioni tramite variabili d'ambiente
