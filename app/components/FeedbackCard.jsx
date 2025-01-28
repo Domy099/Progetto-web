@@ -14,11 +14,17 @@ import {
   Divider,
   IconButton,
 } from "@mui/material";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteIcon from "@mui/icons-material/Delete";
 
-
-const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackDeleted, onFeedbackUpdated, token }) => {
+const FeedbackCard = ({
+  nomeEvento,
+  descrizioneFeedback,
+  documentId,
+  onFeedbackDeleted,
+  onFeedbackUpdated,
+  token,
+}) => {
   const [openDialog, setOpenDeleteDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -44,25 +50,26 @@ const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackD
 
   // Funzione di cancellazione
   const cancellaFeedback = async () => {
-
     try {
-      const response = await fetch(`${STRAPI_API_URL}/api/feedbacks/${documentId}`,
+      const response = await fetch(
+        `${STRAPI_API_URL}/api/feedbacks/${documentId}`,
         {
-          method: 'DELETE',
+          method: "DELETE",
           headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`,
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
-        });
+        }
+      );
 
       if (response.ok) {
-        console.log('Feedback cancellato con successo');
+        console.log("Feedback cancellato con successo");
         onFeedbackDeleted(); //Callback per aggiornare la lista
       } else {
-        console.error('Errore durante la cancellazione:', response.statusText);
+        console.error("Errore durante la cancellazione:", response.statusText);
       }
     } catch (error) {
-      console.error('Errore nella richiesta:', error);
+      console.error("Errore nella richiesta:", error);
     }
   };
 
@@ -74,9 +81,9 @@ const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackD
 
   // Funzione di cancellazione
   const modificaFeedback = async () => {
-
     try {
-      const response = await fetch(`${STRAPI_API_URL}/api/feedbacks/${documentId}`,
+      const response = await fetch(
+        `${STRAPI_API_URL}/api/feedbacks/${documentId}`,
         {
           method: "PUT",
           headers: {
@@ -84,27 +91,27 @@ const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackD
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
-            data: { // Strapi richiede il campo `data`
+            data: {
+              // Strapi richiede il campo `data`
               descrizione: newFeedback,
             },
           }),
-        });
+        }
+      );
 
       if (response.ok) {
-        console.log('Feedback modificato con successo');
+        console.log("Feedback modificato con successo");
         if (onFeedbackUpdated) onFeedbackUpdated();
         setOpenSnackbar(true);
       } else {
-        console.error('Errore durante modifica:', response.statusText);
+        console.error("Errore durante modifica:", response.statusText);
       }
     } catch (error) {
-      console.error('Errore nella richiesta:', error);
-    }
-    finally {
+      console.error("Errore nella richiesta:", error);
+    } finally {
       setOpenEditDialog(false);
     }
   };
-
 
   // Handle snackbar close
   const handleCloseSnackbar = () => {
@@ -115,22 +122,33 @@ const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackD
     <Card
       sx={{
         maxWidth: 345,
-        height: 200,
-        boxShadow: 3,
-        borderRadius: 2,
+        height: "100%",
+        borderRadius: 5,
         backgroundColor: "white",
         transition: "0.3s",
         "&:hover": { transform: "scale(1.03)" },
       }}
     >
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
-        Evento:
+        <Typography
+          variant="body1Bold"
+          sx={{
+            fontSize: 17,
+          }}
+        >
+          Evento:
         </Typography>
         <Typography
-          variant="h6"
-          component="div"
-          sx={{ fontWeight: "bold", color: "#1976d2" }}
+          variant="body1"
+          component="body1"
+          sx={{
+            color: "#408eb5",
+            marginLeft: 1,
+            whiteSpace: "nowrap",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            fontSize: 17,
+          }}
         >
           {nomeEvento}
         </Typography>
@@ -141,17 +159,17 @@ const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackD
             marginTop: 1,
             overflow: "hidden",
             display: "-webkit-box",
-            WebkitLineClamp: 2,  // Limita il testo a 2 righe
+            WebkitLineClamp: 2, // Limita il testo a 2 righe
             WebkitBoxOrient: "vertical",
             textOverflow: "ellipsis",
-            minHeight: "3em",  // Imposta l'altezza minima per garantire 2 righe
+            minHeight: "3em", // Imposta l'altezza minima per garantire 2 righe
           }}
         >
           <strong>Cosa ne pensi:</strong> {descrizioneFeedback}
         </Typography>
       </CardContent>
       <Divider />
-      <CardActions sx={{ justifyContent: 'flex-end' }}>
+      <CardActions sx={{ justifyContent: "flex-end", gap: 1, marginRight: 1 }}>
         <IconButton size="small" color="primary" onClick={handleEditClickOpen}>
           <EditIcon />
         </IconButton>
@@ -160,17 +178,11 @@ const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackD
         </IconButton>
       </CardActions>
 
-
       {/* Overlay di conferma cancellazione */}
-      <Dialog
-        open={openDialog}
-        onClose={handleDeleteClickClose}
-      >
+      <Dialog open={openDialog} onClose={handleDeleteClickClose}>
         <DialogTitle>Conferma Cancellazione</DialogTitle>
         <DialogContent>
-          <Typography>
-            Sei proprio sicuro di non volerci aiutare?
-          </Typography>
+          <Typography>Sei proprio sicuro di non volerci aiutare?</Typography>
           <Typography sx={{ color: "red" }}>
             Questa azione non può essere annullata.
           </Typography>

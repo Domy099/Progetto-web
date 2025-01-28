@@ -5,8 +5,6 @@ import {
   Box,
   Button,
   Typography,
-  Card,
-  CardContent,
   Grid,
   Container,
   TextField,
@@ -15,15 +13,19 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  Divider,
 } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Link from "next/link";
 import TicketCard from "../components/Biglietto/TicketCard";
 import FeedbackCard from "../components/FeedbackCard";
-import { color } from "framer-motion";
 
 // Import per la scansione della camera
 import BarcodeScannerComponent from "react-qr-barcode-scanner";
+import theme from "../../public/theme";
+import { ThemeProvider } from "@mui/material/styles";
+import CssBaseline from "@mui/material/CssBaseline";
+import SelectorMenu from "../components/SelectorMenu";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -60,6 +62,12 @@ export default function Dashboard() {
     if (error) {
       console.error("Errore durante la scansione:", error);
     }
+  };
+
+  const [activeSection, setActiveSection] = useState('Biglietti');
+
+  const handleSectionSelect = (section) => {
+    setActiveSection(section);
   };
 
   /* SECTION - Effetto per il caricamento iniziale */
@@ -313,329 +321,422 @@ export default function Dashboard() {
   if (!user) return null;
 
   return (
-    <Container sx={{ padding: 4 }}>
-      {/* Sezione di benvenuto */}
-      <Box sx={{ mb: 4 }}>
-        <Typography
-          variant="h4"
-          sx={{
-            textAlign: "left",
-            mb: 2,
-            color: "black",
-            fontFamily: "Arial, sans-serif",
-            fontWeight: "bold",
-          }}
-        >
-          Bentornato, {user.username}!
-        </Typography>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <Container sx={{ padding: 4 }}>
+        <Container>
+          <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+            <Typography variant="h1" align="center" sx={{ marginTop: 4 }}>
+              Bentornato, {user.username}!
+            </Typography>
+            <Typography variant="body1" align="center">
+              🎭 Grazie per aver vissuto con noi la magia del Carnevale di
+              Putignano! 🎉
+            </Typography>
+          </Box>
+        </Container>
 
-        {/* Carro preferito */}
-        <Box sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
-          <Icon
-            sx={{
-              color: "red",
-              mr: 1,
-              fontSize: 30,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <FavoriteIcon />
-          </Icon>
-          <Typography variant="h6" sx={{ color: "black" }}>
-            Il tuo carro preferito:{" "}
-            {userVoto ? (
-              userVoto.carri.nome
-            ) : (
-              <>
-                Nessun carro preferito?{" "}
-                <Link
-                  href={`/carri`}
-                  passHref
-                  style={{ textDecoration: "none", color: "#d9622a" }}
-                >
-                  Corri a votare!
-                </Link>
-              </>
-            )}
-          </Typography>
-        </Box>
-      </Box>
-
-      {/*Area che mostra i biglietti*/}
-      <Box sx={{ mb: 3 }}>
-        {" "}
-        {/* Aggiunto padding */}
-        <Typography variant="h6" sx={{ color: "black" }} marginBottom={2}>
-          I tuoi biglietti:
-        </Typography>
-        {userTickets.length > 0 ? (
-          <Grid
-            container
-            spacing={2} // Ridotto spacing
-            sx={{
-              display: "flex",
-              justifyContent: "flex-start",
-              "& .MuiGrid-item": {
-                pl: 2, // Ridotto padding
-                pr: 2, // Ridotto padding
-              },
-            }}
-          >
-            {userTickets
-              .filter(
-                (ticket, index, self) =>
-                  index === self.findIndex((t) => t.codice === ticket.codice)
-              )
-              .map((ticket) => (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={6} // Modificato da 4 a 6
-                  lg={4} // Modificato da 3 a 4
-                  key={ticket.codice}
-                  sx={{
-                    mb: 2, // Ridotto margin bottom
-                    display: "flex",
-                    justifyContent: "center",
-                  }}
-                >
-                  <TicketCard
-                    nomeEvento={ticket.evento?.nome}
-                    dataEmissione={ticket.createdAt}
-                    codice={ticket.codice}
-                    id={ticket.evento?.documentId}
-                  />
-                </Grid>
-              ))}
-          </Grid>
-        ) : (
-          <p>Nessun biglietto disponibile</p>
-        )}
-        <Button
-          variant="contained"
-          onClick={() => setIsOverlayOpen(!isOverlayOpen)}
-          sx={{
-            backgroundColor: "#408eb5", // Colore personalizzato
-            "&:hover": {
-              backgroundColor: "#ed96c8", // Colore per l'hover
-            },
-          }}
-        >
-          Aggiungi Biglietto
-        </Button>
-        {/* Sezione per aggiungere un biglietto */}
-        {isOverlayOpen && (
+        <Container style={{ marginBottom: "5px" }}>
           <Box
             sx={{
-              position: "fixed",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              backgroundColor: "rgba(0, 0, 0, 0.5)",
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              zIndex: 9999,
+              flexDirection: "column",
             }}
           >
-            <Box
+            <Divider
               sx={{
-                backgroundColor: "white",
-                padding: 3,
-                borderRadius: 2,
-                width: "80%",
-                maxWidth: "500px",
-                boxShadow: 3,
-                position: "relative",
+                borderRadius: "20px",
+                marginTop: "20px",
+                width: "60%",
+                marginBottom: "20px",
               }}
-            >
-              <Button
-                onClick={() => setIsOverlayOpen(false)}
+            />
+          </Box>
+        </Container>
+
+        {/* Container per centrare il menu */}
+        <Container style={{ marginBottom: "5px" }}>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              flexDirection: "column",
+            }}
+          >
+            <SelectorMenu 
+              options={['Biglietti', 'Feedback', 'Gestione Profilo']}
+              defaultSelected='Biglietti'
+              onSelect={handleSectionSelect}
+            />
+          </Box>
+        </Container>
+
+        
+        {activeSection === "Biglietti" && (
+          <Box sx={{ mb: 3 }}>
+            <Typography variant="h2" sx={{ color: "black" }} marginBottom={2}>
+              I tuoi biglietti:
+            </Typography>
+            {userTickets.length > 0 ? (
+              <Grid
+                container
+                spacing={2} // Ridotto spacing
                 sx={{
-                  position: "absolute",
-                  right: 8,
-                  top: 20,
-                  minWidth: "auto",
-                  width: "30px",
-                  height: "30px",
-                  borderRadius: "50%",
-                  padding: 0,
-                  color: "white",
-                  backgroundColor: "#408eb5", // Colore personalizzato
-                  "&:hover": {
-                    backgroundColor: "#ed96c8", // Colore per l'hover
+                  display: "flex",
+                  justifyContent: "flex-start",
+                  "& .MuiGrid-item": {
+                    pl: 2, // Ridotto padding
+                    pr: 2, // Ridotto padding
                   },
                 }}
               >
-                ✕
-              </Button>
-
-              <Typography variant="h6" sx={{ color: "black", mb: 2 }}>
-                Aggiungi un biglietto
-              </Typography>
-              <Typography
-                variant="body2"
-                sx={{ color: "grey", mb: 2, marginTop: 1 }}
-              >
-                Aggiungi i tuoi biglietti al portafoglio per recuperarli in
-                qualsiasi momento.
-              </Typography>
-              <TextField
-                label="Inserisci Matricola"
-                variant="outlined"
-                value={matricola}
-                onChange={(e) => setMatricola(e.target.value)}
-                sx={{ mb: 2, width: "100%" }}
-              />
-              {/* Area per l'aggiunta dei biglietti */}
+                {userTickets
+                  .filter(
+                    (ticket, index, self) =>
+                      index ===
+                      self.findIndex((t) => t.codice === ticket.codice)
+                  )
+                  .map((ticket) => (
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      md={6} // Modificato da 4 a 6
+                      lg={4} // Modificato da 3 a 4
+                      key={ticket.codice}
+                      sx={{
+                        mb: 2, // Ridotto margin bottom
+                        display: "flex",
+                        justifyContent: "center",
+                      }}
+                    >
+                      <TicketCard
+                        nomeEvento={ticket.evento?.nome}
+                        dataEmissione={ticket.createdAt}
+                        codice={ticket.codice}
+                        id={ticket.evento?.documentId}
+                      />
+                    </Grid>
+                  ))}
+              </Grid>
+            ) : (
+              <p>Nessun biglietto disponibile</p>
+            )}
+            <Button
+              variant="contained"
+              onClick={() => setIsOverlayOpen(!isOverlayOpen)}
+              sx={{
+                backgroundColor: "#408eb5", // Colore personalizzato
+                "&:hover": {
+                  backgroundColor: "#ed96c8", // Colore per l'hover
+                },
+              }}
+            >
+              Aggiungi Biglietto
+            </Button>
+            {/* Sezione per aggiungere un biglietto */}
+            {isOverlayOpen && (
               <Box
-                sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}
+                sx={{
+                  position: "fixed",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  zIndex: 9999,
+                }}
               >
-                <Button
-                  variant="contained"
-                  onClick={() => setShowScanner(!showScanner)}
+                <Box
                   sx={{
-                    mr: 2,
-                    backgroundColor: "#408eb5", // Colore personalizzato
-                    "&:hover": {
-                      backgroundColor: "#ed96c8", // Colore per l'hover
-                    },
+                    backgroundColor: "white",
+                    padding: 3,
+                    borderRadius: 2,
+                    width: "80%",
+                    maxWidth: "500px",
+                    boxShadow: 3,
+                    position: "relative",
                   }}
                 >
-                  {showScanner ? "Chiudi Scanner" : "Scansiona Codice"}
-                </Button>
-                <Button
-                  variant="contained"
-                  onClick={handleAddTicket}
-                  sx={{
-                    backgroundColor: "#408eb5", // Colore personalizzato
-                    "&:hover": {
-                      backgroundColor: "#ed96c8", // Colore per l'hover
-                    },
-                  }}
-                >
-                  Aggiungi Biglietto
-                </Button>
-              </Box>
+                  <Button
+                    onClick={() => setIsOverlayOpen(false)}
+                    sx={{
+                      position: "absolute",
+                      right: 8,
+                      top: 20,
+                      minWidth: "auto",
+                      width: "30px",
+                      height: "30px",
+                      borderRadius: "50%",
+                      padding: 0,
+                      color: "white",
+                      backgroundColor: "#408eb5", // Colore personalizzato
+                      "&:hover": {
+                        backgroundColor: "#ed96c8", // Colore per l'hover
+                      },
+                    }}
+                  >
+                    ✕
+                  </Button>
 
-              {showScanner && (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    marginTop: "20px",
-                    marginBottom: "20px",
-                  }}
-                >
-                  <BarcodeScannerComponent
-                    width={500}
-                    height={500}
-                    onUpdate={(err, result) => handleScan(err, result)}
+                  <Typography variant="h6" sx={{ color: "black", mb: 2 }}>
+                    Aggiungi un biglietto
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: "grey", mb: 2, marginTop: 1 }}
+                  >
+                    Aggiungi i tuoi biglietti al portafoglio per recuperarli in
+                    qualsiasi momento.
+                  </Typography>
+                  <TextField
+                    label="Inserisci Matricola"
+                    variant="outlined"
+                    value={matricola}
+                    onChange={(e) => setMatricola(e.target.value)}
+                    sx={{ mb: 2, width: "100%" }}
                   />
-                </div>
-              )}
-            </Box>
+                  {/* Area per l'aggiunta dei biglietti */}
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mb: 3,
+                    }}
+                  >
+                    <Button
+                      variant="contained"
+                      onClick={() => setShowScanner(!showScanner)}
+                      sx={{
+                        mr: 2,
+                        backgroundColor: "#408eb5", // Colore personalizzato
+                        "&:hover": {
+                          backgroundColor: "#ed96c8", // Colore per l'hover
+                        },
+                      }}
+                    >
+                      {showScanner ? "Chiudi Scanner" : "Scansiona Codice"}
+                    </Button>
+                    <Button
+                      variant="contained"
+                      onClick={handleAddTicket}
+                      sx={{
+                        backgroundColor: "#408eb5", // Colore personalizzato
+                        "&:hover": {
+                          backgroundColor: "#ed96c8", // Colore per l'hover
+                        },
+                      }}
+                    >
+                      Aggiungi Biglietto
+                    </Button>
+                  </Box>
+
+                  {showScanner && (
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        marginTop: "20px",
+                        marginBottom: "20px",
+                      }}
+                    >
+                      <BarcodeScannerComponent
+                        width={500}
+                        height={500}
+                        onUpdate={(err, result) => handleScan(err, result)}
+                      />
+                    </div>
+                  )}
+                </Box>
+              </Box>
+            )}
           </Box>
         )}
-      </Box>
 
-      <Box sx={{ mb: 3 }}>
-        <Typography variant="h6" sx={{ color: "black" }} marginBottom={2}>
-          I tuoi Feedback:
-        </Typography>
-        {userFeedbacks.length > 0 ? (
-          <Grid container spacing={3}>
-            {userFeedbacks.map((feedback) => (
-              <Grid item xs={12} sm={6} md={4} lg={3} key={feedback.id}>
-                <FeedbackCard
-                  nomeEvento={feedback.evento}
-                  descrizioneFeedback={feedback.descrizione}
-                  documentId={feedback.id}
-                  onFeedbackDeleted={fetchFeedbacks}
-                  onFeedbackUpdated={fetchFeedbacks}
-                  token={sessionStorage.getItem("token")}
-                />
-              </Grid>
-            ))}
-          </Grid>
+{activeSection === "Feedback" && (
+  <Box sx={{ mb: 3, p: 3,  borderRadius: 2 }}>
+    {/* Carro preferito */}
+    <Box sx={{ display: "flex", alignItems: "center", gap: "5px", mb: 3 }}>
+      <Icon
+        sx={{
+          color: "red",
+          mr: 1,
+          fontSize: 30,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <FavoriteIcon />
+      </Icon>
+      <Typography variant="h6" sx={{ color: "#333", fontWeight: "bold" }}>
+        Il tuo carro preferito:{" "}
+        {userVoto ? (
+          <span style={{ color: "red" }}>{userVoto.carri.nome}</span>
         ) : (
-          <Typography sx={{ color: "black" }}>
-            Nessun feedback disponibile
-          </Typography>
+          <>
+            Nessun carro preferito?{" "}
+            <Link
+              href={`/carri`}
+              passHref
+              style={{ textDecoration: "none", color: "#d9622a", fontWeight: "bold" }}
+            >
+              Corri a votare!
+            </Link>
+          </>
         )}
-      </Box>
+      </Typography>
+    </Box>
+    
+    <Typography variant="h6" sx={{ color: "#333", fontWeight: "bold", mb: 2 }}>
+      I tuoi Feedback:
+    </Typography>
+    {userFeedbacks.length > 0 ? (
+      <Grid container spacing={3}>
+        {userFeedbacks.map((feedback) => (
+          <Grid item xs={12} sm={6} md={4} lg={3} key={feedback.id}>
+            <FeedbackCard
+              nomeEvento={feedback.evento}
+              descrizioneFeedback={feedback.descrizione}
+              documentId={feedback.id}
+              onFeedbackDeleted={fetchFeedbacks}
+              onFeedbackUpdated={fetchFeedbacks}
+              token={sessionStorage.getItem("token")}
+              sx={{
+                boxShadow: 3,
+                borderRadius: 2,
+                transition: "transform 0.2s, box-shadow 0.2s",
+                "&:hover": {
+                  transform: "translateY(-5px)",
+                  boxShadow: 6,
+                },
+              }}
+            />
+          </Grid>
+        ))}
+      </Grid>
+    ) : (
+      <Typography sx={{ color: "#666", fontStyle: "italic" }}>
+        Nessun feedback disponibile
+      </Typography>
+    )}
+  </Box>
+)}
 
-      <Box sx={{ display: "flex", justifyContent: "space-between", mt: 3 }}>
-        {/* Logout Button */}
-        <Button
-          variant="contained"
-          onClick={() => {
-            sessionStorage.removeItem("token");
-            router.push("/login");
-          }}
-          sx={{
-            backgroundColor: "#408eb5", // Colore personalizzato
-            "&:hover": {
-              backgroundColor: "#ed96c8", // Colore per l'hover
-            },
-          }}
-        >
-          Logout
-        </Button>
+        {activeSection === "Gestione Profilo" && (
+          <Box sx={{ mt: 3, p: 3, borderRadius: 2 }}>
+            {/* Titolo della sezione */}
+            <Typography variant="h5" sx={{ color: "#333", fontWeight: "bold", mb: 3 }}>
+              Gestione Profilo
+            </Typography>
 
-        {/* Reset Password Button */}
-        <Button
-          variant="contained"
-          onClick={() => {
-            sessionStorage.removeItem("token");
-            router.push("/reset-password");
-          }}
-          sx={{
-            backgroundColor: "#408eb5", // Colore personalizzato
-            "&:hover": {
-              backgroundColor: "#ed96c8", // Colore per l'hover
-            },
-          }}
-        >
-          Reset Password
-        </Button>
+            {/* Sezione Azioni di Sicurezza */}
+            <Box sx={{ mb: 4 }}>
+              <Typography variant="body1Bold" sx={{ color: "#333", fontWeight: "bold", mb: 2 }}>
+                Azioni di Sicurezza
+              </Typography>
+              <Typography variant="body1" sx={{ color: "#666", mb: 2 }}>
+                Qui puoi gestire le impostazioni di sicurezza del tuo account.
+              </Typography>
+              <Box sx={{ display: "flex", gap: 2 }}>
+                {/* Logout Button */}
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    sessionStorage.removeItem("token");
+                    router.push("/login");
+                  }}
+                  sx={{
+                    backgroundColor: "#408eb5",
+                    color: "#fff",
+                    fontWeight: "bold",
+                    borderRadius: 2,
+                    boxShadow: 2,
+                    "&:hover": {
+                      backgroundColor: "#ed96c8",
+                      boxShadow: 4,
+                    },
+                  }}
+                >
+                  Logout
+                </Button>
 
-        {/* Delete User Button */}
-        {/* Bottone per cancellare l'utente */}
-        <Button
-          variant="contained"
-          onClick={handleOpenDialog} // Apre il dialog al click
-          sx={{
-            backgroundColor: "#ff0000", // Colore personalizzato
-            "&:hover": {
-              backgroundColor: "#ed96c8", // Colore per l'hover
-            },
-          }}
-        >
-          Cancella Utente
-        </Button>
+                {/* Reset Password Button */}
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    sessionStorage.removeItem("token");
+                    router.push("/reset-password");
+                  }}
+                  sx={{
+                    backgroundColor: "#408eb5",
+                    color: "#fff",
+                    fontWeight: "bold",
+                    borderRadius: 2,
+                    boxShadow: 2,
+                    "&:hover": {
+                      backgroundColor: "#ed96c8",
+                      boxShadow: 4,
+                    },
+                  }}
+                >
+                  Reset Password
+                </Button>
+              </Box>
+            </Box>
 
-        {/* Dialog di conferma cancellazione */}
-        <Dialog open={openDialog} onClose={handleCloseDialog}>
-          <DialogTitle>Conferma cancellazione</DialogTitle>
-          <DialogContent>
-            Sei sicuro di voler cancellare il profilo? Questa azione non può
-            essere annullata.
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseDialog} color="primary">
-              Annulla
-            </Button>
-            <Button onClick={handleBlockUser} color="error">
-              Conferma
-            </Button>
-          </DialogActions>
-        </Dialog>
-      </Box>
-    </Container>
+            {/* Sezione Cancellazione Account */}
+            <Box>
+              <Typography variant="body1Bold" sx={{ color: "#333", fontWeight: "bold", mb: 2 }}>
+                Cancellazione Account
+              </Typography>
+              <Typography variant="body1" sx={{ color: "#666", mb: 2 }}>
+                Attenzione: questa azione è irreversibile. Una volta cancellato, il tuo account e tutti i dati associati verranno eliminati definitivamente.
+              </Typography>
+              <Button
+                variant="contained"
+                onClick={handleOpenDialog}
+                sx={{
+                  backgroundColor: "#408eb5",
+                  color: "#fff",
+                  fontWeight: "bold",
+                  borderRadius: 2,
+                  boxShadow: 2,
+                  "&:hover": {
+                    backgroundColor: "#ed96c8",
+                    boxShadow: 4,
+                  },
+                }}
+              >
+                Cancella Utente
+              </Button>
+            </Box>
+
+            {/* Dialog di conferma cancellazione */}
+            <Dialog open={openDialog} onClose={handleCloseDialog}>
+              <DialogTitle>Conferma cancellazione</DialogTitle>
+              <DialogContent>
+                Sei sicuro di voler cancellare il profilo? Questa azione non può
+                essere annullata.
+              </DialogContent>
+              <DialogActions>
+                <Button onClick={handleCloseDialog} color="primary">
+                  Annulla
+                </Button>
+                <Button onClick={handleBlockUser} color="error">
+                  Conferma
+                </Button>
+              </DialogActions>
+            </Dialog>
+          </Box>
+        )}
+      </Container>
+    </ThemeProvider>
   );
 }

@@ -11,7 +11,7 @@ export default function CarriCard(props) {
   const { title, description, image, altText, tipo } = props;
 
   return (
-    <Card sx={{ minWidth:270, maxWidth: 345, height: 320, position: 'relative', borderRadius: '20px'}}>
+    <Card sx={{ minWidth:270, maxWidth: 345,  height:'100%', position: 'relative', borderRadius: '20px'}}>
       <CardActionArea>
       <CardContent sx={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
           {/* CardMedia per la locandina */}
@@ -32,7 +32,7 @@ export default function CarriCard(props) {
             {title}
           </Typography>
 
-          <Typography variant="body1" marginTop={1} sx={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+          <Typography variant="body2" marginTop={1} sx={{whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', color: 'text.secondary' }}>
             {description}
           </Typography>
         </CardContent>

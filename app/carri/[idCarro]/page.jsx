@@ -11,6 +11,7 @@ import LeggiDiPiu from "@/app/components/LeggiDiPiu";
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import theme from "@/public/theme";
+import LoadingCircle from "@/app/components/LoadingCircle";
 
 export default function CarroDetailPage({ params }) {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
@@ -183,8 +184,9 @@ export default function CarroDetailPage({ params }) {
 
 
   if (!carroDetails) {
-    return <Typography>Caricamento...</Typography>;
-  }
+return (
+      <LoadingCircle />
+    );  }
 
   return (
     <ThemeProvider theme={theme}>
