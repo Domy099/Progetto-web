@@ -16,7 +16,7 @@ import {
   DialogContent,
   DialogActions,
 } from "@mui/material";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteIcon from "@mui/icons-material/Favorite";
 import Link from "next/link";
 import TicketCard from "../components/Biglietto/TicketCard";
 import FeedbackCard from "../components/FeedbackCard";
@@ -47,7 +47,6 @@ export default function Dashboard() {
   const handleCloseDialog = () => {
     setOpenDialog(false); // Nascondi il dialog
   };
-
 
   // mosta nasconti lo scanner
   const [showScanner, setShowScanner] = useState(false);
@@ -186,7 +185,6 @@ export default function Dashboard() {
     }
   };
 
-  
   useEffect(() => {
     console.log("Biglietti aggiornati:", userTickets);
   }, [userTickets]);
@@ -287,29 +285,28 @@ export default function Dashboard() {
     try {
       const token = sessionStorage.getItem("token");
       const response = await fetch(`${STRAPI_API_URL}/api/users/${user.id}`, {
-        method: 'PUT',
+        method: "PUT",
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           disattivato: true,
         }),
       });
-    
+
       if (!response.ok) {
-        throw new Error('Errore durante il blocco dell\'utente');
+        throw new Error("Errore durante il blocco dell'utente");
       }
-      console.log('Utente bloccato con successo');
+      console.log("Utente bloccato con successo");
       // Reindirizza alla pagina principale dopo il blocco
-      sessionStorage.removeItem('token');
-      router.push('/');
+      sessionStorage.removeItem("token");
+      router.push("/");
     } catch (error) {
-      console.error('Errore:', error);
+      console.error("Errore:", error);
       setError(error.message);
     }
   };
-  
 
   if (loading) return <Typography>Caricamento in corso...</Typography>;
   if (error) return <Typography>Errore: {error}</Typography>;
@@ -331,34 +328,43 @@ export default function Dashboard() {
         >
           Bentornato, {user.username}!
         </Typography>
-        
+
         {/* Carro preferito */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-        <Icon sx={{ color: 'red', mr: 1, fontSize: 30, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <FavoriteIcon />
-        </Icon>
-        <Typography variant="h6" sx={{ color: "black" }}>
-          Il tuo carro preferito:{" "}
-          {userVoto ? (
-            userVoto.carri.nome
-          ) : (
-            <>
-              Nessun carro preferito?{" "}
-              <Link
-                href={`/carri`}
-                passHref
-                style={{ textDecoration: "none", color: "#d9622a" }}
-              >
-                Corri a votare!
-              </Link>
-            </>
-          )}
-        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center", gap: "5px" }}>
+          <Icon
+            sx={{
+              color: "red",
+              mr: 1,
+              fontSize: 30,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <FavoriteIcon />
+          </Icon>
+          <Typography variant="h6" sx={{ color: "black" }}>
+            Il tuo carro preferito:{" "}
+            {userVoto ? (
+              userVoto.carri.nome
+            ) : (
+              <>
+                Nessun carro preferito?{" "}
+                <Link
+                  href={`/carri`}
+                  passHref
+                  style={{ textDecoration: "none", color: "#d9622a" }}
+                >
+                  Corri a votare!
+                </Link>
+              </>
+            )}
+          </Typography>
         </Box>
       </Box>
 
       {/*Area che mostra i biglietti*/}
-      <Box sx={{ mb: 3}}>
+      <Box sx={{ mb: 3 }}>
         {" "}
         {/* Aggiunto padding */}
         <Typography variant="h6" sx={{ color: "black" }} marginBottom={2}>
@@ -408,115 +414,133 @@ export default function Dashboard() {
         ) : (
           <p>Nessun biglietto disponibile</p>
         )}
-
-<Button
-  variant="contained"
-  onClick={() => setIsOverlayOpen(!isOverlayOpen)}
-  sx={{
-    backgroundColor: "#408eb5", // Colore personalizzato
-    '&:hover': {
-    backgroundColor: "#ed96c8", // Colore per l'hover
-  },
-  }}
->
-  Aggiungi Biglietto
-</Button>
-
-      {/* Sezione per aggiungere un biglietto */}
-      {isOverlayOpen && (
-  <Box
-    sx={{
-      position: "fixed",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: "rgba(0, 0, 0, 0.5)", // Trasparenza nera per l'overlay
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      zIndex: 9999, // Assicurati che l'overlay sia sopra gli altri elementi
-    }}
-  >
-    <Box
-      sx={{
-        backgroundColor: "white",
-        padding: 3,
-        borderRadius: 2,
-        width: "80%", // Imposta la larghezza desiderata
-        maxWidth: "500px", // Imposta la larghezza massima
-        boxShadow: 3, // Aggiungi una leggera ombra
-      }}
-    >
-      <Typography variant="h6" sx={{ color: "black", mb: 2 }}>
-        Aggiungi un biglietto
-      </Typography>
-      <Typography variant="body2" sx={{ color: "grey", mb: 2, marginTop: 1 }}>
-        Aggiungi i tuoi biglietti al portafoglio per recuperarli in qualsiasi momento.
-      </Typography>
-      <TextField
-        label="Inserisci Matricola"
-        variant="outlined"
-        value={matricola}
-        onChange={(e) => setMatricola(e.target.value)}
-        sx={{ mb: 2, width: "100%" }}
-      />
-      {/* Area per l'aggiunta dei biglietti */}
-      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
         <Button
           variant="contained"
-          onClick={() => setShowScanner(!showScanner)}
-          sx={{ mr: 2,  }}
-        >
-          {showScanner ? "Chiudi Scanner" : "Scansiona Codice"}
-        </Button>
-        <Button
-          variant="contained"
-          onClick={handleAddTicket}
+          onClick={() => setIsOverlayOpen(!isOverlayOpen)}
           sx={{
             backgroundColor: "#408eb5", // Colore personalizzato
-            '&:hover': {
-            backgroundColor: "#ed96c8", // Colore per l'hover
-          },
+            "&:hover": {
+              backgroundColor: "#ed96c8", // Colore per l'hover
+            },
           }}
         >
           Aggiungi Biglietto
         </Button>
-      </Box>
+        {/* Sezione per aggiungere un biglietto */}
+        {isOverlayOpen && (
+          <Box
+            sx={{
+              position: "fixed",
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              backgroundColor: "rgba(0, 0, 0, 0.5)",
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              zIndex: 9999,
+            }}
+          >
+            <Box
+              sx={{
+                backgroundColor: "white",
+                padding: 3,
+                borderRadius: 2,
+                width: "80%",
+                maxWidth: "500px",
+                boxShadow: 3,
+                position: "relative",
+              }}
+            >
+              <Button
+                onClick={() => setIsOverlayOpen(false)}
+                sx={{
+                  position: "absolute",
+                  right: 8,
+                  top: 20,
+                  minWidth: "auto",
+                  width: "30px",
+                  height: "30px",
+                  borderRadius: "50%",
+                  padding: 0,
+                  color: "white",
+                  backgroundColor: "#408eb5", // Colore personalizzato
+                  "&:hover": {
+                    backgroundColor: "#ed96c8", // Colore per l'hover
+                  },
+                }}
+              >
+                ✕
+              </Button>
 
-      {showScanner && (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "20px",
-            marginBottom: "20px",
-          }}
-        >
-          <BarcodeScannerComponent
-            width={500}
-            height={500}
-            onUpdate={(err, result) => handleScan(err, result)}
-          />
-        </div>
-      )}
+              <Typography variant="h6" sx={{ color: "black", mb: 2 }}>
+                Aggiungi un biglietto
+              </Typography>
+              <Typography
+                variant="body2"
+                sx={{ color: "grey", mb: 2, marginTop: 1 }}
+              >
+                Aggiungi i tuoi biglietti al portafoglio per recuperarli in
+                qualsiasi momento.
+              </Typography>
+              <TextField
+                label="Inserisci Matricola"
+                variant="outlined"
+                value={matricola}
+                onChange={(e) => setMatricola(e.target.value)}
+                sx={{ mb: 2, width: "100%" }}
+              />
+              {/* Area per l'aggiunta dei biglietti */}
+              <Box
+                sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}
+              >
+                <Button
+                  variant="contained"
+                  onClick={() => setShowScanner(!showScanner)}
+                  sx={{
+                    mr: 2,
+                    backgroundColor: "#408eb5", // Colore personalizzato
+                    "&:hover": {
+                      backgroundColor: "#ed96c8", // Colore per l'hover
+                    },
+                  }}
+                >
+                  {showScanner ? "Chiudi Scanner" : "Scansiona Codice"}
+                </Button>
+                <Button
+                  variant="contained"
+                  onClick={handleAddTicket}
+                  sx={{
+                    backgroundColor: "#408eb5", // Colore personalizzato
+                    "&:hover": {
+                      backgroundColor: "#ed96c8", // Colore per l'hover
+                    },
+                  }}
+                >
+                  Aggiungi Biglietto
+                </Button>
+              </Box>
 
-      <Button
-        variant="outlined"
-        onClick={() => setIsOverlayOpen(false)}
-        sx={{
-          mt: 2,
-          display: "block",
-          marginLeft: "auto",
-          marginRight: "auto",
-        }}
-      >
-        Chiudi
-      </Button>
-    </Box>
-  </Box>
-)}
-
+              {showScanner && (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    marginTop: "20px",
+                    marginBottom: "20px",
+                  }}
+                >
+                  <BarcodeScannerComponent
+                    width={500}
+                    height={500}
+                    onUpdate={(err, result) => handleScan(err, result)}
+                  />
+                </div>
+              )}
+            </Box>
+          </Box>
+        )}
       </Box>
 
       <Box sx={{ mb: 3 }}>
@@ -555,14 +579,13 @@ export default function Dashboard() {
           }}
           sx={{
             backgroundColor: "#408eb5", // Colore personalizzato
-            '&:hover': {
-            backgroundColor: "#ed96c8", // Colore per l'hover
-          },
-        }}
+            "&:hover": {
+              backgroundColor: "#ed96c8", // Colore per l'hover
+            },
+          }}
         >
-        Logout
+          Logout
         </Button>
-
 
         {/* Reset Password Button */}
         <Button
@@ -573,44 +596,45 @@ export default function Dashboard() {
           }}
           sx={{
             backgroundColor: "#408eb5", // Colore personalizzato
-            '&:hover': {
-            backgroundColor: "#ed96c8", // Colore per l'hover
-          },
-        }}
+            "&:hover": {
+              backgroundColor: "#ed96c8", // Colore per l'hover
+            },
+          }}
         >
           Reset Password
         </Button>
 
         {/* Delete User Button */}
         {/* Bottone per cancellare l'utente */}
-      <Button
-        variant="contained"
-        onClick={handleOpenDialog} // Apre il dialog al click
-        sx={{
-          backgroundColor: "#ff0000", // Colore personalizzato
-          '&:hover': {
-            backgroundColor: "#ed96c8", // Colore per l'hover
-          },
-        }}
-      >
-        Cancella Utente
-      </Button>
+        <Button
+          variant="contained"
+          onClick={handleOpenDialog} // Apre il dialog al click
+          sx={{
+            backgroundColor: "#ff0000", // Colore personalizzato
+            "&:hover": {
+              backgroundColor: "#ed96c8", // Colore per l'hover
+            },
+          }}
+        >
+          Cancella Utente
+        </Button>
 
-      {/* Dialog di conferma cancellazione */}
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>Conferma cancellazione</DialogTitle>
-        <DialogContent>
-          Sei sicuro di voler cancellare il profilo? Questa azione non può essere annullata.
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
-            Annulla
-          </Button>
-          <Button onClick={handleBlockUser} color="error">
-            Conferma
-          </Button>
-        </DialogActions>
-      </Dialog>
+        {/* Dialog di conferma cancellazione */}
+        <Dialog open={openDialog} onClose={handleCloseDialog}>
+          <DialogTitle>Conferma cancellazione</DialogTitle>
+          <DialogContent>
+            Sei sicuro di voler cancellare il profilo? Questa azione non può
+            essere annullata.
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDialog} color="primary">
+              Annulla
+            </Button>
+            <Button onClick={handleBlockUser} color="error">
+              Conferma
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </Container>
   );
