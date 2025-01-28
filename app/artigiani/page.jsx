@@ -47,7 +47,7 @@ const Page = () => {
         </Box>
 
         <Container style={{ paddingTop: '20px' }}>
-          <Grid container spacing={4} sx={{ justifyContent: { xs: 'center', md: 'center', sm: 'flex-start' } }}>
+          <Grid container spacing={4} sx={{ justifyContent: { xs: 'center', md: 'center', sm: 'flex-start' },mb: 4 }}>
             {artigiani.map((artigiano) => (
               <Grid item key={artigiano.idArtigiano} xs={12} sm={6} md={4}>
                 <Link href={`/artigiani/${artigiano.idArtigiano}`} passHref>

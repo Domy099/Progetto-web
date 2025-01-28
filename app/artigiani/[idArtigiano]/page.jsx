@@ -102,7 +102,7 @@ export default function ArtigianoDetailPage ({ params }){
       </Box>
   
       {/* Sezione Carri */}
-      <Container sx={{ mt: 4 }}>
+      <Container sx={{ mt: 4, mb: 4 }}>
         <Typography variant="h2" sx={{ marginTop: 3, marginBottom: 2 }}>
           Cosa ha realizzato:
         </Typography>

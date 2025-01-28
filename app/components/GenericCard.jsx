@@ -10,7 +10,7 @@ export default function GenericCard(props) {
   const { nome, cognome, storia, immagine, altText, } = props;
 
   return (
-    <Card sx={{ minWidth:270, maxWidth: 345, height:'100%', position: 'relative', borderRadius: '20px'}}>
+    <Card sx={{ minWidth:250, maxWidth: 345, height:'100%', position: 'relative', borderRadius: '20px'}}>
       <CardActionArea> 
         <CardContent sx={{ display: 'flex', flexDirection: 'column', position: 'relative', height: '100%' }}>
           {/* CardMedia per la locandina */}
