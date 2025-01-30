@@ -140,7 +140,6 @@ const FeedbackCard = ({
         </Typography>
         <Typography
           variant="body1"
-          component="body1"
           sx={{
             color: "#408eb5",
             marginLeft: 1,

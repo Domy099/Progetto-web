@@ -430,6 +430,7 @@ export default function Dashboard() {
               onClick={() => setIsOverlayOpen(!isOverlayOpen)}
               sx={{
                 backgroundColor: "#408eb5", // Colore personalizzato
+                borderRadius: 10,
                 "&:hover": {
                   backgroundColor: "#ed96c8", // Colore per l'hover
                 },
@@ -575,7 +576,7 @@ export default function Dashboard() {
       >
         <FavoriteIcon />
       </Icon>
-      <Typography variant="h6" sx={{ color: "#333", fontWeight: "bold" }}>
+      <Typography variant="body1Bold" sx={{ color: "#333", fontWeight: "bold", fontSize: "1.1rem" }}>
         Il tuo carro preferito:{" "}
         {userVoto ? (
           <span style={{ color: "red" }}>{userVoto.carri.nome}</span>
@@ -594,7 +595,7 @@ export default function Dashboard() {
       </Typography>
     </Box>
     
-    <Typography variant="h6" sx={{ color: "#333", fontWeight: "bold", mb: 2 }}>
+    <Typography variant="h2" sx={{ color: "#333", fontWeight: "bold", mb: 2 }}>
       I tuoi Feedback:
     </Typography>
     {userFeedbacks.length > 0 ? (
@@ -632,7 +633,7 @@ export default function Dashboard() {
         {activeSection === "Gestione Profilo" && (
           <Box sx={{ mt: 3, p: 3, borderRadius: 2 }}>
             {/* Titolo della sezione */}
-            <Typography variant="h5" sx={{ color: "#333", fontWeight: "bold", mb: 3 }}>
+            <Typography variant="h2" sx={{ color: "#333", fontWeight: "bold", mb: 3 }}>
               Gestione Profilo
             </Typography>
 
@@ -656,7 +657,7 @@ export default function Dashboard() {
                     backgroundColor: "#408eb5",
                     color: "#fff",
                     fontWeight: "bold",
-                    borderRadius: 2,
+                    borderRadius: 10,
                     boxShadow: 2,
                     "&:hover": {
                       backgroundColor: "#ed96c8",
@@ -675,10 +676,10 @@ export default function Dashboard() {
                     router.push("/reset-password");
                   }}
                   sx={{
-                    backgroundColor: "#408eb5",
+                    backgroundColor: "#dbb13d",
                     color: "#fff",
                     fontWeight: "bold",
-                    borderRadius: 2,
+                    borderRadius: 10,
                     boxShadow: 2,
                     "&:hover": {
                       backgroundColor: "#ed96c8",
@@ -703,10 +704,10 @@ export default function Dashboard() {
                 variant="contained"
                 onClick={handleOpenDialog}
                 sx={{
-                  backgroundColor: "#408eb5",
+                  backgroundColor: 'var(--rosso)',
                   color: "#fff",
                   fontWeight: "bold",
-                  borderRadius: 2,
+                  borderRadius: 10,
                   boxShadow: 2,
                   "&:hover": {
                     backgroundColor: "#ed96c8",
