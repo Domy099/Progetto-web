@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import "./login.css";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/public/theme";
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -65,7 +65,7 @@ const Login = () => {
           Login
         </Typography>
         <form id="login-form" onSubmit={handleLogin}>
-          <div id="email-container">
+          <div id="email-container" style={{ marginTop: "20px" }}>
             <Typography variant="label">
               Email
             </Typography>
@@ -76,9 +76,10 @@ const Login = () => {
               placeholder="esempio@mail.com"
               onChange={(e) => setEmail(e.target.value)}
               required
+              style={{ fontFamily: "kaio-regular" }}
             />
           </div>
-          <div id="password-container">
+          <div id="password-container" style={{ marginTop: "20px" }}>
             <Typography variant="label">
               Password
             </Typography>
@@ -89,14 +90,18 @@ const Login = () => {
               placeholder="Password123"
               onChange={(e) => setPassword(e.target.value)}
               required
+              style={{ fontFamily: "kaio-regular" }}
             />
-            <button
+            <Box sx={{ display: "flex", justifyContent: "center", height: "40px" }}> 
+              <button
               type="button"
               id="toggle-password-btn"
               onClick={toggleMostraPassword}
             >
-              {mostraPassword ? "Nascondi Password" : "Mostra Password"}
+              {mostraPassword ? <Typography variant="label">Nascondi Password</Typography> : <Typography variant="label">Mostra Password</Typography>}
             </button>
+            </Box>
+            
           </div>
           {error && <p id="error-message">{error}</p>}
           {failedAttempts > 0 && (
@@ -105,15 +110,19 @@ const Login = () => {
               id="reset-password-btn"
               onClick={handlePassReset}
             >
-              Hai dimenticato la password? Reimposta qui.
+              <Typography variant="body1Bold" fontSize={14} justifySelf={'center'}>Hai dimenticato la password? Reimposta qui.</Typography>
             </button>
           )}
+          <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
+            <button type="button" id="login-btn" onClick={handleRegistrazione}>
+            Registrati
+          </button>
           <button type="submit" id="login-btn">
             Login
           </button>
-          <button type="button" id="login-btn" onClick={handleRegistrazione}>
-            Registrati
-          </button>
+          
+          </Box>
+          
         </form>
       </div>
     </ThemeProvider>
