@@ -11,7 +11,7 @@ import axios from "axios";
 import MultiActionAreaCard from "./MultiActionAreaCard";
 import { FaFilter } from "react-icons/fa";
 import { ThemeProvider, CssBaseline, Typography, Button, Box, Checkbox, FormControlLabel } from "@mui/material";
-import theme from '../../../public/theme'; // Importa il tema personalizzato
+import theme from '../../../public/theme'; // tema personalizzato
 import LoadingCircle from "../LoadingCircle";
 
 // Configurazioni tramite variabili d'ambiente
@@ -28,7 +28,7 @@ const MAP_CONTAINER_STYLE = {
   height: "100vh",
 };
 
-// Coordinate di default (Brindisi, Italia)
+// Coordinate di default per il centro della mappa
 const DEFAULT_CENTER = {
   lat: 40.849202,
   lng: 17.122637,

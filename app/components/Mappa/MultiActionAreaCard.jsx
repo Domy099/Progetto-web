@@ -10,9 +10,8 @@ import Link from "next/link";
 import Chip from "@mui/material/Chip";
 import Box from "@mui/material/Box";
 import CircularProgress from "@mui/material/CircularProgress";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import theme from "../../../public/theme"; // Importa il tema personalizzato
-import { Description } from "@mui/icons-material";
 
 // Funzione per determinare i colori dei chip in base al tipo di evento
 const getColoriChip = (tipo) => {

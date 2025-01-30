@@ -2,6 +2,10 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import theme from "@/public/theme";
+import { ThemeProvider } from "@mui/material/styles";
+import "./reset2.css";
+import { Typography } from "@mui/material";
 
 const ResetPasswordConfirm = () => {
   const [password, setPassword] = useState("");
@@ -49,96 +53,81 @@ const ResetPasswordConfirm = () => {
     }
 
     try {
-      const response = await axios.post("https://strapiweb.duckdns.org/api/auth/reset-password", {
-        password,
-        passwordConfirmation: confirmPassword,
-        code: token, // Il token ricevuto via email
-      });
+      const response = await axios.post(
+        "https://strapiweb.duckdns.org/api/auth/reset-password",
+        {
+          password,
+          passwordConfirmation: confirmPassword,
+          code: token, // Il token ricevuto via email
+        }
+      );
 
       console.log("Password reimpostata con successo:", response.data);
       alert("Password reimpostata con successo! Ora puoi effettuare il login.");
       router.push("/login"); // Reindirizza alla pagina di login
     } catch (err) {
-      setError(err.response?.data?.error?.message || "Errore durante la reimpostazione della password.");
+      setError(
+        err.response?.data?.error?.message ||
+          "Errore durante la reimpostazione della password."
+      );
     }
   };
 
   return (
-    <div style={{ maxWidth: "400px", margin: "50px auto", padding: "20px", border: "1px solid #ddd", borderRadius: "5px", backgroundColor: "#f9f9f9" }}>
-      <h2 style={{ color: "black", fontWeight: "bold", textAlign: "left" }}>Imposta Nuova Password</h2>
-      <form onSubmit={handleResetPassword}>
-        <div style={{ marginBottom: "15px" }}>
-          <label htmlFor="password" style={{ color: "#333", fontWeight: "bold", display: "block", textAlign: "center" }}>Nuova Password</label>
-          <input
-            type={showPassword ? "text" : "password"}
-            id="password"
-            value={password}
-            placeholder="Password123"
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginTop: "5px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              backgroundColor: "#fff",
-              color: "#000",
-            }}
-          />
-          <button
-            type="button"
-            onClick={toggleMostraPassword}
-            style={{ marginTop: "5px", cursor: "pointer", background: "none", border: "none", color: "#007BFF" }}
-          >
-            {showPassword ? "Nascondi Password" : "Mostra Password"}
-          </button>
-        </div>
-        <div style={{ marginBottom: "15px" }}>
-          <label htmlFor="confirmPassword" style={{ color: "#333", fontWeight: "bold", display: "block", textAlign: "center" }}>Conferma Password</label>
-          <input
-            type={showConfirmPassword ? "text" : "password"}
-            id="confirmPassword"
-            value={confirmPassword}
-            placeholder="Password123"
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-            style={{
-              width: "100%",
-              padding: "8px",
-              marginTop: "5px",
-              borderRadius: "4px",
-              border: "1px solid #ccc",
-              backgroundColor: "#fff",
-              color: "#000",
-            }}
-          />
-          <button
-            type="button"
-            onClick={toggleMostraConfirmPassword}
-            style={{ marginTop: "5px", cursor: "pointer", background: "none", border: "none", color: "#007BFF" }}
-          >
-            {showConfirmPassword ? "Nascondi Password" : "Mostra Password"}
-          </button>
-        </div>
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        <button
-          type="submit"
-          style={{
-            width: "100%",
-            padding: "10px",
-            backgroundColor: "#408eb5",
-            color: "white",
-            border: "none",
-            borderRadius: "4px",
-            cursor: "pointer",
-          }}
-        >
+    <ThemeProvider theme={theme}>
+      <div id="reset-password-container">
+        <Typography variant="h2" id="reset-password-title">
           Reimposta Password
-        </button>
-      </form>
-    </div>
+        </Typography>
+        <form onSubmit={handleResetPassword}>
+          <div id="password-container">
+            <Typography variant="label" id="password-label">
+              Nuova Password
+            </Typography>
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              value={password}
+              placeholder="Password123"
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button
+              type="button"
+              onClick={toggleMostraPassword}
+              id="password-toggle"
+            >
+              {showPassword ? "Nascondi Password" : "Mostra Password"}
+            </button>
+          </div>
+          <div id="confirm-password-container">
+            <Typography variant="label" id="confirm-password-label">
+              Conferma Password
+            </Typography>
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              id="confirmPassword"
+              value={confirmPassword}
+              placeholder="Password123"
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              required
+            />
+            <button
+              type="button"
+              onClick={toggleMostraConfirmPassword}
+              id="password-toggle"
+            >
+              {showConfirmPassword ? "Nascondi Password" : "Mostra Password"}
+            </button>
+          </div>
+          {error && <p id="error-message">{error}</p>}
+          <button type="submit" id="reset-password-button">
+            Reimposta Password
+          </button>
+        </form>
+      </div>
+    </ThemeProvider>
   );
 };
 
-export default ResetPasswordConfirm; 
+export default ResetPasswordConfirm;
