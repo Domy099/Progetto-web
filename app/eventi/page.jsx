@@ -49,18 +49,22 @@ const Page = () => {
           </Typography>
         </Box>
       </Container>
-      <Container style={{ marginBottom: '5px' }}>
-        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column', }}>
-          <Divider sx={{ borderRadius: '20px', marginTop: '20px', width: '60%', marginBottom:'20px' }} />
-          <SelectorMenu 
-            options={['Sfilata 1', 'Sfilata 2', 'Sfilata 3', 'Sfilata 4']}
-            defaultSelected='Sfilata 1'
+      <Container style={{ marginBottom: "5px" }}>
+      <Box sx={{display: "flex",justifyContent: "center",alignItems: "center",flexDirection: "column",}}>
+        <Divider sx={{borderRadius: "20px",marginTop: "20px",width: "60%",marginBottom: "20px",}}/>
+        
+        {/* Box con scrolling orizzontale per il SelectorMenu */}
+        <Box sx={{width: "100%",maxWidth: "400px",overflowX: "auto",}}>
+          <SelectorMenu
+            options={["Sfilata 1", "Sfilata 2", "Sfilata 3", "Sfilata 4"]}
+            defaultSelected="Sfilata 1"
             onSelect={(option) => handleParadeSelect(parseInt(option.split(' ')[1]))}
           />
         </Box>
-      </Container>
+      </Box>
+    </Container>
       <Container style={{ paddingTop: '20px' }}>
-        <Grid container spacing={4} sx={{justifyContent: { xs: 'center', sm: 'flex-start' }}}>
+        <Grid container spacing={4} sx={{justifyContent: { xs: 'center', sm: 'flex-start' }, marginBottom: 4}}>
           {/* https://placehold.co/600x400?text=${evento.nome} */}
           {eventi.map((evento) => (
             <Grid item key={evento.matricola || evento.id} xs={10} sm={6} md={4}>

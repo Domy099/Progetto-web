@@ -23,8 +23,8 @@ function App() {
       <CssBaseline />
       <div>
         {/* Main Content */}
-        <Container >
-          <Grid container spacing={4} sx={{ marginTop: 0}}>
+        <Container  sx={{ marginBottom: 4}}>
+          <Grid container spacing={4} sx={{ marginTop: 0, marginBottom: 4}}>
             <Grid item xs={12} md={8}>
               <Typography variant="h1" marginBottom={2} lineHeight={1.5} >
                 Benvenuti al Carnevale di Putignano

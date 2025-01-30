@@ -49,7 +49,7 @@ const Page = () => {
         </Box>
     {carri && carri.length > 0 ? (
     <Container style={{ paddingTop: '20px' }}>
-      <Grid container spacing={4} sx={{justifyContent: { xs: 'center', sm: 'flex-start' }}}>
+      <Grid container spacing={4} sx={{justifyContent: { xs: 'center', sm: 'flex-start' }, marginBottom: 4}}>
         {carri.map((carro) => (
           <Grid item key={carro.idCarro} xs={10} sm={6} md={4}>
             <Link href={`/carri/${carro.idCarro}`} passHref>

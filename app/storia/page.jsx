@@ -146,8 +146,8 @@ const Storia = () => {
           Contenuti Speciali del Carnevale
         </Typography>
         {contenuti && contenuti.length > 0 ? (
-          <Container style={{ paddingTop: '20px' }}>
-             <Grid container spacing={4} sx={{justifyContent: { xs: 'center', sm: 'flex-start' }}}>
+          <Container style={{ paddingTop: '20px',  }}>
+             <Grid container spacing={4} sx={{justifyContent: { xs: 'center', sm: 'flex-start' }, marginBottom: 4}}>
               {contenuti.map((contenuto) => (
                 <Grid
                   item
@@ -180,7 +180,7 @@ const Storia = () => {
             </Grid>
           </Container>
         ) : (
-          <Typography variant="body2" color="text.secondary" align="center">
+          <Typography variant="body2" color="text.secondary" align="center" marginBottom={4}>
             Non ci sono contenuti al momento, torna più tardi.
           </Typography>
         )}

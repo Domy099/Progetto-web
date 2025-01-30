@@ -15,7 +15,7 @@ const SelectorMenu = ({ options, defaultSelected, onSelect }) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box sx={{ display: 'flex', gap: 2, mb: 4 }}>
+      <Box sx={{ display: 'flex', gap: 2, mb: 3, overflowX: "auto", "&::-webkit-scrollbar": { display: "none" } }}>
         {options.map((option) => (
           <Chip
             key={option}
