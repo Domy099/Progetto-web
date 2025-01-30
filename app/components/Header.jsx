@@ -12,7 +12,6 @@ import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
-import ListItemText from "@mui/material/ListItemText";
 import Box from "@mui/material/Box";
 
 import CssBaseline from "@mui/material/CssBaseline";

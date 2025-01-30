@@ -3,7 +3,7 @@ import { Box, IconButton, Typography } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const BottoneIndietro = ({ destinazione }) => {
-    const router = useRouter(); // Inizializzazione di useRouter
+    const router = useRouter();
   
     return (
       <Box gap={2} mt={2} onClick={() => router.push(destinazione)} edge="start">
@@ -15,7 +15,6 @@ const BottoneIndietro = ({ destinazione }) => {
           Torna indietro
         </Typography>
         </span>
-        
       </Box>
     );
   };

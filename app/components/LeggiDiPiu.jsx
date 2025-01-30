@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
 
@@ -12,7 +12,7 @@ const LeggiDiPiu = ({ text, lunghezza }) => {
   return (
     <div>
       <Typography variant="body1" textAlign={'justify'}>
-        {isExpanded ? text : `${text.slice(0, lunghezza)}...`} {/* Mostra il testo troncato o completo */}
+        {isExpanded ? text : `${text.slice(0, lunghezza)}...`}
       </Typography>
       {text.length > lunghezza && (
         <Link component="button" onClick={handleToggle} sx={{ textDecoration: 'none', typography: 'label', color: '#628caf', }}>

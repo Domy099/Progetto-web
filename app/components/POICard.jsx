@@ -13,7 +13,7 @@ const POICard = ({ nome, descrizione, marker, longitudine, latitudine }) => {
         maxWidth: 400,
         height: '100%',
         backgroundColor: 'background.paper',
-        borderRadius: 5,  // Arrotondamento dei bordi
+        borderRadius: 5,
       }}
     >
 
@@ -23,7 +23,7 @@ const POICard = ({ nome, descrizione, marker, longitudine, latitudine }) => {
           alignItems: 'center',
           gap: 3,
           p: 3,
-          '&:last-child': { pb: 3 }  // Override default padding bottom
+          '&:last-child': { pb: 3 }
         }}
       >
         <Box
@@ -34,7 +34,7 @@ const POICard = ({ nome, descrizione, marker, longitudine, latitudine }) => {
             flexShrink: 0
           }}
         >
-          {/* Se è presente un marker, viene visualizzato altrimenti viene mostrata l'icona di default */}
+
           {marker ? (
             <img
               src={marker}
@@ -50,7 +50,7 @@ const POICard = ({ nome, descrizione, marker, longitudine, latitudine }) => {
             <LocationOnIcon
               sx={{
                 fontSize: 64,
-                color: 'red',  // Colore dell'icona (puoi sostituire 'primary.main' con qualsiasi colore desiderato)
+                color: 'red',
               }}
             />)
           }
@@ -78,12 +78,11 @@ const POICard = ({ nome, descrizione, marker, longitudine, latitudine }) => {
               color: 'primary.main',
               fontWeight: 'bold',
               textDecoration: 'none',
-              
+
               fontSize: 15,
               '&:hover': {
                 textDecoration: 'underline',
               }
-
             }}
           >
             Vai a Google Maps

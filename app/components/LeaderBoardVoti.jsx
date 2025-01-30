@@ -16,11 +16,9 @@ const LeaderBoardVoti = ({ carri }) => {
     }));
 
     const topCarri = ([...formattedData].sort((a, b) => b.votes - a.votes).slice(0, 3));
-
-    // Duplichiamo gli elementi per creare l'effetto di loop infinito
     const caroselloItems = [...topCarri, ...topCarri, ...topCarri];
 
-    const currentIndexRef = useRef(topCarri.length); // Partiamo dal primo elemento "reale"
+    const currentIndexRef = useRef(topCarri.length);
     const [isTransitioning, setIsTransitioning] = useState(false);
 
     const handleNext = () => {
@@ -40,13 +38,12 @@ const LeaderBoardVoti = ({ carri }) => {
     const updateCarosello = () => {
         const carosello = document.getElementById("carosello");
         if (carosello) {
-            const offset = -currentIndexRef.current * 100; // 100% per ogni slide
+            const offset = -currentIndexRef.current * 100;
             carosello.style.transition = "transform 0.5s ease-in-out";
             carosello.style.transform = `translateX(${offset}%)`;
         }
     };
 
-    // Effetto per gestire il reset del carosello
     useEffect(() => {
         const carosello = document.getElementById("carosello");
         const handleTransitionEnd = () => {

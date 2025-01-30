@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { use } from 'react';
-import { Container, Typography, Card, CardContent, CardMedia, Box, CircularProgress } from '@mui/material';
+import { Container, Typography, Box } from '@mui/material';
 import Link from 'next/link';
 import BottoneIndietro from '@/app/components/IndietroButton';
 import CarriCard from '@/app/components/CarriCard';
@@ -15,9 +14,7 @@ import LoadingCircle from '@/app/components/LoadingCircle';
 
 export default function ArtigianoDetailPage ({ params }){
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
-    const idArtigiano = use(params).idArtigiano;
-    //const idArtigiano = params?.idArtigiano;
-    console.log(idArtigiano);
+  const idArtigiano = use(params).idArtigiano;
   const [artigianoDetails, setArtigianoDetails] = useState(null);
 
   useEffect(() => {
@@ -31,10 +28,7 @@ export default function ArtigianoDetailPage ({ params }){
         const data = await response.json();
 
         if (data && data.data) {
-
           setArtigianoDetails(data.data[0]);
-          console.log(data.data[0]);
-
         } else {
           console.warn("Nessun artigiano trovato per l'id fornito.");
         }
@@ -42,14 +36,11 @@ export default function ArtigianoDetailPage ({ params }){
         console.error("Errore nel recuperare i dati dell'artigiano:", error);
       }
     };
-
     fetchArtigianoDetails();
   }, [idArtigiano]);
 
   if (!artigianoDetails) {
-    return (
-      <LoadingCircle />
-    );
+    return (<LoadingCircle />);
     
   }
 
@@ -59,19 +50,17 @@ export default function ArtigianoDetailPage ({ params }){
     <Container>
       <BottoneIndietro destinazione="/artigiani" />
   
-      {/* Dettagli dell'artigiano */}
       <Box
         display="flex"
-        flexDirection={{ xs: "column", sm: "row" }} // Cambia da una colonna a due colonne
+        flexDirection={{ xs: "column", sm: "row" }}
         alignItems="flex-start"
         gap={4}
         mt={2}
       >
-        {/* Immagine dell'artigiano a sinistra (se disponibile) */}
         <Box
           flexShrink={0}
           sx={{
-            maxWidth: { xs: "100%", sm: "40%" }, // Larghezza dinamica per immagine
+            maxWidth: { xs: "100%", sm: "40%" },
           }}
         >
           <img
@@ -87,7 +76,6 @@ export default function ArtigianoDetailPage ({ params }){
           />
         </Box>
   
-        {/* Dettagli del nome, cognome e descrizione */}
         <Box flex={1}>
           <Typography variant="h1" component="h1">
             {artigianoDetails.nome} {artigianoDetails.cognome}
@@ -100,8 +88,7 @@ export default function ArtigianoDetailPage ({ params }){
           }
         </Box>
       </Box>
-  
-      {/* Sezione Carri */}
+      
       <Container sx={{ mt: 4, mb: 4 }}>
         <Typography variant="h2" sx={{ marginTop: 3, marginBottom: 2 }}>
           Cosa ha realizzato:

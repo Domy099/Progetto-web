@@ -23,14 +23,12 @@ function App() {
       <CssBaseline />
       <div>
         {/* Main Content */}
-        <Container  sx={{ marginBottom: 4}}>
-          <Grid container spacing={4} sx={{ marginTop: 0, marginBottom: 4}}>
+        <Container sx={{ marginBottom: 4 }}>
+          <Grid container spacing={4} sx={{ marginTop: 0, marginBottom: 4 }}>
             <Grid item xs={12} md={8}>
               <Typography variant="h1" marginBottom={2} lineHeight={1.5} >
                 Benvenuti al Carnevale di Putignano
               </Typography>
-
-
               <Typography variant="body1" paragraph className="text-black">
                 Unisciti a noi per una celebrazione colorata e vivace con costumi, musica e tanto divertimento!
               </Typography>

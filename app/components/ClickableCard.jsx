@@ -19,11 +19,11 @@ const ClickableCard = ({ item }) => (
         className="text-center cursor-pointer card"
         sx={{
           transition: 'transform 0.2s',
-          borderRadius: '16px', // Angoli arrotondati
+          borderRadius: '16px',
           overflow: 'hidden',
-          position: 'relative', // Posizionamento relativo per ancorare gli elementi assoluti
+          position: 'relative',
           width: '100%',
-          height: '200px', // Imposta un'altezza maggiore per ogni card
+          height: '200px',
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
@@ -72,9 +72,6 @@ const ClickableCard = ({ item }) => (
           style={{}}
         />
         </div>
-
-        
-
         <Typography variant="h3">{item}</Typography>
       </Paper>
     </Link>

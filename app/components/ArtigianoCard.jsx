@@ -4,7 +4,7 @@ import { Card, CardMedia, CardContent, Typography } from '@mui/material';
 const ArtigianoCard = ({ nome, cognome, storia, immagine }) => {
   return (
     <Card
-    sx={{minWidth:270, maxWidth: 345, position: 'relative', borderRadius: '20px'}}
+      sx={{ minWidth: 270, maxWidth: 345, position: 'relative', borderRadius: '20px' }}
     >
       <CardMedia
         component="img"
@@ -28,8 +28,8 @@ const ArtigianoCard = ({ nome, cognome, storia, immagine }) => {
           flexDirection: "column",
           justifyContent: "flex-start",
           padding: 2,
-          flexGrow: 1, // Consente al contenuto di espandersi
-          overflow: "hidden", // Assicura che non ci siano fuoriuscite
+          flexGrow: 1,
+          overflow: "hidden",
         }}
       >
         <Typography
@@ -39,22 +39,9 @@ const ArtigianoCard = ({ nome, cognome, storia, immagine }) => {
         >
           {nome} {cognome}
         </Typography>
-        <Typography variant="body2" component="p" sx={{color: "text.seconary", textAlign: "left", fontSize: "0.8rem" }}>
+        <Typography variant="body2" component="p" sx={{ color: "text.seconary", textAlign: "left", fontSize: "0.8rem" }}>
           Scopri di più
         </Typography>
-
-        {/*storia && (
-            <Typography
-            variant="body2"
-            component="p"
-            sx={{whiteSpace: 'nowrap',overflow:'hidden' , textOverflow: "ellipsis"}}
-            >
-            <strong>Storia:</strong> {storia}
-            </Typography>
-        )*/}
-
-
-
       </CardContent>
     </Card>
 

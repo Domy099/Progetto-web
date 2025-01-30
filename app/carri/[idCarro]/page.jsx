@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Container, Typography, Card, CardContent, CardMedia, Box, Button, Grid } from "@mui/material";
+import { Container, Typography, Box, Button, Grid } from "@mui/material";
 import BottoneIndietro from "@/app/components/IndietroButton";
 import jwt from "jsonwebtoken";
 import ArtigianoCard from "@/app/components/ArtigianoCard";
@@ -33,14 +33,10 @@ export default function CarroDetailPage({ params }) {
 
     const fetchCarroDetails = async () => {
       try {
-        const response = await fetch(
-          `${STRAPI_API_URL}/api/carri?filters[idCarro][$eq]=${idCarro}&populate[0]=immagine&populate[1]=artigiani.immagine`
-        );
+        const response = await fetch(`${STRAPI_API_URL}/api/carri?filters[idCarro][$eq]=${idCarro}&populate[0]=immagine&populate[1]=artigiani.immagine`);
         const data = await response.json();
         setCarroDetails(data.data[0]);
-        console.log("Dettagli del carro:", data.data[0]);
         setIdCarroVoto(data.data[0].id);
-
         setLoading(false);
       } catch (error) {
         console.error("Errore nel recuperare i dati del carro", error);
@@ -52,9 +48,6 @@ export default function CarroDetailPage({ params }) {
       try {
         const token = sessionStorage.getItem("token");
         if (!token) {
-          //alert("Devi effettuare l'accesso per inviare un voto");
-          //router.push("/login");
-          //return hasVoted;
           console.log("Utente non autenticato!");
           return;
         }
@@ -63,11 +56,7 @@ export default function CarroDetailPage({ params }) {
         if (!decoded || !decoded.id) {
           alert("Errore durante l'autenticazione, accedi nuovamente.");
           router.push("/login");
-          //return hasVoted;
         }
-
-        //const idUtente = decoded.id;
-        //setIdUtente(idUtente);
 
         setLoading(true);
         const response = await fetch(
@@ -88,26 +77,12 @@ export default function CarroDetailPage({ params }) {
 
         const responseData = await response.json();
 
-        // Verifica la struttura della risposta
-        /*if (!responseData.voto) {
-          throw new Error("Non ci sono voti nella risposta");
-        }
-        */
-
-        console.log("Voti fetchati:", responseData.voto);
         if (responseData.voto ) {
           if(responseData.voto.length > 0)
           {
             setHasVoted(true);
           }
         }
-
-        // Mappa i dati dei voti nel formato richiesto
-        /*const formattedVoti = {
-          id: responseData.voto.id, // Usa il campo id del voto
-          carro: responseData.voto.carri?.idCarro || "Evento sconosciuto",
-        };
-        */
 
         setVotiDetails(responseData.voto);
         return hasVoted;
@@ -120,18 +95,11 @@ export default function CarroDetailPage({ params }) {
       }
     };
 
-
-    //fetchCarroDetails();
-
     Promise.all([fetchCarroDetails(), fetchVoti()]).catch((err) => {
       setError(err.message);
       setLoading(false);
     });
   }, [idCarro, hasVoted]);
-
-  useEffect(() => {
-    console.log("Voti aggiornati:", VotiDetails);
-  }, [VotiDetails]);
 
   const handleVotaClick = async () => {
     const token = sessionStorage.getItem("token");
@@ -143,15 +111,7 @@ export default function CarroDetailPage({ params }) {
 
     const decoded = jwt.decode(token);
     const userId = decoded.id;
-    //setIdUtente(userId);
 
-    /*const { hasVoted } = await fetchVoti();
-
-    if (hasVoted) {
-      alert("Hai già votato per un carro.");
-      return;
-    }
-    */
     setLoading(true);
     try {
       const votoData = {
@@ -184,9 +144,7 @@ export default function CarroDetailPage({ params }) {
 
 
   if (!carroDetails) {
-return (
-      <LoadingCircle />
-    );  }
+      return (<LoadingCircle />);}
 
   return (
     <ThemeProvider theme={theme}>
@@ -194,23 +152,18 @@ return (
     <Container>
       <BottoneIndietro destinazione="/carri" />
       <Container>
-        {/* Contenuto dell'evento */}
         <Box
           display="flex"
-          flexDirection={{ xs: "column", sm: "row" }} // Cambia da una colonna a due colonne
+          flexDirection={{ xs: "column", sm: "row" }}
           alignItems="flex-start"
           gap={4}
           mt={4}
         >
-          {/* Immagine del carro a sinistra */}
           <Box
             flexShrink={0}
-            sx={{
-              maxWidth: { xs: "100%", sm: "40%" }, // Larghezza dinamica per immagine
-            }}
+            sx={{maxWidth: { xs: "100%", sm: "40%" },}}
           >
             <img
-
               src={carroDetails.immagine?.url ? `${STRAPI_API_URL}${carroDetails.immagine.url}` : `https://placehold.co/150?text=${carroDetails.nome}`}
               alt={`Foto del carro ${carroDetails.nome}`}
               style={{
@@ -223,12 +176,11 @@ return (
             />
           </Box>
 
-          {/* Dettagli del carro a destra */}
           <Box flex={1}>
-            <Typography variant="h1" component="h1" gutterBottom color="text.secondary">
+            <Typography variant="h1" component="h1">
               {carroDetails.nome}
             </Typography>
-            <Typography variant="h2" gutterBottom color="text.secondary">
+            <Typography variant="h2">
               Descrizione:
             </Typography>
             <LeggiDiPiu text={carroDetails.descrizione} lunghezza={600} />
@@ -287,14 +239,11 @@ return (
         </Box>
       </Container>
 
-
-      {/* Sezione Artigiani sotto i dettagli */}
-      <Container sx={{ mt: 4 }}>
+      <Container sx={{ mt: 4, mb: 4 }}>
         <Typography variant="h2" sx={{ marginTop: 3, marginBottom: 2 }}>
           Realizzato da:
         </Typography>
 
-        {/* Grid container per gestire il layout a griglia */}
         {carroDetails.artigiani.length > 0 ? (
           <Container>
             <Grid container spacing={4} sx={{justifyContent: 'flex-start'}} columnGap={4}>
@@ -302,9 +251,7 @@ return (
               <Grid
                 key={artigiano.idArtigiano}
                 item
-                xs={10}   // Una colonna su schermi molto piccoli
-                sm={6}    // Due colonne su schermi medi
-                md={4}    // Tre colonne su schermi grandi
+                xs={10} sm={6} md={4}
               >
                 <Link href={`/artigiani/${artigiano.idArtigiano}`} passHref>
                   <ArtigianoCard
@@ -317,7 +264,6 @@ return (
                   />
                 </Link>
               </Grid>
-             
             ))}
           </Grid>
           </Container>
@@ -327,9 +273,7 @@ return (
           </Typography>
         )}
       </Container>
-
     </Container>
     </ThemeProvider>
   );
-
 }

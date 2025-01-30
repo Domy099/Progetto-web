@@ -11,21 +11,18 @@ import theme from '../../public/theme';
 const Page = () => {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 
-  const [artigiani, setArtigiani] = useState([]); // Stato per i dati degli artigiani
+  const [artigiani, setArtigiani] = useState([]);
 
-  // Effettua la chiamata all'API per ottenere i dati degli artigiani
   useEffect(() => {
     const fetchArtigiani = async () => {
       try {
-        const response = await fetch(`${STRAPI_API_URL}/api/artigiani?populate=*`); // Sostituisci con l'endpoint reale
+        const response = await fetch(`${STRAPI_API_URL}/api/artigiani?populate=*`);
         const jsonData = await response.json();
-        console.log('Dati ricevuti:', jsonData);
-        setArtigiani(jsonData.data); // Accedi a jsonData.data per l'array corretto
+        setArtigiani(jsonData.data);
       } catch (error) {
         console.error('Errore durante il recupero dei dati:', error);
       }
     };
-
     fetchArtigiani();
   }, []);
 
@@ -47,7 +44,7 @@ const Page = () => {
         </Box>
 
         <Container style={{ paddingTop: '20px' }}>
-          <Grid container spacing={4} sx={{ justifyContent: { xs: 'center', md: 'center', sm: 'flex-start' },mb: 4 }}>
+          <Grid container spacing={4} sx={{ justifyContent: { xs: 'center', md: 'center', sm: 'flex-start' }, mb: 4 }}>
             {artigiani.map((artigiano) => (
               <Grid item key={artigiano.idArtigiano} xs={12} sm={6} md={4}>
                 <Link href={`/artigiani/${artigiano.idArtigiano}`} passHref>

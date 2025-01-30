@@ -1,30 +1,9 @@
 import React, { useState } from "react";
-import {
-  Card,
-  CardContent,
-  Typography,
-  CardActions,
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-  Snackbar,
-  Divider,
-  IconButton,
-} from "@mui/material";
+import { Card, CardContent, Typography, CardActions, Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField, Snackbar, Divider, IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const FeedbackCard = ({
-  nomeEvento,
-  descrizioneFeedback,
-  documentId,
-  onFeedbackDeleted,
-  onFeedbackUpdated,
-  token,
-}) => {
+const FeedbackCard = ({ nomeEvento, descrizioneFeedback, documentId, onFeedbackDeleted, onFeedbackUpdated, token, }) => {
   const [openDialog, setOpenDeleteDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -45,10 +24,9 @@ const FeedbackCard = ({
   const handleConfirmDelete = () => {
     cancellaFeedback();
     setOpenDialog(false);
-    setOpenSnackbar(true); // Show snackbar after confirmation
+    setOpenSnackbar(true);
   };
 
-  // Funzione di cancellazione
   const cancellaFeedback = async () => {
     try {
       const response = await fetch(
@@ -64,7 +42,7 @@ const FeedbackCard = ({
 
       if (response.ok) {
         console.log("Feedback cancellato con successo");
-        onFeedbackDeleted(); //Callback per aggiornare la lista
+        onFeedbackDeleted();
       } else {
         console.error("Errore durante la cancellazione:", response.statusText);
       }
@@ -76,10 +54,9 @@ const FeedbackCard = ({
   const handleConfirmUpdate = () => {
     modificaFeedback();
     setOpenDialog(false);
-    setOpenSnackbar(true); // Show snackbar after confirmation
+    setOpenSnackbar(true);
   };
 
-  // Funzione di cancellazione
   const modificaFeedback = async () => {
     try {
       const response = await fetch(
@@ -92,7 +69,6 @@ const FeedbackCard = ({
           },
           body: JSON.stringify({
             data: {
-              // Strapi richiede il campo `data`
               descrizione: newFeedback,
             },
           }),
@@ -113,7 +89,6 @@ const FeedbackCard = ({
     }
   };
 
-  // Handle snackbar close
   const handleCloseSnackbar = () => {
     setOpenSnackbar(false);
   };
@@ -158,10 +133,10 @@ const FeedbackCard = ({
             marginTop: 1,
             overflow: "hidden",
             display: "-webkit-box",
-            WebkitLineClamp: 2, // Limita il testo a 2 righe
+            WebkitLineClamp: 2,
             WebkitBoxOrient: "vertical",
             textOverflow: "ellipsis",
-            minHeight: "3em", // Imposta l'altezza minima per garantire 2 righe
+            minHeight: "3em",
           }}
         >
           <strong>Cosa ne pensi:</strong> {descrizioneFeedback}

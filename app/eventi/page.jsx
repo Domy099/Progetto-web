@@ -13,7 +13,7 @@ const Page = () => {
   const [eventi, setEventi] = useState([]); // Stato per i dati dei carri
   const [sfilataSelezionata, setSfilataSelezionata] = useState(1);
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
-  // Effettua la chiamata all'API per ottenere i dati dei carri
+
   useEffect(() => {
     const fetchEventi = async () => {
       try {
@@ -25,7 +25,6 @@ const Page = () => {
         console.error('Errore durante il recupero dei dati:', error);
       }
     };
-
     fetchEventi();
   }, [sfilataSelezionata]);
 
@@ -34,7 +33,6 @@ const Page = () => {
     setSfilataSelezionata(paradeNumber);
     console.log(`Sfilata selezionata: ${paradeNumber}`);
   };
-
 
   return (
     <ThemeProvider theme={theme}>
@@ -50,22 +48,19 @@ const Page = () => {
         </Box>
       </Container>
       <Container style={{ marginBottom: "5px" }}>
-      <Box sx={{display: "flex",justifyContent: "center",alignItems: "center",flexDirection: "column",}}>
-        <Divider sx={{borderRadius: "20px",marginTop: "20px",width: "60%",marginBottom: "20px",}}/>
-        
-        {/* Box con scrolling orizzontale per il SelectorMenu */}
-        <Box sx={{width: "100%",maxWidth: "400px",overflowX: "auto",}}>
-          <SelectorMenu
-            options={["Sfilata 1", "Sfilata 2", "Sfilata 3", "Sfilata 4"]}
-            defaultSelected="Sfilata 1"
-            onSelect={(option) => handleParadeSelect(parseInt(option.split(' ')[1]))}
-          />
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", }}>
+          <Divider sx={{ borderRadius: "20px", marginTop: "20px", width: "60%", marginBottom: "20px", }} />
+          <Box sx={{ width: "100%", maxWidth: "400px", overflowX: "auto", }}>
+            <SelectorMenu
+              options={["Sfilata 1", "Sfilata 2", "Sfilata 3", "Sfilata 4"]}
+              defaultSelected="Sfilata 1"
+              onSelect={(option) => handleParadeSelect(parseInt(option.split(' ')[1]))}
+            />
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
       <Container style={{ paddingTop: '20px' }}>
-        <Grid container spacing={4} sx={{justifyContent: { xs: 'center', sm: 'flex-start' }, marginBottom: 4}}>
-          {/* https://placehold.co/600x400?text=${evento.nome} */}
+        <Grid container spacing={4} sx={{ justifyContent: { xs: 'center', sm: 'flex-start' }, marginBottom: 4 }}>
           {eventi.map((evento) => (
             <Grid item key={evento.matricola || evento.id} xs={10} sm={6} md={4}>
               <Link href={`/eventi/${evento.matricola}`} passHref>
@@ -92,9 +87,7 @@ const Page = () => {
         </Grid>
       </Container>
     </ThemeProvider>
-
   );
-
 };
 
 export default Page;

@@ -11,9 +11,9 @@ export default function ContenutoCard(props) {
   const { title, image, altText, data } = props;
 
   return (
-    <Card sx={{ minWidth:270, maxWidth: 345, position: 'relative', borderRadius: '20px'}}>
+    <Card sx={{ minWidth: 270, maxWidth: 345, position: 'relative', borderRadius: '20px' }}>
       <CardActionArea>
-        <CardContent  sx={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
+        <CardContent sx={{ display: 'flex', flexDirection: 'column', position: 'relative' }}>
           {image && (
             <CardMedia
               component="img"
@@ -29,14 +29,13 @@ export default function ContenutoCard(props) {
             />
           )}
 
-          {/* Chip sopra il titolo */}
           {data && (
             <Chip
               label={new Date(data).toLocaleDateString('it-IT')}
               sx={{
                 alignSelf: 'flex-start',
-                backgroundColor: '#fdd835',  
-                marginBottom: 2, 
+                backgroundColor: '#fdd835',
+                marginBottom: 2,
                 marginTop: 2,
                 typography: 'label',
                 color: 'white',
@@ -44,11 +43,9 @@ export default function ContenutoCard(props) {
             />
           )}
 
-          {/* Titolo e descrizione */}
-          <Typography variant="h2" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}>
+          <Typography variant="h2" sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
             {title}
           </Typography>
-
         </CardContent>
       </CardActionArea>
     </Card>

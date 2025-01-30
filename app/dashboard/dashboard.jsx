@@ -1,20 +1,7 @@
 import { useEffect, useState } from "react";
 import jwt from "jsonwebtoken";
 import { useRouter } from "next/navigation";
-import {
-  Box,
-  Button,
-  Typography,
-  Grid,
-  Container,
-  TextField,
-  Icon,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Divider,
-} from "@mui/material";
+import { Box, Button, Typography, Grid, Container, TextField, Icon, Dialog, DialogTitle, DialogContent, DialogActions, Divider, } from "@mui/material";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import Link from "next/link";
 import TicketCard from "../components/Biglietto/TicketCard";
@@ -40,7 +27,7 @@ export default function Dashboard() {
   const [userVoto, setUserVoto] = useState(null);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
 
-  const [openDialog, setOpenDialog] = useState(false); // Stato per la visibilità del dialog
+  const [openDialog, setOpenDialog] = useState(false);
 
   const handleOpenDialog = () => {
     setOpenDialog(true); // Mostra il dialog
@@ -50,7 +37,7 @@ export default function Dashboard() {
     setOpenDialog(false); // Nascondi il dialog
   };
 
-  // mosta nasconti lo scanner
+  // Mostra o nascondi lo scanner
   const [showScanner, setShowScanner] = useState(false);
 
   // Gestione lettura da scanner
@@ -70,7 +57,6 @@ export default function Dashboard() {
     setActiveSection(section);
   };
 
-  /* SECTION - Effetto per il caricamento iniziale */
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     if (!token) {
@@ -95,9 +81,6 @@ export default function Dashboard() {
         setUser(userData);
         setUserTickets(userData.bigliettis || []);
         setUserVoto(userData.voto);
-        console.log("Voto:", userVoto);
-        // setUserFeedbacks(userData.feedbacks);
-        //console.log(userFeedbacks);
       } catch (err) {
         setError(err.message);
       }
@@ -129,7 +112,7 @@ export default function Dashboard() {
         const formattedTickets = responseData.data.map((ticket) => ({
           id: ticket.documentId,
           matricola: ticket.codice,
-          userRelation: ticket.user || null /*NOTE - Per evitare errori*/,
+          userRelation: ticket.user || null
         }));
 
         setAllTickets(formattedTickets);
@@ -175,11 +158,9 @@ export default function Dashboard() {
         throw new Error("Formato risposta non valido");
       }
 
-      console.log("Feedback fetchati:", responseData.feedbacks);
-
       // Mappa i dati dei feedback nel formato richiesto
       const formattedFeedbacks = responseData.feedbacks.map((feedback) => ({
-        id: feedback.documentId, // Usa il campo corretto dal JSON
+        id: feedback.documentId,
         evento: feedback.evento?.nome || "Evento sconosciuto",
         descrizione: feedback.descrizione || "Nessuna descrizione disponibile",
       }));
@@ -193,21 +174,6 @@ export default function Dashboard() {
     }
   };
 
-  useEffect(() => {
-    console.log("Biglietti aggiornati:", userTickets);
-  }, [userTickets]);
-
-  /*
-  useEffect(() => {
-    console.log("Feedback aggiornati:", userFeedbacks);
-  }, [userFeedbacks]);
-
-  useEffect(() => {
-    console.log("Voto aggiornato:", userVoto);
-  }, [userVoto]);
-  */
-
-  /* SECTION - Funzione per assegnare il biglietto */
   const handleSendTicket = async (ticket) => {
     const token = sessionStorage.getItem("token");
     if (!token) {
@@ -240,18 +206,18 @@ export default function Dashboard() {
       }
 
       const updatedTicket = await response.json();
-      
+
       // Aggiorna lo stato dei biglietti dell'utente aggiungendo il biglietto appena caricato dall'utente
       setUserTickets(prevTickets => [...prevTickets, updatedTicket.data]);
-      
+
       // Rimuovi il biglietto dalla lista dei biglietti disponibili
-      setAllTickets(prevTickets => 
+      setAllTickets(prevTickets =>
         prevTickets.filter(t => t.id !== ticket.ticketId)
       );
 
       // Chiudi l'overlay
       setIsOverlayOpen(false);
-      
+
       // Resetta il campo matricola
       setMatricola("");
 
@@ -263,7 +229,6 @@ export default function Dashboard() {
     }
   };
 
-  /* SECTION - Funzione per aggiungere un biglietto */
   const handleAddTicket = async () => {
     try {
       // Verifica che la matricola sia valida
@@ -294,7 +259,6 @@ export default function Dashboard() {
     }
   };
 
-  /* SECTION - Funzione logout */
   const handleLogout = () => {
     sessionStorage.removeItem("token");
     router.push("/login");
@@ -377,7 +341,7 @@ export default function Dashboard() {
               flexDirection: "column",
             }}
           >
-            <SelectorMenu 
+            <SelectorMenu
               options={['Biglietti', 'Feedback', 'Gestione Profilo']}
               defaultSelected='Biglietti'
               onSelect={handleSectionSelect}
@@ -385,7 +349,7 @@ export default function Dashboard() {
           </Box>
         </Container>
 
-        
+
         {activeSection === "Biglietti" && (
           <Box sx={{ mb: 3 }}>
             <Typography variant="h2" sx={{ color: "black" }} marginBottom={2}>
@@ -398,10 +362,7 @@ export default function Dashboard() {
                 sx={{
                   display: "flex",
                   justifyContent: "flex-start",
-                  "& .MuiGrid-item": {
-                    pl: 2, // Ridotto padding
-                    pr: 2, // Ridotto padding
-                  },
+                  "& .MuiGrid-item": { pl: 2, pr: 2, },
                 }}
               >
                 {userTickets
@@ -413,13 +374,10 @@ export default function Dashboard() {
                   .map((ticket) => (
                     <Grid
                       item
-                      xs={12}
-                      sm={6}
-                      md={6} // Modificato da 4 a 6
-                      lg={4} // Modificato da 3 a 4
+                      xs={12} sm={6} md={6} lg={4}
                       key={ticket.codice}
                       sx={{
-                        mb: 2, // Ridotto margin bottom
+                        mb: 2,
                         display: "flex",
                         justifyContent: "center",
                       }}
@@ -440,10 +398,10 @@ export default function Dashboard() {
               variant="contained"
               onClick={() => setIsOverlayOpen(!isOverlayOpen)}
               sx={{
-                backgroundColor: "#408eb5", // Colore personalizzato
+                backgroundColor: "#408eb5",
                 borderRadius: 10,
                 "&:hover": {
-                  backgroundColor: "#ed96c8", // Colore per l'hover
+                  backgroundColor: "#ed96c8",
                 },
               }}
             >
@@ -488,9 +446,9 @@ export default function Dashboard() {
                       borderRadius: "50%",
                       padding: 0,
                       color: "white",
-                      backgroundColor: "#408eb5", // Colore personalizzato
+                      backgroundColor: "#408eb5",
                       "&:hover": {
-                        backgroundColor: "#ed96c8", // Colore per l'hover
+                        backgroundColor: "#ed96c8",
                       },
                     }}
                   >
@@ -527,9 +485,9 @@ export default function Dashboard() {
                       onClick={() => setShowScanner(!showScanner)}
                       sx={{
                         mr: 2,
-                        backgroundColor: "#408eb5", // Colore personalizzato
+                        backgroundColor: "#408eb5",
                         "&:hover": {
-                          backgroundColor: "#ed96c8", // Colore per l'hover
+                          backgroundColor: "#ed96c8",
                         },
                       }}
                     >
@@ -539,9 +497,9 @@ export default function Dashboard() {
                       variant="contained"
                       onClick={handleAddTicket}
                       sx={{
-                        backgroundColor: "#408eb5", // Colore personalizzato
+                        backgroundColor: "#408eb5",
                         "&:hover": {
-                          backgroundColor: "#ed96c8", // Colore per l'hover
+                          backgroundColor: "#ed96c8",
                         },
                       }}
                     >
@@ -571,75 +529,75 @@ export default function Dashboard() {
           </Box>
         )}
 
-{activeSection === "Feedback" && (
-  <Box sx={{ mb: 3, p: 3,  borderRadius: 2 }}>
-    {/* Carro preferito */}
-    <Box sx={{ display: "flex", alignItems: "center", gap: "5px", mb: 3 }}>
-      <Icon
-        sx={{
-          color: "red",
-          mr: 1,
-          fontSize: 30,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <FavoriteIcon />
-      </Icon>
-      <Typography variant="body1Bold" sx={{ color: "#333", fontWeight: "bold", fontSize: "1.1rem" }}>
-        Il tuo carro preferito:{" "}
-        {userVoto ? (
-          <span style={{ color: "red" }}>{userVoto.carri.nome}</span>
-        ) : (
-          <>
-            Nessun carro preferito?{" "}
-            <Link
-              href={`/carri`}
-              passHref
-              style={{ textDecoration: "none", color: "#d9622a", fontWeight: "bold" }}
-            >
-              Corri a votare!
-            </Link>
-          </>
+        {activeSection === "Feedback" && (
+          <Box sx={{ mb: 3, p: 3, borderRadius: 2 }}>
+            {/* Carro preferito */}
+            <Box sx={{ display: "flex", alignItems: "center", gap: "5px", mb: 3 }}>
+              <Icon
+                sx={{
+                  color: "red",
+                  mr: 1,
+                  fontSize: 30,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <FavoriteIcon />
+              </Icon>
+              <Typography variant="body1Bold" sx={{ color: "#333", fontWeight: "bold", fontSize: "1.1rem" }}>
+                Il tuo carro preferito:{" "}
+                {userVoto ? (
+                  <span style={{ color: "red" }}>{userVoto.carri.nome}</span>
+                ) : (
+                  <>
+                    Nessun carro preferito?{" "}
+                    <Link
+                      href={`/carri`}
+                      passHref
+                      style={{ textDecoration: "none", color: "#d9622a", fontWeight: "bold" }}
+                    >
+                      Corri a votare!
+                    </Link>
+                  </>
+                )}
+              </Typography>
+            </Box>
+
+            <Typography variant="h2" sx={{ color: "#333", fontWeight: "bold", mb: 2 }}>
+              I tuoi Feedback:
+            </Typography>
+            {userFeedbacks.length > 0 ? (
+              <Grid container spacing={3}>
+                {userFeedbacks.map((feedback) => (
+                  <Grid item xs={12} sm={6} md={4} lg={3} key={feedback.id}>
+                    <FeedbackCard
+                      nomeEvento={feedback.evento}
+                      descrizioneFeedback={feedback.descrizione}
+                      documentId={feedback.id}
+                      onFeedbackDeleted={fetchFeedbacks}
+                      onFeedbackUpdated={fetchFeedbacks}
+                      token={sessionStorage.getItem("token")}
+                      sx={{
+                        boxShadow: 3,
+                        borderRadius: 2,
+                        transition: "transform 0.2s, box-shadow 0.2s",
+                        "&:hover": {
+                          transform: "translateY(-5px)",
+                          boxShadow: 6,
+                        },
+                      }}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            ) : (
+              <Typography sx={{ color: "#666", fontStyle: "italic" }}>
+                Nessun feedback disponibile
+              </Typography>
+            )}
+          </Box>
         )}
-      </Typography>
-    </Box>
-    
-    <Typography variant="h2" sx={{ color: "#333", fontWeight: "bold", mb: 2 }}>
-      I tuoi Feedback:
-    </Typography>
-    {userFeedbacks.length > 0 ? (
-      <Grid container spacing={3}>
-        {userFeedbacks.map((feedback) => (
-          <Grid item xs={12} sm={6} md={4} lg={3} key={feedback.id}>
-            <FeedbackCard
-              nomeEvento={feedback.evento}
-              descrizioneFeedback={feedback.descrizione}
-              documentId={feedback.id}
-              onFeedbackDeleted={fetchFeedbacks}
-              onFeedbackUpdated={fetchFeedbacks}
-              token={sessionStorage.getItem("token")}
-              sx={{
-                boxShadow: 3,
-                borderRadius: 2,
-                transition: "transform 0.2s, box-shadow 0.2s",
-                "&:hover": {
-                  transform: "translateY(-5px)",
-                  boxShadow: 6,
-                },
-              }}
-            />
-          </Grid>
-        ))}
-      </Grid>
-    ) : (
-      <Typography sx={{ color: "#666", fontStyle: "italic" }}>
-        Nessun feedback disponibile
-      </Typography>
-    )}
-  </Box>
-)}
 
         {activeSection === "Gestione Profilo" && (
           <Box sx={{ mt: 3, p: 3, borderRadius: 2 }}>

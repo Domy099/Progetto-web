@@ -2,8 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { TextField, Container, Typography, Card, CardContent, CardMedia, Box, Button, Grid, Icon, Chip, Divider } from '@mui/material';
-import { Event, LocationOn, DateRange, Description, LockClock, AccessTime } from '@mui/icons-material';
+import { TextField, Container, Typography, Box, Button, Grid, Chip, Divider } from '@mui/material';
 import jwt from 'jsonwebtoken';
 import BottoneIndietro from '../../components/IndietroButton';
 import { use } from 'react';
@@ -15,9 +14,7 @@ import LoadingCircle from '@/app/components/LoadingCircle';
 
 export default function EventoDetailPage({ params }) {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
-  //const matricola = params?.matricola;
   const matricola = use(params).matricola;
-  //const {matricola} = params;
   const [hasVoted, setHasVoted] = useState(false);
   const [eventoDetails, setEventoDetails] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -26,7 +23,7 @@ export default function EventoDetailPage({ params }) {
   const router = useRouter();
   const [idEvento, setIdEvento] = useState(null);
   const [feedbackText, setFeedbackText] = useState("");
-  const [showForm, setShowForm] = useState(false); // Stato per mostrare/nascondere il form
+  const [showForm, setShowForm] = useState(false);
   const oggi = new Date().toISOString().split('T')[0];
 
 
@@ -67,9 +64,6 @@ export default function EventoDetailPage({ params }) {
       const token = sessionStorage.getItem("token");
       if (!token) {
         console.log("Utente non autenticato!");
-        //alert("Devi effettuare l'accesso per inviare un feedback");
-        //router.push("/login");
-        //return { hasVoted: false, feedbackDetails: null };
         return;
       }
 
@@ -117,14 +111,12 @@ export default function EventoDetailPage({ params }) {
   //Gestisce l'invio del feedback
   const handleFeedbackClick = async () => {
     const token = sessionStorage.getItem("token");
-
     if (!token) {
       console.log("Utente non autenticato!");
       alert("Devi effettuare l'accesso per inviare un feedback");
       router.push("/login");
       return;
     }
-
     if (hasVoted) {
       setShowForm(false);
       alert("Hai già inviato un feedback per questo evento");
@@ -184,14 +176,8 @@ export default function EventoDetailPage({ params }) {
     }
   };
 
-
-
-
-
   if (!eventoDetails) {
-    return (
-          <LoadingCircle />
-        );
+    return (<LoadingCircle />);
   }
 
   return (
@@ -206,7 +192,6 @@ export default function EventoDetailPage({ params }) {
           gap={4}
           mt={3}
         >
-          {/* Immagine dell'evento a sinistra (opzionale se esiste un'immagine) */}
           <Box
             flexShrink={0}
             sx={{
@@ -231,9 +216,8 @@ export default function EventoDetailPage({ params }) {
             />
           </Box>
 
-          {/* Dettagli dell'evento a destra */}
           <Box flex={1}>
-          {eventoDetails.tipo &&
+            {eventoDetails.tipo &&
               <Chip
                 label={eventoDetails.tipo}
                 sx={{
@@ -249,49 +233,48 @@ export default function EventoDetailPage({ params }) {
               {eventoDetails.nome}
             </Typography>
 
-            <Grid container spacing={2} mt={1} direction="column"> {/* Ridotto lo spazio sopra il secondo Grid */}
+            <Grid container spacing={2} mt={1} direction="column">
               {/* Data */}
               <Grid item xs={12} display="flex" alignItems="baseline" gap={2}>
-               <Typography fontSize={20}>📅</Typography>
+                <Typography fontSize={20}>📅</Typography>
                 <span style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 6 }}>
                   <Typography variant="body1Bold">
                     Data:
                   </Typography>
-                <Typography variant="body1">
-                  {new Date(eventoDetails.data).toLocaleDateString()}
-                </Typography>
+                  <Typography variant="body1">
+                    {new Date(eventoDetails.data).toLocaleDateString()}
+                  </Typography>
                 </span>
               </Grid>
 
-                {/* Posizione */}
-                <Grid item xs={12} display="flex" alignItems="baseline" gap={2}>
+              {/* Posizione */}
+              <Grid item xs={12} display="flex" alignItems="baseline" gap={2}>
                 <Typography fontSize={20}>📍</Typography>
                 <span style={{ display: 'flex', flexDirection: 'row', alignItems: 'baseline', gap: 6 }}>
                   <Typography variant="body1Bold">
-                  Posizione:
+                    Posizione:
                   </Typography>
                   <Typography variant="body1">
-                  {eventoDetails.posizione || 'Non specificata'}
+                    {eventoDetails.posizione || 'Non specificata'}
                   </Typography>
-                </span>
-                </Grid>
-
-                {/* Orario */}
-              <Grid item xs={12} display="flex" alignItems="baseline" gap={2}>
-              <Typography fontSize={20}>🕒</Typography>
-              <span style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-                <Typography variant="body1Bold">
-                    Ora:
-                  </Typography>
-                <Typography variant="body1" >
-                  {eventoDetails.Orario ? new Date('1970-01-01T' + eventoDetails.Orario).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Non specificato'}
-                </Typography>
                 </span>
               </Grid>
 
+              {/* Orario */}
+              <Grid item xs={12} display="flex" alignItems="baseline" gap={2}>
+                <Typography fontSize={20}>🕒</Typography>
+                <span style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+                  <Typography variant="body1Bold">
+                    Ora:
+                  </Typography>
+                  <Typography variant="body1" >
+                    {eventoDetails.Orario ? new Date('1970-01-01T' + eventoDetails.Orario).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Non specificato'}
+                  </Typography>
+                </span>
+              </Grid>
             </Grid>
 
-            {eventoDetails.descrizione && (<Grid container spacing={2} alignItems="center" mt={1}> {/* Ridotto lo spazio sopra il Grid */}
+            {eventoDetails.descrizione && (<Grid container spacing={2} alignItems="center" mt={1}>
               {/* Descrizione */}
               <Grid item xs={12} sm={6} display="flex" alignItems="center">
                 <Typography variant="body1Bold">
@@ -305,17 +288,13 @@ export default function EventoDetailPage({ params }) {
               </Grid>
             </Grid>)
             }
-            
-
-
           </Box>
-
         </Box>
-        
-        <Divider sx={{margin: 3}}/>
+
+        <Divider sx={{ margin: 3 }} />
 
         {/* Punti di interesse */}
-        <Typography variant="h2"  sx={{ mt: 4 }}>
+        <Typography variant="h2" sx={{ mt: 4 }}>
           Punti di Interesse dell'evento:
         </Typography>
 
@@ -338,12 +317,12 @@ export default function EventoDetailPage({ params }) {
           </Typography>
         )}
 
-        <Divider sx={{margin: 3}}/>
+        <Divider sx={{ margin: 3 }} />
 
-        <Typography variant="h2"  sx={{ mt: 4 }}>
+        <Typography variant="h2" sx={{ mt: 4 }}>
           Hai da dirci qualcosa sull'evento?
         </Typography>
-        {/* Confronta la data odierna con quella dell'evento per il feedback */}
+
         {feedbackDetails ? (
           <Typography variant="body1" >
             Hai già inviato un feedback per questo evento.
@@ -358,6 +337,7 @@ export default function EventoDetailPage({ params }) {
                   sx={{
                     borderRadius: 20,
                     mt: 2,
+                    mb: 4,
                     backgroundColor: '#408eb5',
                     '&:hover': {
                       backgroundColor: '#ed96c8', // Colore per lo stato hover
@@ -367,16 +347,15 @@ export default function EventoDetailPage({ params }) {
                   Lascia un feedback
                 </Button>
 
-
                 {showForm && (
                   <Box mt={2}>
-                    <Typography variant="h6" gutterBottom sx={{ color: 'black' }}>
+                    <Typography variant="body1Bold">
                       Scrivi il tuo feedback
                     </Typography>
                     <TextField
                       multiline
-                      rows={3} // Numero di righe visibili
-                      fullWidth // Per occupare tutta la larghezza del container
+                      rows={3}
+                      fullWidth
                       value={feedbackText}
                       onChange={(e) => setFeedbackText(e.target.value)}
                       placeholder="Inserisci qui il tuo feedback..."
@@ -386,9 +365,10 @@ export default function EventoDetailPage({ params }) {
                       color="secondary"
                       onClick={handleSubmitFeedback}
                       sx={{
-                        mt: 2, // Margine superiore
-                        backgroundColor: '#EA580C', // Colore di sfondo personalizzato
-                        '&:hover': { backgroundColor: '#D1550A' }, // Colore al passaggio del mouse
+                        mt: 2,
+                        mb: 4,
+                        backgroundColor: '#EA580C',
+                        '&:hover': { backgroundColor: '#D1550A' },
                       }}
                     >
                       Invia
@@ -401,13 +381,11 @@ export default function EventoDetailPage({ params }) {
                 Torna dopo l'evento per farci sapere che ne pensi!
               </Typography>
             )
-
           )
         }
       </Container>
     </ThemeProvider>
   );
-
 }
 
 const getColoriChip = (tipo) => {

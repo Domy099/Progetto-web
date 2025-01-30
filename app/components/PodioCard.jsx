@@ -27,8 +27,8 @@ const PodioCard = ({ position, name, votes, image }) => {
         sx={{
           width: 100,
           height: 100,
-          marginBottom: { xs: 2, sm: 0 }, // Aggiunge margine solo su schermi stretti
-          marginRight: { sm: 2, xs: 0 }, // Sposta a destra solo su schermi ampi
+          marginBottom: { xs: 2, sm: 0 },
+          marginRight: { sm: 2, xs: 0 },
         }}
       />
       <CardContent

@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from 'react';
-import { Container, Grid, Typography, Card, CardContent, CardMedia, Button, Box } from '@mui/material';
+import { Container, Grid, Typography, Card, CardMedia, Box } from '@mui/material';
 import Link from 'next/link';
 import ContenutoCard from '../components/ContenutoCard';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -8,14 +8,11 @@ import { ThemeProvider } from '@mui/material/styles';
 import theme from '@/public/theme';
 import LeggiDiPiu from '../components/LeggiDiPiu';
 
-
 const Storia = () => {
   const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
   const [contenuti, setContenuti] = useState([]);
 
-  // Caricamento dei contenuti da Strapi
   useEffect(() => {
-
     const fetchContenutiDetails = async () => {
       try {
         const response = await fetch(
@@ -24,9 +21,7 @@ const Storia = () => {
         const data = await response.json();
 
         if (data && data.data) {
-
           setContenuti(data.data);
-          console.log(contenuti);
 
         } else {
           console.warn("Nessun contenuto trovato.");
@@ -43,7 +38,6 @@ const Storia = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-
       <Container>
         <Typography variant="h1" align="center" marginTop={4} marginBottom={6} padding={4}>
           La Storia del Carnevale di Putignano
@@ -51,7 +45,6 @@ const Storia = () => {
 
         {/* Sezione 1: Introduzione */}
         <Box mb={4}>
-
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} md={6} order={{ xs: 1, md: 1 }}>
               <Typography variant="h2">
@@ -69,7 +62,7 @@ const Storia = () => {
                 <CardMedia
                   component="img"
                   height="300"
-                  image=".\img\storia\storia_1.jpg" // Sostituisci con l'immagine appropriata
+                  image=".\img\storia\storia_1.jpg"
                   alt="Immagine Carnevale Putignano"
                 />
               </Card>
@@ -113,7 +106,6 @@ const Storia = () => {
 
         {/* Sezione 3: Tradizioni */}
         <Box mb={4}>
-
           <Grid container spacing={2} alignItems="center">
             <Grid item xs={12} md={6} order={{ xs: 1, md: 1 }} padding={4}>
               <Typography variant="h2" >
@@ -130,7 +122,7 @@ const Storia = () => {
                 <CardMedia
                   component="img"
                   height="300"
-                  image=".\img\storia\storia_3.jpg" // Sostituisci con l'immagine appropriata
+                  image=".\img\storia\storia_3.jpg"
                   alt="Immagine Tradizioni Carnevale"
                 />
               </Card>
@@ -138,16 +130,13 @@ const Storia = () => {
           </Grid>
         </Box>
 
-
-
         {/* Sezione 4: Contenuti Caricati dal Server (Strapi) */}
-
         <Typography variant="h3" fontSize={30} align="center" marginTop={5} marginBottom={4}>
           Contenuti Speciali del Carnevale
         </Typography>
         {contenuti && contenuti.length > 0 ? (
-          <Container style={{ paddingTop: '20px',  }}>
-             <Grid container spacing={4} sx={{justifyContent: { xs: 'center', sm: 'flex-start' }, marginBottom: 4}}>
+          <Container style={{ paddingTop: '20px', }}>
+            <Grid container spacing={4} sx={{ justifyContent: { xs: 'center', sm: 'flex-start' }, marginBottom: 4 }}>
               {contenuti.map((contenuto) => (
                 <Grid
                   item

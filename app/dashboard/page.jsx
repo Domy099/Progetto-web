@@ -2,19 +2,8 @@
 import React, { useState } from 'react';
 import Dashboard from './dashboard';
 
-
-
-
-//<Registrazione />
-
 function App() {
-
-	return (
-	<>
-	<Dashboard />
-	</>
-	);
-	
+	return (<Dashboard />);
 }
 
 export default App;
