@@ -239,11 +239,22 @@ export default function Dashboard() {
         throw new Error("Errore nell'aggiornamento del biglietto");
       }
 
-      await response.json();
-      console.log("Biglietto aggiornato con successo");
+      const updatedTicket = await response.json();
+      
+      // Aggiorna lo stato dei biglietti dell'utente aggiungendo il biglietto appena caricato dall'utente
+      setUserTickets(prevTickets => [...prevTickets, updatedTicket.data]);
+      
+      // Rimuovi il biglietto dalla lista dei biglietti disponibili
+      setAllTickets(prevTickets => 
+        prevTickets.filter(t => t.id !== ticket.ticketId)
+      );
 
-      // Ricarica la pagina
-      window.location.reload();
+      // Chiudi l'overlay
+      setIsOverlayOpen(false);
+      
+      // Resetta il campo matricola
+      setMatricola("");
+
     } catch (error) {
       console.error("Errore durante l'assegnazione del biglietto:", error);
       alert("Errore durante l'assegnazione del biglietto");
