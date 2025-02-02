@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./registrazione.css"; // Puoi personalizzare lo stile qui
-import { useRouter } from "next/router";
 import { Snackbar, Alert, Typography } from "@mui/material";
 import theme from "@/public/theme";
 import { ThemeProvider } from "@mui/material/styles";
-import Router from "next/router";
 import { Box } from "@mui/system";
 
 const Registrazione = () => {
@@ -16,7 +14,6 @@ const Registrazione = () => {
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const router = useRouter();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -26,10 +23,11 @@ const Registrazione = () => {
           email: email,
           password: password,
       });
+
       // Mostra la snackbar
       setOpenSnackbar(true);
-      // Reindirizza alla home page
-      router.push("/");
+      window.location.href = "/"; // Reindirizza alla home page
+      
     } catch (error) {
       console.log("Errore : ", error.response);
       setError("Registrazione fallita. Riprova.");
