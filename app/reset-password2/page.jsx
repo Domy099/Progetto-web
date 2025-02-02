@@ -35,6 +35,7 @@ const ResetPasswordConfirm = () => {
 
     try {
       const response = await axios.post(`${STRAPI_API_URL}/api/auth/reset-password`,{
+          password,
           passwordConfirmation: confirmPassword,
           code: token, // Il token ricevuto via email
       });
