@@ -19,7 +19,7 @@
 #reset-password-btn:hover {
   color: var(--rosa);
   text-decoration: underline;
-  font-size: 17px;
+  font-size: 16px;
 }
 
 #email-input,

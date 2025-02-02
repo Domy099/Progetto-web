@@ -66,9 +66,7 @@ const Login = () => {
         </Typography>
         <form id="login-form" onSubmit={handleLogin}>
           <div id="email-container" style={{ marginTop: "20px" }}>
-            <Typography variant="label">
-              Email
-            </Typography>
+            <Typography variant="label">Email</Typography>
             <input
               type="email"
               id="email-input"
@@ -80,9 +78,7 @@ const Login = () => {
             />
           </div>
           <div id="password-container" style={{ marginTop: "20px" }}>
-            <Typography variant="label">
-              Password
-            </Typography>
+            <Typography variant="label">Password</Typography>
             <input
               type={mostraPassword ? "text" : "password"}
               id="password-input"
@@ -92,16 +88,21 @@ const Login = () => {
               required
               style={{ fontFamily: "kaio-regular" }}
             />
-            <Box sx={{ display: "flex", justifyContent: "center", height: "40px" }}> 
-              <button
-              type="button"
-              id="toggle-password-btn"
-              onClick={toggleMostraPassword}
+            <Box
+              sx={{ display: "flex", justifyContent: "center", height: "40px" }}
             >
-              {mostraPassword ? <Typography variant="label">Nascondi Password</Typography> : <Typography variant="label">Mostra Password</Typography>}
-            </button>
+              <button
+                type="button"
+                id="toggle-password-btn"
+                onClick={toggleMostraPassword}
+              >
+                {mostraPassword ? 
+                  (<Typography variant="label">Nascondi Password</Typography>) 
+                  :
+                  (<Typography variant="label">Mostra Password</Typography>)
+                }
+              </button>
             </Box>
-            
           </div>
           {error && <p id="error-message">{error}</p>}
           {failedAttempts > 0 && (
@@ -110,19 +111,23 @@ const Login = () => {
               id="reset-password-btn"
               onClick={handlePassReset}
             >
-              <Typography variant="body1Bold" fontSize={14} justifySelf={'center'}>Hai dimenticato la password? Reimposta qui.</Typography>
+              <Typography
+                variant="body1Bold"
+                fontSize={14}
+                justifySelf={"center"}
+              >
+                Hai dimenticato la password? Reimposta qui.
+              </Typography>
             </button>
           )}
           <Box sx={{ display: "flex", justifyContent: "center", gap: 2 }}>
             <button type="button" id="login-btn" onClick={handleRegistrazione}>
-            Registrati
-          </button>
-          <button type="submit" id="login-btn">
-            Login
-          </button>
-          
+              Registrati
+            </button>
+            <button type="submit" id="login-btn">
+              Login
+            </button>
           </Box>
-          
         </form>
       </div>
     </ThemeProvider>

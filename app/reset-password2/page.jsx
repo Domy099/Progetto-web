@@ -14,26 +14,7 @@ const ResetPasswordConfirm = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const token = urlParams.get("code");
-
-    if (!token) {
-      setError("Token mancante. Controlla il link ricevuto via email.");
-      return;
-    }
-
-    // Se c'è il token, procedi con il reimpostare la password
-  }, []);
-
-  const toggleMostraPassword = () => {
-    setShowPassword(!showPassword);
-  };
-
-  const toggleMostraConfirmPassword = () => {
-    setShowConfirmPassword(!showConfirmPassword);
-  };
+  const STRAPI_API_URL = process.env.NEXT_PUBLIC_STRAPI_API_URL;
 
   const handleResetPassword = async (e) => {
     e.preventDefault();
@@ -53,16 +34,11 @@ const ResetPasswordConfirm = () => {
     }
 
     try {
-      const response = await axios.post(
-        "https://strapiweb.duckdns.org/api/auth/reset-password",
-        {
-          password,
+      const response = await axios.post(`${STRAPI_API_URL}/api/auth/reset-password`,{
           passwordConfirmation: confirmPassword,
           code: token, // Il token ricevuto via email
-        }
-      );
+      });
 
-      console.log("Password reimpostata con successo:", response.data);
       alert("Password reimpostata con successo! Ora puoi effettuare il login.");
       router.push("/login"); // Reindirizza alla pagina di login
     } catch (err) {
@@ -73,10 +49,18 @@ const ResetPasswordConfirm = () => {
     }
   };
 
+  const toggleMostraPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const toggleMostraConfirmPassword = () => {
+    setShowConfirmPassword(!showConfirmPassword);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <div id="reset-password-container">
-        <Typography variant="h2" id="reset-password-title">
+        <Typography variant="h2" id="reset-password-title" sx={{ mb: 3 }}>
           Reimposta Password
         </Typography>
         <form onSubmit={handleResetPassword}>
@@ -92,13 +76,22 @@ const ResetPasswordConfirm = () => {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <button
-              type="button"
-              onClick={toggleMostraPassword}
-              id="password-toggle"
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                height: "40px",
+                marginBottom: "20px",
+              }}
             >
-              {showPassword ? "Nascondi Password" : "Mostra Password"}
-            </button>
+              <span onClick={toggleMostraPassword} id="password-toggle">
+                {showPassword ? 
+                  (<Typography variant="label">Nascondi Password</Typography>) 
+                  : 
+                  (<Typography variant="label">Mostra Password</Typography>)
+                }
+              </span>
+            </div>
           </div>
           <div id="confirm-password-container">
             <Typography variant="label" id="confirm-password-label">
@@ -112,13 +105,25 @@ const ResetPasswordConfirm = () => {
               onChange={(e) => setConfirmPassword(e.target.value)}
               required
             />
-            <button
-              type="button"
-              onClick={toggleMostraConfirmPassword}
-              id="password-toggle"
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                height: "40px",
+                marginBottom: "20px",
+              }}
             >
-              {showConfirmPassword ? "Nascondi Password" : "Mostra Password"}
-            </button>
+              <span
+                onClick={toggleMostraConfirmPassword}
+                id="password-toggle"
+              >
+                {showConfirmPassword ? 
+                  (<Typography variant="label">Nascondi Password</Typography>) 
+                  : 
+                  (<Typography variant="label">Mostra Password</Typography>)
+                }
+              </span>
+            </div>
           </div>
           {error && <p id="error-message">{error}</p>}
           <button type="submit" id="reset-password-button">
