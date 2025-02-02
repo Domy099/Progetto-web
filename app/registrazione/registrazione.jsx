@@ -26,8 +26,16 @@ const Registrazione = () => {
 
       // Mostra la snackbar
       setOpenSnackbar(true);
-      window.location.href = "/"; // Reindirizza alla home page
       
+      // Usa setTimeout per eseguire una funzione dopo 2 secondi
+      setTimeout(() => {
+        // Verifica se 'window' è definito (ambiente browser)
+        if (typeof window !== "undefined") {
+          // Reindirizza l'utente alla home page ('/')
+          window.location.href = "/";
+        }
+      }, 2000); // Attendi 2 secondi prima di eseguire la funzione
+
     } catch (error) {
       console.log("Errore : ", error.response);
       setError("Registrazione fallita. Riprova.");
